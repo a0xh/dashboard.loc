@@ -2,7 +2,6 @@
 
 namespace App\Domain\User\Application\Store;
 
-use App\Domain\User\Application\Index\IndexUserAction;
 use Illuminate\Http\RedirectResponse;
 
 final readonly class StoreUserResponder
@@ -11,7 +10,7 @@ final readonly class StoreUserResponder
     {
         if ($result) {
             session()->flash('success', 'messages.user.store.success');
-            return redirect()->action(IndexUserAction::class);
+            return redirect()->route('admin.user.index');
         }
 
         return back()->with('error', 'messages.user.store.error');

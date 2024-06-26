@@ -2,7 +2,6 @@
 
 namespace App\Domain\User\Application\Update;
 
-use App\Domain\User\Application\Index\UserIndexAction;
 use Illuminate\Http\RedirectResponse;
 
 final readonly class UpdateUserResponder
@@ -11,7 +10,7 @@ final readonly class UpdateUserResponder
     {
         if ($result) {
             session()->flash('success', 'messages.user.update.success');
-            return redirect()->action(UserIndexAction::class);
+            return redirect()->route('admin.user.index');
         }
 
         return back()->with('error', 'messages.user.update.error');

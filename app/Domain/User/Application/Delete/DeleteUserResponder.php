@@ -2,7 +2,6 @@
 
 namespace App\Domain\User\Application\Delete;
 
-use App\Domain\User\Application\Index\IndexUserAction;
 use Illuminate\Http\RedirectResponse;
 
 final readonly class DeleteUserResponder
@@ -11,7 +10,7 @@ final readonly class DeleteUserResponder
     {
         if ($result) {
             session()->flash('success', 'messages.user.update.success');
-            return redirect()->action(IndexUserAction::class);
+            return redirect()->route('admin.user.index');
         }
         
         return back()->with('error', 'messages.user.update.error');

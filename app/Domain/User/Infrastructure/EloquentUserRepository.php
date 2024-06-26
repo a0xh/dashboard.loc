@@ -23,11 +23,10 @@ class EloquentUserRepository implements UserRepositoryInterface
     {
         try {
             DB::transaction(function() use($data, $roleId) {
-                $createUser = User::create($data);
-                $createUser->roles()->sync($roleId);
-
-                return $createUser->exists();
+                $user = User::create($data);
+                $user->roles()->sync($roleId);
             }, 3);
+            return $createUser->exists();
         } catch (ExternalServiceException $exception) {
             return 'User Could Not Be Created!';
         }
@@ -37,11 +36,10 @@ class EloquentUserRepository implements UserRepositoryInterface
     {
         try {
             DB::transaction(function() use($user, $data, $roleId) {
-                $updateUser = $user->update($data);
-                $updateUser->roles()->sync($roleId);
-
-                return $updateUser->isDirty();
+                $user->update($data);
+                $user->roles()->sync($roleId);
             }, 3);
+            return $user->wasChanged();
         } catch (ExternalServiceException $exception) {
             return 'User Could Not Be Updated!';
         }
@@ -51,11 +49,10 @@ class EloquentUserRepository implements UserRepositoryInterface
     {
         try {
             DB::transaction(function() use($user) {
-                $deleteUser = $user->roles()->detach();
-                $deleteUser->delete();
-
-                return $deleteUser->trashed();
+                $user->roles()->detach();
+                $user->delete();
             }, 3);
+            return $user->trashed();
         } catch (ExternalServiceException $exception) {
             return 'User Could Not Be Deleted!';
         }
