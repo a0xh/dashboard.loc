@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', trans('Добавление пользователя'))
+@section('title', trans('Редактирование пользователя'))
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/dropify.min.css') }}">
@@ -13,7 +13,7 @@
 
 	    	<x-heading />
 	        <x-errors />
-	        
+            
 	        @isset ($user)
 		        <form action="{{ route('admin.user.update', $user)}}" method="post" enctype="multipart/form-data">
 

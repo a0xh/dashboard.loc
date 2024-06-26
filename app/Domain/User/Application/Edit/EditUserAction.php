@@ -4,10 +4,9 @@ namespace App\Domain\User\Application\Edit;
 
 use App\Infrastructure\Controllers\Controller;
 use App\Domain\Role\Infrastructure\RoleRepositoryInterface;
+use Spatie\RouteAttributes\Attributes\{Get, ScopeBindings};
 use App\Domain\User\Domain\User;
-use App\Domain\Role\Domain\Role;
 
-#[Route('/admin/user/{user}/edit', name: 'admin.user.edit', method: 'GET', middleware: 'admin')]
 final class EditUserAction extends Controller
 {
     public function __construct(
@@ -15,6 +14,8 @@ final class EditUserAction extends Controller
         private readonly EditUserResponder $userResponder
     ) {}
 
+    #[Get('/admin/user/{user:id}/edit', name: "admin.user.edit")]
+    #[ScopeBindings]
     public function __invoke(User $user): \Illuminate\View\View
     {
         return $this->userResponder->handle([

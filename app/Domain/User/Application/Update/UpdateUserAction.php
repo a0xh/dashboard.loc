@@ -7,9 +7,9 @@ use App\Domain\User\Infrastructure\UserRepositoryInterface;
 use Illuminate\Http\RedirectResponse;
 use App\Domain\User\Domain\{User, UserRequest};
 use App\Application\Traits\MediaAction;
+use Spatie\RouteAttributes\Attributes\{Put, ScopeBindings};
 use Illuminate\Support\Collection;
 
-#[Route('/admin/user/{user}/update', name: 'admin.user.update', method: 'PUT', middleware: 'admin')]
 final class UpdateUserAction extends Controller
 {
     use MediaAction;
@@ -19,6 +19,8 @@ final class UpdateUserAction extends Controller
         private readonly UpdateUserResponder $userResponder
     ) {}
 
+    #[Put('/admin/user/{user:id}/update', name: "admin.user.update")]
+    #[ScopeBindings]
     public function __invoke(User $user, UserRequest $userRequest): RedirectResponse
     {
         $userDto = literal($userRequest->formRequest());

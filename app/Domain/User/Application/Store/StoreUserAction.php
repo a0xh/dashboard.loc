@@ -7,9 +7,9 @@ use App\Domain\User\Infrastructure\UserRepositoryInterface;
 use Illuminate\Http\RedirectResponse;
 use App\Domain\User\Domain\{User, UserRequest};
 use App\Application\Traits\MediaAction;
+use Spatie\RouteAttributes\Attributes\Post;
 use Illuminate\Support\Collection;
 
-#[Route('/admin/user/store', name: 'admin.user.store', method: 'POST', middleware: 'admin')]
 final class StoreUserAction extends Controller
 {
     use MediaAction;
@@ -19,6 +19,7 @@ final class StoreUserAction extends Controller
         private readonly StoreUserResponder $userResponder
     ) {}
 
+    #[Post('/admin/user/store', name: "admin.user.store")]
     public function __invoke(UserRequest $userRequest): RedirectResponse
     {
         $userDto = literal($userRequest->formRequest());
