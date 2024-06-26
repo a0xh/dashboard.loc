@@ -8,7 +8,7 @@ use App\Domain\User\Domain\User;
 use App\Application\Traits\MediaAction;
 use Illuminate\Http\RedirectResponse;
 
-#[Route('/admin/user/{user}/delete', name: 'admin.user.delete', method: 'DELETE')]
+#[Route('/admin/user/{user}/delete', name: 'admin.user.delete', method: 'DELETE', middleware: 'admin')]
 final class DeleteUserAction extends Controller
 {
     use MediaAction;
@@ -25,8 +25,8 @@ final class DeleteUserAction extends Controller
         }
 
         $deleteUser = $this->userRepository->deleteUser($user);
-        $redirectToUserIndex = $this->userResponder->handle($deleteUser);
+        $redirectTo = $this->userResponder->handle($deleteUser);
 
-        return $redirectToUserIndex;
+        return $redirectTo;
     }
 }

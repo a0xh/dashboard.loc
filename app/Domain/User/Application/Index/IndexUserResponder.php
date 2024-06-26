@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\View;
 
 final readonly class IndexUserResponder
 {
-    public function handle(LengthAwarePaginator $users): \Illuminate\View\View
+    public function handle(array $data): \Illuminate\View\View
     {
-        return View::make('admin::user.index', ['users' => $users]);
+        return View::make('admin::user.index', $data);
     }
 }

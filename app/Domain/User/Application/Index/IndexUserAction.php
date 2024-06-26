@@ -6,7 +6,7 @@ use App\Infrastructure\Controllers\Controller;
 use App\Domain\User\Infrastructure\UserRepositoryInterface;
 use App\Domain\User\Domain\User;
 
-#[Route('/admin/user', name: 'admin.user.index', method: 'GET')]
+#[Route('/admin/user', name: 'admin.user.index', method: 'GET', middleware: 'admin')]
 final class IndexUserAction extends Controller
 {
     public function __construct(
@@ -16,9 +16,8 @@ final class IndexUserAction extends Controller
     
     public function __invoke(): \Illuminate\View\View
     {
-        $getUser = $this->userRepository->getUser(11);
-        $respondViewUserIndex = $this->userResponder->handle($getUser);
-
-        return $respondViewUserIndex;
+        return $this->userResponder->handle([
+            'users' => $this->userRepository->getUser(11)
+        ]);
     }
 }

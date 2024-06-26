@@ -9,7 +9,7 @@ class Route
 {
     public array $args;
 
-    public function __construct(string $path, string $name, string $method)
+    public function __construct(string $method, string $path, string $name, string $middleware)
     {
         $this->args = func_get_args();
     }

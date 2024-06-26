@@ -9,7 +9,7 @@ use App\Domain\User\Domain\{User, UserRequest};
 use App\Application\Traits\MediaAction;
 use Illuminate\Support\Collection;
 
-#[Route('/admin/user/{user}/update', name: 'admin.user.update', method: 'PUT')]
+#[Route('/admin/user/{user}/update', name: 'admin.user.update', method: 'PUT', middleware: 'admin')]
 final class UpdateUserAction extends Controller
 {
     use MediaAction;
@@ -37,8 +37,8 @@ final class UpdateUserAction extends Controller
             'media' => $updateMedia, 'data' => $userDto->getData(),
         ])->toArray(), $userDto->getRoleId());
 
-        $redirectToUserIndex = $this->userResponder->handle($updateUser);
+        $redirectTo = $this->userResponder->handle($updateUser);
 
-        return $redirectToUserIndex;
+        return $redirectTo;
     }
 }

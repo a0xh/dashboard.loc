@@ -9,7 +9,7 @@ use App\Domain\User\Domain\{User, UserRequest};
 use App\Application\Traits\MediaAction;
 use Illuminate\Support\Collection;
 
-#[Route('/admin/user/store', name: 'admin.user.store', method: 'POST')]
+#[Route('/admin/user/store', name: 'admin.user.store', method: 'POST', middleware: 'admin')]
 final class StoreUserAction extends Controller
 {
     use MediaAction;
@@ -37,8 +37,8 @@ final class StoreUserAction extends Controller
             'media' => $createMedia, 'data' => $userDto->getData(),
         ])->toArray(), $userDto->getRoleId());
 
-        $redirectToUserIndex = $this->userResponder->handle($createUser);
+        $redirectTo = $this->userResponder->handle($createUser);
 
-        return $redirectToUserIndex;
+        return $redirectTo;
     }
 }

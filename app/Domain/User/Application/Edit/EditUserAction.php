@@ -7,7 +7,7 @@ use App\Domain\Role\Infrastructure\RoleRepositoryInterface;
 use App\Domain\User\Domain\User;
 use App\Domain\Role\Domain\Role;
 
-#[Route('/admin/user/{user}/edit', name: 'admin.user.edit', method: 'GET')]
+#[Route('/admin/user/{user}/edit', name: 'admin.user.edit', method: 'GET', middleware: 'admin')]
 final class EditUserAction extends Controller
 {
     public function __construct(
@@ -17,9 +17,9 @@ final class EditUserAction extends Controller
 
     public function __invoke(User $user): \Illuminate\View\View
     {
-        $getRoleAll = $this->roleRepository->getRoleAll();
-        $respondViewUserEdit = $this->userResponder->handle($user, $getRoleAll);
-
-        return $respondViewUserEdit;
+        return $this->userResponder->handle([
+            'roles' => $this->roleRepository->getRoleAll(),
+            'user' => $user
+        ]);
     }
 }

@@ -6,10 +6,8 @@ use Illuminate\Support\Facades\View;
 
 final readonly class CreateUserResponder
 {
-    public function handle(array $roles): \Illuminate\View\View
+    public function handle(array $data): \Illuminate\View\View
     {
-        return View::make('admin::user.create', [
-            'roles' => $roles
-        ]);
+        return View::make('admin::user.create', $data);
     }
 }
