@@ -21,7 +21,7 @@ class RepositoryServiceProvider extends ServiceProvider
 
         $this->app->bind(
             \App\Domain\User\Infrastructure\UserRepositoryInterface::class,
-            \App\Domain\User\Infrastructure\EloquentUserRepository::class
+            \App\Domain\User\Infrastructure\CachedUserRepository::class
         );
     }
 

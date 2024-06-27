@@ -32,12 +32,13 @@ final class UpdateUserAction extends Controller
             'last_name' => $userDto->getLastName(),
             'email' => $userDto->getEmail(),
             'password' => $userDto->getHashPassword(),
-            'status' => $userDto->getStatus()
+            'status' => $userDto->getStatus(),
+            'role_id' => $userDto->getRoleId()
         ]);
 
         $updateUser = $this->userRepository->updateUser($user, $data->merge([
             'media' => $updateMedia, 'data' => $userDto->getData(),
-        ])->toArray(), $userDto->getRoleId());
+        ])->toArray());
 
         $redirectTo = $this->userResponder->handle($updateUser);
 

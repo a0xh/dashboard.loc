@@ -13,25 +13,30 @@ return [
      * Optionally, you can specify group configuration by using key/values
      */
     'directories' => [
-        app_path('Domain/Statistics/Application/Index'),
-
-        app_path('Domain/User/Application/Create'),
-        app_path('Domain/User/Application/Delete'),
-        app_path('Domain/User/Application/Edit'),
-        app_path('Domain/User/Application/Index'),
-        app_path('Domain/User/Application/Show'),
-        app_path('Domain/User/Application/Store'),
-        app_path('Domain/User/Application/Update'),
-        /*
-        app_path('Http/Controllers/Api') => [
-           'prefix' => 'api',
-           'middleware' => 'api',
-            // only register routes in files that match the patterns
-           'patterns' => ['*Controller.php'],
-           // do not register routes in files that match the patterns
-           'not_patterns' => [],
+    	app_path('Domain/Statistics/Application/Index') => [
+           'middleware' => ['web', 'auth']
         ],
-        */
+        app_path('Domain/User/Application/Create') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/User/Application/Delete') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/User/Application/Edit') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/User/Application/Index') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/User/Application/Show') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/User/Application/Store') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/User/Application/Update') => [
+           'middleware' => ['web', 'auth']
+        ],
     ],
 
     /**

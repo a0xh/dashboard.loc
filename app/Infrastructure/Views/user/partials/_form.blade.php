@@ -8,7 +8,7 @@
                     <div class="col-md-6">
                         <label for="first_name" class="form-label">{{ _('Имя') }}</label>
 
-                        <input id="first_name" type="text" name="first_name" value="{{ $user->first_name ?? old('first_name') }}" class="form-control @isset($errors) @error('first_name') is-invalid @enderror @endisset" autocomplete="first_name" autofocus>
+                        <input id="first_name" type="text" name="first_name" value="{{ $user->first_name ?? old('first_name') }}" class="form-control @error('first_name') is-invalid @enderror" autocomplete="first_name" autofocus>
 
                         <x-error-field name="first_name" />
                     </div>
@@ -18,7 +18,7 @@
                     <div class="col-md-6">
                         <label for="last_name" class="form-label">{{ _('Фамилия') }}</label>
 
-                        <input id="last_name" type="text" name="last_name" value="{{ $user->last_name ?? old('last_name') }}" class="form-control @isset($errors) @error('last_name') is-invalid @enderror @endisset" autocomplete="last_name">
+                        <input id="last_name" type="text" name="last_name" value="{{ $user->last_name ?? old('last_name') }}" class="form-control @error('last_name') is-invalid @enderror" autocomplete="last_name">
 
                         <x-error-field name="last_name" />
                     </div>
@@ -28,7 +28,7 @@
                     <div class="col-md-12">
                         <label for="email" class="form-label">{{ _('Эл. почта') }}</label>
 
-                        <input id="email" type="email" name="email" value="{{ $user->email ?? old('email') }}" class="form-control @isset($errors) @error('email') is-invalid @enderror @endisset" autocomplete="email">
+                        <input id="email" type="email" name="email" value="{{ $user->email ?? old('email') }}" class="form-control @error('email') is-invalid @enderror" autocomplete="email">
 
                         <x-error-field name="email" />
                     </div>
@@ -38,7 +38,7 @@
                     <div class="col-md-12">
                         <label for="password" class="form-label">{{ _('Пароль') }}</label>
 
-                        <input id="password" type="password" name="password" class="form-control @isset($errors) @error('password') is-invalid @enderror @endisset" autocomplete="new-password">
+                        <input id="password" type="password" name="password" class="form-control @error('password') is-invalid @enderror" autocomplete="new-password">
 
                         <x-error-field name="password" />
                     </div>
@@ -65,7 +65,7 @@
                     <div class="col-md-12">
                         <label for="ip_address" class="form-label">{{ _('IP-адрес') }}</label>
 
-                        <input id="ip_address" type="text" name="data[ip_address]" value="{{ $user->data->ip_address ?? old('ip_address') }}" class="form-control @isset($errors) @error('ip_address') is-invalid @enderror @endisset" autocomplete="ip_address">
+                        <input id="ip_address" type="text" name="data[ip_address]" value="{{ $user->data->ip_address ?? old('ip_address') }}" class="form-control @error('ip_address') is-invalid @enderror" autocomplete="ip_address">
 
                         <x-error-field name="ip_address" />
                     </div>
@@ -99,7 +99,7 @@
                         <div class="col-md-12">
                             <label for="role_id" class="form-label">{{ _('Роль') }}</label>
 
-                            <select id="role_id" name="role_id" class="form-select @isset($errors) @error('role_id') is-invalid @enderror @endisset">
+                            <select id="role_id" name="role_id" class="form-select @error('role_id') is-invalid @enderror">
                                 <option selected disabled hidden>{{ _('-- Выбрать роль --') }}</option>
                                 @isset ($roles)
                                     @foreach ($roles as $role)

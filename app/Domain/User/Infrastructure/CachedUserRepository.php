@@ -1,23 +1,24 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Domain\User\Infrastructure;
 
 use App\Domain\User\Domain\User;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Cache\CacheManager;
 
 class CachedUserRepository implements UserRepositoryInterface
 {
-    const TTL = 1440;
+    protected const TTL = 1440;
 
     public function __construct(
-        protected EloquentUserRepository $user,
+        protected EloquentUserRepository $userRepository,
         protected CacheManager $cache
     ) {}
 
     public function findByUser(int $id): User
     {
-        $findByUser = $this->cache->remember('user_' . $id, self::TTL, function () {
-            return $this->user->findByUser($id);
+        $findByUser = $this->cache->remember('user_' . $id, self::TTL, function() use($id) {
+            return $this->userRepository->findByUser($id);
         });
 
         return $findByUser;
@@ -25,25 +26,51 @@ class CachedUserRepository implements UserRepositoryInterface
 
     public function getUser(int $count): LengthAwarePaginator
     {
-        $findByUser = $this->cache->remember('users', self::TTL, function () {
-            return $this->user->getUser($id);
+        $getUser = $this->cache->remember('users', self::TTL, function() use($count) {
+            return $this->userRepository->getUser($count);
         });
 
-        return $findByUser;
+        return $getUser;
     }
 
-    public function createUser(array $data, int $roleId): bool
+    public function createUser(array $data): bool
     {
-        //
+        $createUser = $this->userRepository->createUser($data);
+
+        if ($this->cache->has('users')) {
+            $this->cache->pull('users');
+        }
+
+        return $createUser;
     }
 
-    public function updateUser(User $user, array $data, int $roleId): bool
+    public function updateUser(User $user, array $data): bool
     {
-        //
+        $updateUser = $this->userRepository->updateUser($user, $data);
+
+        if ($this->cache->has('users')) {
+            $this->cache->pull('users');
+        }
+
+        if ($this->cache->has('user_' . $user->id)) {
+            $this->cache->forget('user_' . $user->id);
+        }
+
+        return $updateUser;
     }
 
     public function deleteUser(User $user): bool
     {
-        //
+        $deleteUser = $this->user->deleteUser($user);
+
+        if ($this->cache->has('users')) {
+            $this->cache->forget('users');
+        }
+
+        if ($this->cache->has('user_' . $user->id)) {
+            $this->cache->forget('user_' . $user->id);
+        }
+
+        return $deleteUser;
     }
 }

@@ -36,7 +36,7 @@ final class StoreUserAction extends Controller
 
         $createUser = $this->userRepository->createUser($data->merge([
             'media' => $createMedia, 'data' => $userDto->getData(),
-        ])->toArray(), $userDto->getRoleId());
+        ])->toArray());
 
         $redirectTo = $this->userResponder->handle($createUser);
 
