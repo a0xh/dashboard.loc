@@ -5,10 +5,11 @@ namespace App\Domain\User\Application\Delete;
 use App\Infrastructure\Controllers\Controller;
 use App\Domain\User\Infrastructure\UserRepositoryInterface;
 use App\Application\Traits\MediaAction;
-use Spatie\RouteAttributes\Attributes\{Delete, ScopeBindings};
+use Spatie\RouteAttributes\Attributes\{Delete, Where};
 use App\Domain\User\Domain\User;
 use Illuminate\Http\RedirectResponse;
 
+#[Where('{user:id}', '[0-9]+')]
 final class DeleteUserAction extends Controller
 {
     use MediaAction;
@@ -19,7 +20,6 @@ final class DeleteUserAction extends Controller
     ) {}
 
     #[Delete('/admin/user/{user:id}/delete', name: "admin.user.delete")]
-    #[ScopeBindings]
     public function __invoke(User $user): RedirectResponse
     {
         if ($user->media) {

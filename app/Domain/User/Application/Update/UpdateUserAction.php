@@ -7,9 +7,10 @@ use App\Domain\User\Infrastructure\UserRepositoryInterface;
 use Illuminate\Http\RedirectResponse;
 use App\Domain\User\Domain\{User, UserRequest};
 use App\Application\Traits\MediaAction;
-use Spatie\RouteAttributes\Attributes\{Put, ScopeBindings};
+use Spatie\RouteAttributes\Attributes\{Put, Where};
 use Illuminate\Support\Collection;
 
+#[Where('{user:id}', '[0-9]+')]
 final class UpdateUserAction extends Controller
 {
     use MediaAction;
@@ -20,7 +21,6 @@ final class UpdateUserAction extends Controller
     ) {}
 
     #[Put('/admin/user/{user:id}/update', name: "admin.user.update")]
-    #[ScopeBindings]
     public function __invoke(User $user, UserRequest $userRequest): RedirectResponse
     {
         $userDto = literal($userRequest->formRequest());

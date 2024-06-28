@@ -31,7 +31,8 @@ final class StoreUserAction extends Controller
             'last_name' => $userDto->getLastName(),
             'email' => $userDto->getEmail(),
             'password' => $userDto->getHashPassword(),
-            'status' => $userDto->getStatus()
+            'status' => $userDto->getStatus(),
+            'role_id' => $userDto->getRoleId()
         ]);
 
         $createUser = $this->userRepository->createUser($data->merge([

@@ -7,7 +7,7 @@ use Illuminate\Http\UploadedFile;
 
 trait MediaAction
 {
-    public function storeMedia(?UploadedFile $request): ?string
+    public function createMedia(?UploadedFile $request): ?string
     {
         if (request()->hasFile('media')) {
             return $request?->store(date('Y-m'));

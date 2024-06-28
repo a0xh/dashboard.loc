@@ -61,7 +61,7 @@ class CachedUserRepository implements UserRepositoryInterface
 
     public function deleteUser(User $user): bool
     {
-        $deleteUser = $this->user->deleteUser($user);
+        $deleteUser = $this->userRepository->deleteUser($user);
 
         if ($this->cache->has('users')) {
             $this->cache->forget('users');

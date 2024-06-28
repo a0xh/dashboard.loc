@@ -4,10 +4,12 @@ namespace App\Domain\Role\Infrastructure;
 
 use App\Domain\Role\Domain\Role;
 
-class EloquentRoleRepository implements RoleRepositoryInterface
+class EloquentRoleRepository extends DecoratorRoleRepository
 {
+    public function __construct(protected Role $role) {}
+
     public function getRoleAll(): array
     {
-        return Role::query()->orderBy('created_at', 'desc')->get()->all();
+        return $this->role->query()->orderBy('created_at', 'desc')->get()->all();
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Application\Enums\StatusEnum;
 
 class User extends Authenticatable
@@ -15,6 +16,11 @@ class User extends Authenticatable
     use Notifiable;
 
     protected $table = 'users';
+    
+    protected $dates = [
+        'created_at',
+        'updated_at'
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -76,5 +82,10 @@ class User extends Authenticatable
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(\App\Domain\Role\Domain\Role::class);
+    }
+
+    public function categories(): HasMany
+    {
+        return $this->hasMany(\App\Domain\Caregory\Domain\Caregory::class);
     }
 }

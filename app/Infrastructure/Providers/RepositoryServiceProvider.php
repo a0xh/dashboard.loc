@@ -16,12 +16,17 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             \App\Domain\Role\Infrastructure\RoleRepositoryInterface::class,
-            \App\Domain\Role\Infrastructure\EloquentRoleRepository::class
+            \App\Domain\Role\Infrastructure\CachedRoleRepository::class
         );
 
         $this->app->bind(
             \App\Domain\User\Infrastructure\UserRepositoryInterface::class,
             \App\Domain\User\Infrastructure\CachedUserRepository::class
+        );
+
+        $this->app->bind(
+            \App\Domain\Category\Infrastructure\CategoryRepositoryInterface::class,
+            \App\Domain\Category\Infrastructure\CachedCategoryRepository::class
         );
     }
 

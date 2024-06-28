@@ -3,9 +3,10 @@
 namespace App\Domain\User\Application\Show;
 
 use App\Infrastructure\Controllers\Controller;
-use Spatie\RouteAttributes\Attributes\{Get, ScopeBindings};
+use Spatie\RouteAttributes\Attributes\{Get, Where};
 use App\Domain\User\Domain\User;
 
+#[Where('{user:id}', '[0-9]+')]
 final class ShowUserAction extends Controller
 {
     public function __construct(
@@ -13,7 +14,6 @@ final class ShowUserAction extends Controller
     ) {}
 
     #[Get('/admin/user/{user:id}/show', name: "admin.user.show")]
-    #[ScopeBindings]
     public function __invoke(User $user): \Illuminate\View\View
     {
         return $this->userResponder->handle(['user' => $user]);

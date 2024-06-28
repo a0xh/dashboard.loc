@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', trans('Редактирование пользователя'))
+@section('title', trans('Добавление пользователя'))
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/dropify.min.css') }}">
@@ -15,12 +15,10 @@
 	        <x-errors />
             <x-message />
             
-	        @isset ($user)
-		        <form action="{{ route('admin.user.update', $user)}}" method="post" enctype="multipart/form-data">
+	        @if (Route::has('admin.user.store'))
+		        <form action="{{ route('admin.user.store')}}" method="post" enctype="multipart/form-data">
 
-		            @method('PUT')
 		            @csrf
-
 		            @includeIf('user.partials._form')
 
 		        </form>
@@ -32,7 +30,7 @@
 		    			@endif
                     </x-slot>
                 </x-no-data>
-		    @endisset
+		    @endif
 
 	    </div>
 	</div>

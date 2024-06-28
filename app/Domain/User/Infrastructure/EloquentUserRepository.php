@@ -26,8 +26,8 @@ class EloquentUserRepository extends DecoratorUserRepository
             DB::transaction(function() use($data) {
                 $roleId = $data['role_id'];
 
-                $this->user->create(data_forget($data, 'role_id'));
-                $this->user->roles()->sync($roleId);
+                $user = $this->user->create(data_forget($data, 'role_id'));
+                $user->roles()->sync($roleId);
             }, 3);
 
             return $this->user->exists();
@@ -64,7 +64,11 @@ class EloquentUserRepository extends DecoratorUserRepository
                 $user->delete();
             }, 3);
 
-            return $user->trashed();
+            if ($user->deleteOrFail() !== true) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         catch (\ExternalServiceException $exception) {

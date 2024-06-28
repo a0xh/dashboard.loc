@@ -14,7 +14,7 @@ final class IndexUserAction extends Controller
         private readonly IndexUserResponder $userResponder
     ) {}
 
-    #[Get('/admin/user', name: 'admin.user.index',)]
+    #[Get('/admin/user', name: 'admin.user.index')]
     public function __invoke(): \Illuminate\View\View
     {
         return $this->userResponder->handle([

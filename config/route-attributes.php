@@ -13,8 +13,8 @@ return [
      * Optionally, you can specify group configuration by using key/values
      */
     'directories' => [
-    	app_path('Domain/Statistics/Application/Index') => [
-           'middleware' => ['web', 'auth']
+      app_path('Domain/Statistics/Application/Index') => [
+         'middleware' => ['web', 'auth']
         ],
         app_path('Domain/User/Application/Create') => [
            'middleware' => ['web', 'auth']
@@ -35,6 +35,24 @@ return [
            'middleware' => ['web', 'auth']
         ],
         app_path('Domain/User/Application/Update') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Category/Application/Create') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Category/Application/Delete') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Category/Application/Edit') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Category/Application/Index') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Category/Application/Store') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Category/Application/Update') => [
            'middleware' => ['web', 'auth']
         ],
     ],
