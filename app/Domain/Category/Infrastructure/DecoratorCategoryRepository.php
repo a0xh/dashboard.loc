@@ -13,6 +13,7 @@ abstract class DecoratorCategoryRepository implements CategoryRepositoryInterfac
         $this->categoryRepository = $categoryRepository;
     }
 
-    abstract public function getCategoryAll(string $type): Category;
-    abstract public function getCategory(string $type, int $count): LengthAwarePaginator;
+    abstract public function getCategoryAll(string $type): array;
+    abstract public function getCategoryByProduct(int $count): LengthAwarePaginator;
+    abstract public function getCategoryByPost(int $count): LengthAwarePaginator;
 }

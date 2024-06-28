@@ -15,7 +15,7 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
         protected CacheManager $cache
     ) {}
 
-    public function getCategoryAll(string $type): Category
+    public function getCategoryAll(string $type): array
     {
         $getCategoryAll = $this->cache->remember('category_' . $type, self::TTL, function() use($type) {
             return $this->categoryRepository->getCategoryAll($type);
@@ -24,21 +24,42 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
         return $getCategoryAll;
     }
 
-    public function getCategory(string $type, int $count): LengthAwarePaginator
+    public function getCategoryByProduct(int $count): LengthAwarePaginator
     {
-        $getCategory = $this->cache->remember('categories', self::TTL, function() use($type, $count) {
-            return $this->categoryRepository->getCategory($type, $count);
+        $getCategoryByProduct = $this->cache->remember('categories_product', self::TTL, function() use($count) {
+            return $this->categoryRepository->getCategoryByProduct($count);
         });
 
-        return $getCategory;
+        return $getCategoryByProduct;
+    }
+
+    public function getCategoryByPost(int $count): LengthAwarePaginator
+    {
+        $getCategoryByPost = $this->cache->remember('categories_post', self::TTL, function() use($count) {
+            return $this->categoryRepository->getCategoryByPost($count);
+        });
+
+        return $getCategoryByPost;
     }
 
     public function createCategory(array $data): bool
     {
         $createCategory = $this->categoryRepository->createCategory($data);
 
-        if ($this->cache->has('categories')) {
-            $this->cache->pull('categories');
+        if ($this->cache->has('categories_post')) {
+            $this->cache->pull('categories_post');
+        }
+
+        if ($this->cache->has('categories_product')) {
+            $this->cache->pull('categories_product');
+        }
+
+        if ($this->cache->has('category_product')) {
+            $this->cache->pull('category_product');
+        }
+
+        if ($this->cache->has('category_post')) {
+            $this->cache->pull('category_post');
         }
 
         return $createCategory;
@@ -48,8 +69,20 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
     {
         $updateCategory = $this->categoryRepository->updateCategory($category, $data);
 
-        if ($this->cache->has('categories')) {
-            $this->cache->pull('categories');
+        if ($this->cache->has('categories_post')) {
+            $this->cache->pull('categories_post');
+        }
+
+        if ($this->cache->has('categories_product')) {
+            $this->cache->pull('categories_product');
+        }
+
+        if ($this->cache->has('category_product')) {
+            $this->cache->pull('category_product');
+        }
+
+        if ($this->cache->has('category_post')) {
+            $this->cache->pull('category_post');
         }
 
         return $updateCategory;
@@ -59,8 +92,20 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
     {
         $deleteCategory = $this->categoryRepository->deleteCategory($category);
 
-        if ($this->cache->has('categories')) {
-            $this->cache->forget('categories');
+        if ($this->cache->has('categories_post')) {
+            $this->cache->forget('categories_post');
+        }
+
+        if ($this->cache->has('categories_product')) {
+            $this->cache->forget('categories_product');
+        }
+
+        if ($this->cache->has('category_product')) {
+            $this->cache->forget('category_product');
+        }
+
+        if ($this->cache->has('category_post')) {
+            $this->cache->forget('category_post');
         }
 
         return $deleteCategory;

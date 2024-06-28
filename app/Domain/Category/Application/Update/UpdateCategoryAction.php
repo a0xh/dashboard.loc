@@ -30,19 +30,20 @@ final class UpdateCategoryAction extends Controller
 
         $data = collect([
             'title' => $categoryDto->getTitle(),
-            'slug' => $categoryDto->getSlug(),
             'description' => $categoryDto->getDescription(),
+            'slug' => $categoryDto->getSlug(),
             'keywords' => $categoryDto->getKeywords(),
             'category_id' => $categoryDto->getCategoryId(),
-            'status' => $categoryDto->getStatus(),
-            'data' => $categoryDto->getData()
+            'status' => $categoryDto->getStatus()
         ]);
 
-        $updateCategory = $this->categoryRepository->updateCategory($category, $data->merge([
-                'type' => $category->type,
-                'media' => $createMedia,
-                'user_id' => $category->user_id
-        ])->toArray());
+        $updateCategory = $this->categoryRepository->updateCategory($category,
+            $data->merge([
+                'user_id' => $category->user_id,
+                'media' => $updateMedia,
+                'type' => $category->type
+            ])->toArray()
+        );
 
         $redirectTo = $this->categoryResponder->handle($updateCategory);
 

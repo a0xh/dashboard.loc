@@ -11,15 +11,15 @@
         <div class="container-xxl">
 
             <x-heading>
-            	<x-slot:button>
-            		@if (Route::has('admin.user.create'))
-	                    <a href="{{ route('admin.user.create') }}" class="btn btn-primary btn-set-task w-sm-100">
-	                        <i class="icofont-plus-circle me-2 fs-6"></i>
-	                        {{ __('Добавить пользователя') }}
-	                    </a>
-		            @endif
-            	</x-slot>
-        	</x-heading>
+                <x-slot:button>
+                    @if (Route::has('admin.user.create'))
+                        <a href="{{ route('admin.user.create') }}" class="btn btn-primary btn-set-task w-sm-100">
+                            <i class="icofont-plus-circle me-2 fs-6"></i>
+                            {{ __('Добавить пользователя') }}
+                        </a>
+                    @endif
+                </x-slot>
+            </x-heading>
 
             <x-success />
 
@@ -31,9 +31,9 @@
                             <div class="card-body">
                                 <div class="table-responsive">
 
-									@if (View::exists('user.partials._table'))
-										@include('user.partials._table')
-									@endif
+                                    @if (View::exists('user.partials._table'))
+                                        @include('user.partials._table')
+                                    @endif
 
                                 </div>
                             </div>
@@ -44,11 +44,11 @@
             @else
                 <x-no-data>
                     <x-slot:button>
-                    	@if (Route::has('admin.user.create'))
-		                    <a href="{{ route('admin.user.create') }}" class="btn btn-primary border lift mt-1">
-		                        {{ __('Добавьте пользователя') }}
-		                    </a>
-			            @endif
+                        @if (Route::has('admin.user.create'))
+                            <a href="{{ route('admin.user.create') }}" class="btn btn-primary border lift mt-1">
+                                {{ __('Добавьте пользователя') }}
+                            </a>
+                        @endif
                     </x-slot>
                 </x-no-data>
             @endisset

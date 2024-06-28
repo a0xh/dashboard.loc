@@ -9,13 +9,13 @@ class CategoryDto
 {
     public function __construct(
         private string $title,
-        private string $slug,
+        private ?string $slug,
         private ?string $description,
         private ?string $keywords,
         private bool $status,
         private ?UploadedFile $media,
         private ?int $category_id,
-        private ?array $data
+        private string $type
     ) {}
 
     public function getTitle(): string
@@ -23,7 +23,7 @@ class CategoryDto
         return $this->title;
     }
 
-    public function getSlug(): string
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
@@ -50,11 +50,15 @@ class CategoryDto
 
     public function getCategoryId(): ?int
     {
+        if ($this->category_id == 0) {
+            return null;
+        }
+
         return $this->category_id;
     }
 
-    public function getData(): ?array
+    public function getType(): string
     {
-        return $this->data;
+        return $this->type;
     }
 }

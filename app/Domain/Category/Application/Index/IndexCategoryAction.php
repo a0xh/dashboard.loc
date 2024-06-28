@@ -18,8 +18,8 @@ final class IndexCategoryAction extends Controller
     public function __invoke(): \Illuminate\View\View
     {
         return $this->categoryResponder->handle([
-            'categoriesTypeProduct' => $this->category->getCategories('product', 11),
-            'categoriesTypePost' => $this->category->getCategories('post', 11)
+            'categoriesTypeProduct' => $this->categoryRepository->getCategoryByProduct(11),
+            'categoriesTypePost' => $this->categoryRepository->getCategoryByPost(11)
         ]);
     }
 }

@@ -217,7 +217,7 @@
                                 </div>
                                 
                                 <a href="javascript:void(0);" class="nav-link dropdown-toggle pulse p-0" role="button" data-bs-toggle="dropdown" data-bs-display="static">
-                                    <img class="avatar lg rounded-circle img-thumbnail" src="{{ Storage::url($user->media->file ?? null) }}">
+                                    <img class="avatar lg rounded-circle img-thumbnail" src="{{ Storage::url($user->media ?? null) }}">
                                 </a>
 
                                 <div class="dropdown-menu rounded-lg shadow border-0 dropdown-animation dropdown-menu-end p-0 m-0">
@@ -225,7 +225,7 @@
 
                                         <div class="card-body pb-0">
                                             <div class="d-flex py-1">
-                                                <img class="avatar rounded-circle" src="{{ Storage::url($user->media->file ?? null) }}">
+                                                <img class="avatar rounded-circle" src="{{ Storage::url($user->media ?? null) }}">
                                                 <div class="flex-fill ms-3">
                                                     <p class="mb-0"><span class="font-weight-bold">{{ $user->name ?? null }}</span></p>
                                                     <small>{{ $user->email ?? null }}</small>

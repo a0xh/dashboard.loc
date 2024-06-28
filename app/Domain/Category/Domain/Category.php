@@ -11,6 +11,8 @@ use Cviebrock\EloquentSluggable\Sluggable;
 
 class Category extends Model
 {
+    use Sluggable;
+    
     protected $table = 'categories';
 
     /**
@@ -65,13 +67,6 @@ class Category extends Model
         return Attribute::make(
             get: fn ($data) => json_decode($data),
             set: fn ($data) => json_encode($data),
-        );
-    }
-
-    protected function category_id(): Attribute
-    {
-        return Attribute::make(
-            set: fn ($category_id) => ($category_id == 0) ? null : $category_id
         );
     }
 

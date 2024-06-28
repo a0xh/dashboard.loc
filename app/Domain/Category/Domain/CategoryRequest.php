@@ -27,8 +27,9 @@ class CategoryRequest extends FormRequest
             'description' => ['bail', 'nullable', 'string', 'min:3', 'max:200'],
             'media' => ['bail', 'nullable', 'image', 'dimensions:max_width=6000,max_height=6000'],
             'keywords' => ['bail', 'nullable', 'string', 'min:3', 'max:200'],
-            'status' => ['bail', 'required', 'boolean', 'in:0,1'],
             'category_id' => ['bail', 'nullable', 'integer'],
+            'type' => ['bail', 'nullable', 'string', 'in:product,post', 'min:4', 'max:7'],
+            'status' => ['bail', 'required', 'boolean', 'in:0,1'],
         ]);
 
         switch ($this->method())
@@ -40,7 +41,7 @@ class CategoryRequest extends FormRequest
             }
             case 'PUT': {
                 return $validation->merge([
-                    'slug' => ['bail', 'nullable', 'string', 'lowercase', 'min:1', 'max:65', 'unique:categories,slug,' . $this->user->id]
+                    'slug' => ['bail', 'nullable', 'string', 'lowercase', 'min:1', 'max:65', 'unique:categories,slug,' . $this->category->id]
                 ])->toArray();
             }
             default:
@@ -68,6 +69,7 @@ class CategoryRequest extends FormRequest
             description: $this->description,
             media: $this->media,
             status: $this->status,
+            type: $this->type,
         );
     }
 }

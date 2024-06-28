@@ -7,7 +7,8 @@ use App\Domain\Category\Infrastructure\CategoryRepositoryInterface;
 use Spatie\RouteAttributes\Attributes\{Get, Defaults};
 use App\Domain\Category\Domain\Category;
 
-#[Defaults('type', ['product', 'post'])]
+#[Defaults('type', 'product')]
+#[Defaults('type', 'post')]
 final class CreateCategoryAction extends Controller
 {
     public function __construct(
@@ -18,9 +19,21 @@ final class CreateCategoryAction extends Controller
     #[Get('/admin/category/create/{type}', name: "admin.category.create")]
     public function __invoke(): \Illuminate\View\View
     {
+        $type = str_replace('admin/category/create/', '', request()->path());
+
+        switch ($type) {
+            case 'product':
+                $categories = $this->categoryRepository->getCategoryAll('product');
+                break;
+
+            case 'post':
+                $categories = $this->categoryRepository->getCategoryAll('post');
+                break;
+        }
+
         return $this->categoryResponder->handle([
-            'categoriesTypeProduct' => $this->category->getCategoryAll('product'),
-            'categoriesTypePost' => $this->category->getCategoryAll('post')
+            'categories' => $categories,
+            'type' => $type
         ]);
     }
 }

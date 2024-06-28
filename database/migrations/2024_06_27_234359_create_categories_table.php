@@ -19,11 +19,12 @@ return new class extends Migration
 
             $table->smallIncrements('id');
             $table->string('title', 65);
-            $table->string('slug', 65)->unique();
+            $table->string('slug', 65)->unique()->nullable();
             $table->string('description', 200)->nullable();
             $table->string('keywords', 200)->nullable();
             $table->enum('type', ['post', 'product']);
             $table->boolean('status')->default(false);
+            $table->string('media', 255)->nullable();
             $table->unsignedSmallInteger('category_id')->nullable()->index();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->unsignedSmallInteger('user_id')->index();

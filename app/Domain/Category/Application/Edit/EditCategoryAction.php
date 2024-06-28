@@ -3,7 +3,7 @@
 namespace App\Domain\Category\Application\Edit;
 
 use App\Infrastructure\Controllers\Controller;
-use App\Domain\Role\Infrastructure\CategoryRepositoryInterface;
+use App\Domain\Category\Infrastructure\CategoryRepositoryInterface;
 use Spatie\RouteAttributes\Attributes\{Get, Where};
 use App\Domain\Category\Domain\Category;
 
@@ -19,8 +19,8 @@ final class EditCategoryAction extends Controller
     public function __invoke(Category $category): \Illuminate\View\View
     {
         return $this->categoryResponder->handle([
-            'categoriesTypeProduct' => $this->category->getCategoryAll('product'),
-            'categoriesTypePost' => $this->category->getCategoryAll('post'),
+            'categoriesTypeProduct' => $this->categoryRepository->getCategoryAll('product'),
+            'categoriesTypePost' => $this->categoryRepository->getCategoryAll('post'),
             'category' => $category
         ]);
     }

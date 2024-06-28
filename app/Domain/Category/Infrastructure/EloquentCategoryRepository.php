@@ -10,14 +10,19 @@ class EloquentCategoryRepository extends DecoratorCategoryRepository
 {
     public function __construct(protected Category $category) {}
 
-    public function getCategoryAll(string $type): Category
+    public function getCategoryAll(string $type): array
     {
-        return $this->category->where('type', $type)->orderBy('created_at', 'desc')->get()->all();
+        return $this->category->whereNull('category_id')->where('type', $type)->orderBy('created_at', 'desc')->get()->all();
     }
 
-    public function getCategory(string $type, int $count): LengthAwarePaginator
+    public function getCategoryByProduct(int $count): LengthAwarePaginator
     {
-        return $this->category->query()->whereNull('category_id')->with(['childrenCategories', 'user'])->where('type', $type)->orderByDesc('created_at')->paginate($count);
+        return $this->category->query()->whereNull('category_id')->with(['childrenCategories', 'user'])->where('type', 'product')->orderByDesc('created_at')->paginate($count);
+    }
+
+    public function getCategoryByPost(int $count): LengthAwarePaginator
+    {
+        return $this->category->query()->whereNull('category_id')->with(['childrenCategories', 'user'])->where('type', 'post')->orderByDesc('created_at')->paginate($count);
     }
 
     public function createCategory(array $data): bool

@@ -35,8 +35,8 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Model::unguard();
-        Model::shouldBeStrict();
+        // Model::unguard();
+        // Model::shouldBeStrict();
 
         View::addNamespace('admin', [
             app_path() . '/Infrastructure/Views',
