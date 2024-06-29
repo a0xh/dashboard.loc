@@ -17,7 +17,7 @@ class EloquentTagRepository extends DecoratorTagRepository
 
     public function getTagByProduct(int $count): LengthAwarePaginator
     {
-        return = $this->tag->query()->with('user')->where('type', 'product')->orderByDesc('created_at')->paginate($count);
+        return $this->tag->query()->with('user')->where('type', 'product')->orderByDesc('created_at')->paginate($count);
     }
 
     public function getTagByPost(int $count): LengthAwarePaginator

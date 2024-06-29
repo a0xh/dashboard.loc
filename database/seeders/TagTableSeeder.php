@@ -20,7 +20,7 @@ class TagTableSeeder extends Seeder
         $tag->slug = 'tag-1';
         $tag->description = 'description';
         $tag->keywords = 'keywords';
-        $tag->image = 'assets/img/no-data.png';
+        $tag->media = 'assets/img/no-data.png';
         $tag->type = 'post';
         $tag->status = true;
         $tag->user_id = 1;
@@ -30,11 +30,11 @@ class TagTableSeeder extends Seeder
         sleep(1);
 
         $tag = new Tag();
-        $tag->title = 'Таг №2';
+        $tag->title = 'Tag №2';
         $tag->slug = 'tag-2';
         $tag->description = 'description';
         $tag->keywords = 'keywords';
-        $tag->image = 'assets/img/no-data.png';
+        $tag->media = 'assets/img/no-data.png';
         $tag->type = 'product';
         $tag->status = true;
         $tag->user_id = 1;
@@ -44,11 +44,11 @@ class TagTableSeeder extends Seeder
         sleep(1);
         
         $tag = new Tag();
-        $tag->title = 'Таг №3';
+        $tag->title = 'Tag №3';
         $tag->slug = 'tag-3';
         $tag->description = 'description';
         $tag->keywords = 'keywords';
-        $tag->image = 'assets/img/no-data.png';
+        $tag->media = 'assets/img/no-data.png';
         $tag->type = 'post';
         $tag->status = true;
         $tag->user_id = 1;
@@ -58,11 +58,11 @@ class TagTableSeeder extends Seeder
         sleep(1);
         
         $tag = new Tag();
-        $tag->title = 'Таг №4';
+        $tag->title = 'Tag №4';
         $tag->slug = 'tag-4';
         $tag->description = 'description';
         $tag->keywords = 'keywords';
-        $tag->image = 'assets/img/no-data.png';
+        $tag->media = 'assets/img/no-data.png';
         $tag->type = 'product';
         $tag->status = true;
         $tag->user_id = 1;

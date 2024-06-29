@@ -88,4 +88,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Domain\Caregory\Domain\Caregory::class);
     }
+
+    public function tags(): HasMany
+    {
+        return $this->hasMany(\App\Domain\Tag\Domain\Tag::class);
+    }
 }

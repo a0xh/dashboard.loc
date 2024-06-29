@@ -9,13 +9,19 @@
 
         <ul class="menu-list flex-grow-1 mt-3">
             <li>
-                <a href="{{ route('admin.statistics.index') }}" class="m-link">
+                <a href="{{ route('admin.statistics.index') }}" @class([
+                    'active m-link' => Route::is('admin.statistics.index'),
+                    'm-link' => !Route::is('admin.statistics.index')
+                ])>
                     <i class="icofont-chart-bar-graph"></i>
                     <span>{{ __('Статистика') }}</span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin.user.index') }}" class="m-link">
+                <a href="{{ route('admin.user.index') }}" @class([
+                    'active m-link' => Route::is('admin.user.index'),
+                    'm-link' => !Route::is('admin.user.index')
+                ])>
                     <i class="icofont-users-alt-2"></i>
                     <span>{{ __('Пользователи') }}</span>
                 </a>
@@ -57,7 +63,10 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="m-link">
+                <a href="{{ route('admin.tag.index') }}" @class([
+                    'active m-link' => Route::is('admin.tag.index'),
+                    'm-link' => !Route::is('admin.tag.index')
+                ])>
                     <i class="icofont-tags"></i>
                     <span>{{ __('Теги') }}</span>
                 </a>

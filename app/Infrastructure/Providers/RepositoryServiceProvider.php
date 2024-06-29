@@ -30,8 +30,8 @@ class RepositoryServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            \App\Domain\Category\Infrastructure\TagRepositoryInterface::class,
-            \App\Domain\Category\Infrastructure\CachedTagRepository::class
+            \App\Domain\Tag\Infrastructure\TagRepositoryInterface::class,
+            \App\Domain\Tag\Infrastructure\CachedTagRepository::class
         );
     }
 

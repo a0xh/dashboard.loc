@@ -59,15 +59,15 @@
                 <div class="card-body">
                     <div class="row g-3 align-items-center">
                         <div class="col-md-12">
-                            <label for="image" class="form-label">{{ __('Картинка') }}</label>
+                            <label for="media" class="form-label">{{ __('Картинка') }}</label>
 
-                            @isset ($tag->image)
-                                <input id="image" type="file" name="image" class="dropify" data-default-file="{{ Storage::url($tag->image) }}" data-allowed-file-extensions="jpg jpeg png svg gif">
+                            @isset ($tag->media)
+                                <input id="media" type="file" name="media" class="dropify" data-default-file="{{ Storage::url($tag->media) }}" data-allowed-file-extensions="jpg jpeg png svg gif">
                             @else
-                                <input id="image" type="file" name="image" class="dropify" data-allowed-file-extensions="jpg jpeg png svg gif">
+                                <input id="media" type="file" name="media" class="dropify" data-allowed-file-extensions="jpg jpeg png svg gif">
                             @endisset
 
-                            @error('image')
+                            @error('media')
                                 <span role="alert" class="invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
@@ -79,10 +79,10 @@
                                 <div class="col-md-6">
                                     <div class="form-check">
 
-                                        @isset ($tag->status)
-                                            <input id="status" type="radio" name="status" value="on" class="form-check-input" @checked($tag->status == true)>
+                                        @isset ($tag->status->value)
+                                            <input id="status" type="radio" name="status" value="1" class="form-check-input" @checked($tag->status->value == true)>
                                         @else
-                                            <input id="status" type="radio" name="status" value="on" class="form-check-input" @checked(old('status') == false)>
+                                            <input id="status" type="radio" name="status" value="1" class="form-check-input" @checked(old('status') == false)>
                                         @endisset
 
                                         <label for="status" class="form-check-label">{{ __('Опубликовано') }}</label>
@@ -91,19 +91,17 @@
                                 
                                 <div class="col-md-6">
                                     <div class="form-check">
-                                        @isset ($tag->status)
-                                            <input id="status" type="radio" name="status" value="off" class="form-check-input" @checked($tag->status == false)>
+                                        @isset ($tag->status->value)
+                                            <input id="status" type="radio" name="status" value="0" class="form-check-input" @checked($tag->status->value == false)>
                                         @else
-                                            <input id="status" type="radio" name="status" value="off" class="form-check-input" @checked(old('status') == false)>
+                                            <input id="status" type="radio" name="status" value="0" class="form-check-input" @checked(old('status') == false)>
                                         @endisset
                                         
                                         <label for="status" class="form-check-label">{{ __('Не опубликовано') }}</label>
                                     </div>
                                 </div>
                                 
-                                @isset ($type)
-                                    <input type="hidden" name="type" value="{{ $type }}">
-                                @endisset
+                                <input type="hidden" name="type" value="{{ $type ?? $tag->type }}">
 
                             </div>
                         </div>

@@ -1,42 +1,38 @@
-@extends('layouts.admin')
+@extends('layouts.main')
 
-@section('title', 'Редактирование тега')
+@section('title', trans('Редактирование тега'))
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/dropify.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 @endpush
 
-@section('header')
-    @include('admin.partials._header')
-@endsection
-
 @section('content')
     <div class="body d-flex py-lg-3 py-md-2">
         <div class="container-xxl">
-            
-            <div class="row align-items-center">
-                <div class="border-0 mb-4">
-                    <div class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
-                        <h3 class="fw-bold mb-0">@yield('title')</h3>
-                    </div>
-                </div>
-            </div>
 
-            @if ($errors->any())
-                @foreach ($errors->all() as $error)
-                    <div role="alert" class="alert alert-danger">{{ $error }}</div>
-                @endforeach
+            <x-heading />
+            <x-errors />
+            <x-message />
+
+            @if (Route::has('admin.tag.update'))
+                <form action="{{ route('admin.tag.update', $tag) }}" method="post" enctype="multipart/form-data">
+
+                    @method('PUT')
+                    @csrf
+
+                    @include('tag.partials._form');
+
+                </form>
+            @else
+                <x-no-data>
+                    <x-slot:button>
+                        @if (Route::has('admin.statistics.index'))
+                            <a href="{{ route('admin.statistics.index') }}" class="btn btn-primary border lift mt-1">{{ __('Вернутся на главную') }}</a>
+                        @endif
+                    </x-slot>
+                </x-no-data>
             @endif
-
-            <form method="post" action="{{ route('admin.tags.update', $tag) }}" enctype="multipart/form-data">
-
-                @method('PUT')
-                @csrf
-
-                @include('admin.tags.partials._form');
-
-            </form>
             
         </div>
     </div>
@@ -50,15 +46,6 @@
     <script>
         $(function() {
             $('.dropify').dropify();
-
-            var drEvent = $('#dropify-event').dropify();
-            drEvent.on('dropify.beforeClear', function(event, element) {
-                return confirm("Do you really want to delete \"" + element.file.name + "\" ?");
-            });
-
-            drEvent.on('dropify.afterClear', function(event, element) {
-                alert('File deleted');
-            });
         });
     </script>
 @endpush

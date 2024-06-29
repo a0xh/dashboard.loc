@@ -47,19 +47,23 @@
 
     <td>
         <div class="btn-group" role="group" aria-label="childCategories">
-            <a href="{{ route('admin.category.edit', $category) }}" class="btn btn-outline-secondary">
-                <i class="icofont-edit text-success"></i>
-            </a>
+            @if (Route::has('admin.category.edit'))
+                <a href="{{ route('admin.category.edit', $category) }}" class="btn btn-outline-secondary">
+                    <i class="icofont-edit text-success"></i>
+                </a>
+            @endif
             
-            <form onsubmit="if (confirm('Вы действительно хотите удалить данную запись из таблицы?')) {return true} else {return false}" action="{{ route('admin.category.delete', $category) }}" method="post">
+            @if (Route::has('admin.category.delete'))
+                <form onsubmit="if (confirm('Вы действительно хотите удалить данную запись из таблицы?')) {return true} else {return false}" action="{{ route('admin.category.delete', $category) }}" method="post">
 
-                @method('DELETE')
-                @csrf
-                
-                <button type="submit" class="btn btn-outline-secondary">
-                    <i class="icofont-ui-delete text-danger"></i>
-                </button>
-            </form>
+                    @method('DELETE')
+                    @csrf
+                    
+                    <button type="submit" class="btn btn-outline-secondary">
+                        <i class="icofont-ui-delete text-danger"></i>
+                    </button>
+                </form>
+            @endif
         </div>
     </td>
 </tr>

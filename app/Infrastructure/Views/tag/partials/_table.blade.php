@@ -25,49 +25,67 @@
                         @endisset
                     </span>
                 </th>
+
                 <td>
                     <span class="fw-bold ms-1">
-                        {{ $tag->title }}
+                        {{ $tag->title ?? null }}
                     </span>
                 </td>
-                <td>{{ $tag->slug }}</td>
+
+                <td>{{ $tag->slug ?? null }}</td>
+
                 <td>
                     @isset ($tag->type)
-                        @if ($tag->type !== 'product')
-                            {{ __('Пост') }}
-                        @endif
+                        @switch($tag->type)
+                            @case('product')
+                                {{ __('Товар') }}
+                                @break
+                            @case('post')
+                                {{ __('Пост') }}
+                                @break
+                            @default
+                                <span class="badge bg-warning">✖</span>
+                        @endswitch
                     @else
                         <span class="badge bg-warning">✖</span>
                     @endisset
                 </td>
-                <td>{{ $tag->user->first()->name }}</td>
+
+                <td>{{ $tag->user->first_name ?? null }} {{ $tag->user->last_name ?? null }}</td>
+
                 <td>
-                    @if ($tag->status)
+                    @if ($tag->status->value)
                         <span class="badge bg-success">
                             {{ __('Опубликовано') }}
                         </span>
                     @else
                         <span class="badge bg-danger">
-                            {{ __('Черновик') }}
+                            {{ __('Не опубликовано') }}
                         </span>
                     @endif
                 </td>
-                <td>{{ $tag->created_at }}</td>
+
+                <td>{{ $tag->created_at ?? null }}</td>
+
                 <td>
                     <div class="btn-group" role="group" aria-label="tags">
-                        <a href="{{ route('admin.tags.edit', $tag) }}" class="btn btn-outline-secondary">
-                            <i class="icofont-edit text-success"></i>
-                        </a>
+                        @if (Route::has('admin.tag.edit'))
+                            <a href="{{ route('admin.tag.edit', $tag) }}" class="btn btn-outline-secondary">
+                                <i class="icofont-edit text-success"></i>
+                            </a>
+                        @endif
                         
-                        <form onsubmit="if (confirm('Вы действительно хотите удалить данную запись из таблицы?')) {return true} else {return false}" action="{{ route('admin.tags.destroy', $tag) }}" method="post">
-                            
-                            @method('DELETE')
-                            @csrf
+                        @if (Route::has('admin.tag.delete'))
+                            <form onsubmit="if (confirm('Вы действительно хотите удалить данную запись из таблицы?')) {return true} else {return false}" action="{{ route('admin.tag.delete', $tag) }}" method="post">
+                                
+                                @method('DELETE')
+                                @csrf
 
-                            <button type="submit" class="btn btn-outline-secondary">
-                                <i class="icofont-ui-delete text-danger"></i>
-                            </button>
-                        </form>
+                                <button type="submit" class="btn btn-outline-secondary">
+                                    <i class="icofont-ui-delete text-danger"></i>
+                                </button>
+                            </form>
+                        @endif
                     </div>
                 </td>
             </tr>
