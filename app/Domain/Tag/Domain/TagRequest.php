@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Domain\Category\Domain;
+namespace App\Domain\Tag\Domain;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CategoryRequest extends FormRequest
+class TagRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,6 @@ class CategoryRequest extends FormRequest
             'description' => ['bail', 'nullable', 'string', 'min:3', 'max:200'],
             'media' => ['bail', 'nullable', 'image', 'dimensions:max_width=6000,max_height=6000'],
             'keywords' => ['bail', 'nullable', 'string', 'min:3', 'max:200'],
-            'category_id' => ['bail', 'nullable', 'integer'],
             'type' => ['bail', 'nullable', 'string', 'in:product,post', 'min:4', 'max:7'],
             'status' => ['bail', 'required', 'boolean', 'in:0,1'],
         ]);
@@ -35,12 +34,12 @@ class CategoryRequest extends FormRequest
         {
             case 'POST': {
                 return $validation->merge([
-                    'slug' => ['bail', 'nullable', 'string', 'lowercase', 'min:1', 'max:65', 'unique:categories,slug']
+                    'slug' => ['bail', 'nullable', 'string', 'lowercase', 'min:1', 'max:65', 'unique:tags,slug']
                 ])->toArray();
             }
             case 'PUT': {
                 return $validation->merge([
-                    'slug' => ['bail', 'nullable', 'string', 'lowercase', 'min:1', 'max:65', 'unique:categories,slug,' . $this->category->id]
+                    'slug' => ['bail', 'nullable', 'string', 'lowercase', 'min:1', 'max:65', 'unique:tags,slug,' . $this->tag->id]
                 ])->toArray();
             }
             default:
@@ -58,14 +57,13 @@ class CategoryRequest extends FormRequest
         return [];
     }
 
-    public function formRequest(): CategoryDto
+    public function formRequest(): TagDto
     {
-        return new CategoryDto(
+        return new TagDto(
             title: $this->title,
-            category_id: $this->category_id,
+            description: $this->description,
             slug: $this->slug,
             keywords: $this->keywords,
-            description: $this->description,
             media: $this->media,
             status: $this->status,
             type: $this->type,

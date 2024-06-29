@@ -15,9 +15,9 @@ class CategoryTableSeeder extends Seeder
      */
     public function run(): void
     {
-        $category = new Category;
-        $category->title = 'Веб-разработка';
-        $category->slug = 'web-development';
+        $category = new Category();
+        $category->title = 'Category №1';
+        $category->slug = 'category-1';
         $category->description = 'description';
         $category->keywords = 'keywords';
         $category->type = 'post';
@@ -30,10 +30,25 @@ class CategoryTableSeeder extends Seeder
 
         sleep(1);
 
-        $category = new Category;
-        $category->title = 'Маркетинг';
-        $category->slug = 'marketing';
+        $category = new Category();
+        $category->title = 'Category №2';
+        $category->slug = 'category-2';
         $category->description = 'description';
+        $category->keywords = 'keywords';
+        $category->type = 'product';
+        $category->status = true;
+        $category->media = 'assets/img/no-data.png';
+        $category->category_id = 1;
+        $category->user_id = 1;
+        $category->data = null;
+        $category->save();
+
+        sleep(1);
+        
+        $category = new Category();
+        $category->title = 'Category №3';
+        $category->slug = 'category-3';
+        $category->description = 'description.';
         $category->keywords = 'keywords';
         $category->type = 'post';
         $category->status = true;
@@ -45,15 +60,15 @@ class CategoryTableSeeder extends Seeder
 
         sleep(1);
         
-        $category = new Category;
-        $category->title = 'SEO-оптимизация';
-        $category->slug = 'seo';
+        $category = new Category();
+        $category->title = 'Category №4';
+        $category->slug = 'category-4';
         $category->description = 'description.';
         $category->keywords = 'keywords';
-        $category->type = 'post';
+        $category->type = 'product';
         $category->status = true;
         $category->media = 'assets/img/no-data.png';
-        $category->category_id = null;
+        $category->category_id = 3;
         $category->user_id = 1;
         $category->data = null;
         $category->save();

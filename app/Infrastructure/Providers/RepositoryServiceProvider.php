@@ -28,6 +28,11 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Domain\Category\Infrastructure\CategoryRepositoryInterface::class,
             \App\Domain\Category\Infrastructure\CachedCategoryRepository::class
         );
+
+        $this->app->bind(
+            \App\Domain\Category\Infrastructure\TagRepositoryInterface::class,
+            \App\Domain\Category\Infrastructure\CachedTagRepository::class
+        );
     }
 
     /**
@@ -35,8 +40,8 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Model::unguard();
-        // Model::shouldBeStrict();
+        Model::unguard();
+        Model::shouldBeStrict();
 
         View::addNamespace('admin', [
             app_path() . '/Infrastructure/Views',

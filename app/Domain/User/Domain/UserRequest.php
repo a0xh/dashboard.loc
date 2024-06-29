@@ -3,7 +3,6 @@
 namespace App\Domain\User\Domain;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Domain\User\Domain\UserDto;
 
 class UserRequest extends FormRequest
 {

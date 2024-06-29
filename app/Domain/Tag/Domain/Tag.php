@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Domain\Category\Domain;
+namespace App\Domain\Tag\Domain;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Application\Enums\StatusEnum;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Application\Enums\StatusEnum;
 
-class Category extends Model
+class Tag extends Model
 {
     use Sluggable;
-    
-    protected $table = 'categories';
+
+    protected $table = 'tags';
     
     protected $dates = [
         'created_at',
@@ -30,10 +29,9 @@ class Category extends Model
         'slug',
         'description',
         'keywords',
+        'media',
         'type',
         'status',
-        'media',
-        'category_id',
         'user_id',
         'data'
     ];
@@ -53,12 +51,16 @@ class Category extends Model
             'type' => 'string',
             'status' => StatusEnum::class,
             'media' => 'string',
-            'category_id' => 'int',
             'user_id' => 'int',
             'data' => 'array',
         ];
     }
 
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
     public function sluggable(): array
     {
         return [
@@ -67,23 +69,13 @@ class Category extends Model
             ]
         ];
     }
-    
+
     protected function data(): Attribute
     {
         return Attribute::make(
-            get: fn ($data) => json_decode($data),
-            set: fn ($data) => json_encode($data),
+            get: fn ($value) => (object) unserialize($value),
+            set: fn ($value) => serialize($value)
         );
-    }
-
-    public function categories(): HasMany
-    {
-        return $this->hasMany(\App\Domain\Category\Domain\Category::class);
-    }
-
-    public function childrenCategories(): HasMany
-    {
-        return $this->hasMany(self::class)->with('categories');
     }
 
     public function user(): BelongsTo

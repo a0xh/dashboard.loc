@@ -55,6 +55,24 @@ return [
         app_path('Domain/Category/Application/Update') => [
            'middleware' => ['web', 'auth']
         ],
+        app_path('Domain/Tag/Application/Create') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Tag/Application/Delete') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Tag/Application/Edit') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Tag/Application/Index') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Tag/Application/Store') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Tag/Application/Update') => [
+           'middleware' => ['web', 'auth']
+        ],
     ],
 
     /**
