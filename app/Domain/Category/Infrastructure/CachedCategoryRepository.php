@@ -5,10 +5,12 @@ namespace App\Domain\Category\Infrastructure;
 use App\Domain\Category\Domain\Category;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Cache\CacheManager;
+use Illuminate\Support\{Str, Collection};
 
 class CachedCategoryRepository implements CategoryRepositoryInterface
 {
     protected const TTL = 1440;
+    public const KEY = ['category_post', 'category_product'];
 
     public function __construct(
         protected EloquentCategoryRepository $categoryRepository,
@@ -17,7 +19,9 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
 
     public function getCategoryAll(string $type): array
     {
-        $getCategoryAll = $this->cache->remember('category_' . $type, self::TTL, function() use($type) {
+        $key = Str::of('category')->finish('_')->append($type)->append('_')->finish('all');
+
+        $getCategoryAll = $this->cache->remember($key, self::TTL, function() use($type) {
             return $this->categoryRepository->getCategoryAll($type);
         });
 
@@ -26,7 +30,7 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
 
     public function getCategoryByProduct(int $count): LengthAwarePaginator
     {
-        $getCategoryByProduct = $this->cache->remember('categories_product', self::TTL, function() use($count) {
+        $getCategoryByProduct = $this->cache->remember(self::KEY[1], self::TTL, function() use($count) {
             return $this->categoryRepository->getCategoryByProduct($count);
         });
 
@@ -35,7 +39,7 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
 
     public function getCategoryByPost(int $count): LengthAwarePaginator
     {
-        $getCategoryByPost = $this->cache->remember('categories_post', self::TTL, function() use($count) {
+        $getCategoryByPost = $this->cache->remember(self::KEY[0], self::TTL, function() use($count) {
             return $this->categoryRepository->getCategoryByPost($count);
         });
 
@@ -46,21 +50,19 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
     {
         $createCategory = $this->categoryRepository->createCategory($data);
 
-        if ($this->cache->has('categories_post')) {
-            $this->cache->pull('categories_post');
-        }
+        $cache = $this->cache;
 
-        if ($this->cache->has('categories_product')) {
-            $this->cache->pull('categories_product');
-        }
+        $keysCache = collect(self::KEY);
 
-        if ($this->cache->has('category_product')) {
-            $this->cache->pull('category_product');
-        }
-
-        if ($this->cache->has('category_post')) {
-            $this->cache->pull('category_post');
-        }
+        $keysCache->each(function ($item) use($cache) {
+            if ($cache->has(Str::of($item)->finish('_all')) {
+                return $cache->forget(Str::of($item)->append('_')->finish('all'));
+            }
+        })->each(function($item) use($cache) {
+            if ($cache->has($item)) {
+                return $cache->forget(Str::of($item));
+            }
+        });
 
         return $createCategory;
     }
@@ -69,21 +71,21 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
     {
         $updateCategory = $this->categoryRepository->updateCategory($category, $data);
 
-        if ($this->cache->has('categories_post')) {
-            $this->cache->pull('categories_post');
-        }
+        $keysCache = collect(self::KEY);
 
-        if ($this->cache->has('categories_product')) {
-            $this->cache->pull('categories_product');
-        }
+        $cache = $this->cache;
 
-        if ($this->cache->has('category_product')) {
-            $this->cache->pull('category_product');
-        }
+        $keysCache->each(function ($item) use($cache) {
+            if ($cache->has($item . '_all')) {
+                return $cache->forget(Str::of($item)->append('_')->finish('all'));
+            }
+        });
 
-        if ($this->cache->has('category_post')) {
-            $this->cache->pull('category_post');
-        }
+        $keysCache->each(function($item) use($cache) {
+            if ($cache->has($item)) {
+                return $cache->forget(Str::of($item));
+            }
+        });
 
         return $updateCategory;
     }
@@ -92,21 +94,18 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
     {
         $deleteCategory = $this->categoryRepository->deleteCategory($category);
 
-        if ($this->cache->has('categories_post')) {
-            $this->cache->forget('categories_post');
-        }
+        $keysCache = collect(self::KEY);
+        $cache = $this->cache;
 
-        if ($this->cache->has('categories_product')) {
-            $this->cache->forget('categories_product');
-        }
-
-        if ($this->cache->has('category_product')) {
-            $this->cache->forget('category_product');
-        }
-
-        if ($this->cache->has('category_post')) {
-            $this->cache->forget('category_post');
-        }
+        $keysCache->each(function ($item) use($cache) {
+            if ($cache->has($item . '_all')) {
+                return $cache->forget(Str::of($item)->append('_')->finish('all'));
+            }
+        })->each(function($item) use($cache) {
+            if ($cache->has($item)) {
+                return $cache->forget(Str::of($item));
+            }
+        });
 
         return $deleteCategory;
     }
