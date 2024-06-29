@@ -9,17 +9,18 @@ use Illuminate\Support\{Str, Collection};
 
 class CachedUserRepository implements UserRepositoryInterface
 {
-    protected const TTL = 1440;
-    private const KEY = ['user'];
+    private const TTL = 1440;
 
     public function __construct(
-        protected EloquentUserRepository $userRepository,
-        protected CacheManager $cache
+        public EloquentUserRepository $userRepository,
+        public CacheManager $cache
     ) {}
 
     public function findByUser(int $id): User
     {
-        $findByUser = $this->cache->remember('user_' . $id, self::TTL, function() use($id) {
+        $key = Str::of('user')->append('_')->finish($id);
+
+        $findByUser = $this->cache->remember($key, self::TTL, function() use($id) {
             return $this->userRepository->findByUser($id);
         });
 
@@ -39,9 +40,13 @@ class CachedUserRepository implements UserRepositoryInterface
     {
         $createUser = $this->userRepository->createUser($data);
 
-        if ($this->cache->has(Str::of('users'))) {
-            $this->cache->pull(Str::of('users'));
-        }
+        $cache = $this->cache;
+
+        collect(['users'])->each(function ($item) use($cache) {
+            if ($cache->has($item)) {
+                return $cache->forget($item);
+            }
+        });
 
         return $createUser;
     }
@@ -50,16 +55,17 @@ class CachedUserRepository implements UserRepositoryInterface
     {
         $updateUser = $this->userRepository->updateUser($user, $data);
 
-        $cleanCache = collect(self::KEY);
         $cache = $this->cache;
 
-        $cleanCache->each(function ($item) use($cache, $user) {
-            if ($cache->has($item . '_' . $user->id)) {
-                return $cache->pull(Str::of($item)->append('_')->finish($user->id));
+        collect(['users'])->each(function ($item) use($cache) {
+            if ($cache->has($item)) {
+                return $cache->forget($item);
             }
-        })->each(function($item) use($cache) {
-            if ($cache->has($item . 's')) {
-                return $cache->pull(Str::of($item)->finish('s'));
+        });
+
+        collect(['user_'])->each(function($item) use($cache, $user) {
+            if ($cache->has(Str::of($item)->finish($user->id))) {
+                return $cache->forget(Str::of($item)->finish($user->id));
             }
         });
 
@@ -70,15 +76,19 @@ class CachedUserRepository implements UserRepositoryInterface
     {
         $deleteUser = $this->userRepository->deleteUser($user);
 
-        foreach (self::KEY as $key) {
-            if ($this->cache->has(Str::of($key)->append('_')->finish($user->id))) {
-                $this->cache->forget(Str::of($key)->append('_')->finish($user->id));
+        $cache = $this->cache;
+
+        collect(['users'])->each(function ($item) use($cache) {
+            if ($cache->has($item)) {
+                return $cache->forget($item);
             }
-            
-            if ($this->cache->has($key . 's')) {
-                $this->cache->forget(Str::of($key)->finish('s'));
+        });
+
+        collect(['user_'])->each(function($item) use($cache, $user) {
+            if ($cache->has(Str::of($item)->finish($user->id))) {
+                return $cache->forget(Str::of($item)->finish($user->id));
             }
-        }
+        });
 
         return $deleteUser;
     }

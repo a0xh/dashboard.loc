@@ -15,7 +15,7 @@
 	        <x-errors />
             <x-message />
             
-	        @isset ($user)
+	        @if (Route::has('admin.user.update'))
 		        <form action="{{ route('admin.user.update', $user)}}" method="post" enctype="multipart/form-data">
 
 		            @method('PUT')
@@ -32,7 +32,7 @@
 		    			@endif
                     </x-slot>
                 </x-no-data>
-		    @endisset
+		    @endif
 
 	    </div>
 	</div>

@@ -25,12 +25,15 @@
                         @endisset
                     </span>
                 </th>
+                
                 <td>
                     <span class="fw-bold ms-1">
                         {{ $category->title ?? null }}
                     </span>
                 </td>
+
                 <td>{{ $category->slug ?? null }}</td>
+
                 <td>
                     @isset ($category->category_id)
                         <span class="fw-bold ms-1">
@@ -40,7 +43,9 @@
                         <span class="badge bg-warning">✖</span>
                     @endisset
                 </td>
+
                 <td>{{ $category->user->first_name ?? null }} {{ $category->user->last_name ?? null }}</td>
+
                 <td>
                     @if ($category->status)
                         <span class="badge bg-success">
@@ -52,16 +57,20 @@
                         </span>
                     @endif
                 </td>
+
                 <td>{{ $category->created_at ?? null }}</td>
+
                 <td>
-                    <div class="btn-group" role="group" aria-label="category">
+                    <div class="btn-group" role="group" aria-label="categories">
                         <a href="{{ route('admin.category.edit', $category) }}" class="btn btn-outline-secondary">
                             <i class="icofont-edit text-success"></i>
                         </a>
                         
                         <form onsubmit="if (confirm('Вы действительно хотите удалить данную запись из таблицы?')) {return true} else {return false}" action="{{ route('admin.category.delete', $category) }}" method="post">
+
                             @method('DELETE')
                             @csrf
+
                             <button type="submit" class="btn btn-outline-secondary">
                                 <i class="icofont-ui-delete text-danger"></i>
                             </button>

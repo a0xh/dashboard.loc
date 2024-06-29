@@ -54,11 +54,11 @@
                     @isset ($user->status->value)
                         @if ($user->status->value)
                             <span class="badge bg-success">
-                                Активный
+                                {{ __('Активный') }}
                             </span>
                         @else
                             <span class="badge bg-danger">
-                                Заблокированный
+                                {{ __('Заблокированный') }}
                             </span>
                         @endif
                     @endisset
@@ -67,26 +67,26 @@
                 <td>{!! $user->data->ip_address ?? '<span class="badge bg-warning">✖</span>' !!}</td>
 
                 <td>
-                    <div class="btn-group" role="group">
+                    <div class="btn-group" role="group" aria-label="users">
                         @if (Route::has('admin.user.show'))
-                            <a href="{{ route('admin.user.show', $user) }}" class="btn btn-outline-secondary" title="Посмотреть">
+                            <a href="{{ route('admin.user.show', $user) }}" class="btn btn-outline-secondary" title="{{ __('Посмотреть') }}">
                                 <i class="icofont-eye-open text-info"></i>
                             </a>
                         @endif
 
                         @if (Route::has('admin.user.edit'))
-                            <a href="{{ route('admin.user.edit', $user) }}" class="btn btn-outline-secondary" title="Отредактировать">
+                            <a href="{{ route('admin.user.edit', $user) }}" class="btn btn-outline-secondary" title="{{ __('Отредактировать') }}">
                                 <i class="icofont-edit text-success"></i>
                             </a>
                         @endif
 
                         @if (Route::has('admin.user.delete'))
-                            <form onsubmit="if (confirm('Вы действительно хотите удалить данную запись из таблицы?')) {return true} else {return false}" action="{{ route('admin.user.delete', $user) }}" method="post">
+                            <form onsubmit="if (confirm('{{ __('Вы действительно хотите удалить данную запись из таблицы?') }}')) {return true} else {return false}" action="{{ route('admin.user.delete', $user) }}" method="post">
 
                                 @method('DELETE')
                                 @csrf
 
-                                <button type="submit" class="btn btn-outline-secondary" title="Удалить">
+                                <button type="submit" class="btn btn-outline-secondary" title="{{ __('Удалить') }}">
                                     <i class="icofont-ui-delete text-danger"></i>
                                 </button>
                             </form>

@@ -31,11 +31,13 @@
                         <label for="category_id" class="form-label">{{ __('Родитель') }}</label>
 
                         <select id="category_id" name="category_id" class="form-select @error('category_id') is-invalid @enderror" size="3" aria-label="category_id">
+
                             @isset ($category)
                                 <option value="0" @selected($category->category_id == null)>-= Без родителя =-</option>
                             @else
                                 <option value="0" @selected(old('category_id') == null)>-= Без родителя =-</option>
                             @endisset
+
                             @isset ($categories)
                                 @foreach ($categories as $value)
                                     @isset ($category)
@@ -85,6 +87,7 @@
 
                 <div class="card-body">
                     <div class="row g-3 align-items-center">
+                        
                         <div class="col-md-12">
                             <label for="media" class="form-label">{{ __('Картинка') }}</label>
 

@@ -39,6 +39,8 @@
                             </div>
                         </div>
 
+                        {{ $users->links('components.pagination') }}
+
                     </div>
                 </div>
             @else

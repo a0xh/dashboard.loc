@@ -10,7 +10,6 @@ use Illuminate\Support\{Str, Collection};
 class CachedCategoryRepository implements CategoryRepositoryInterface
 {
     private const TTL = 1440;
-    private const KEY = ['category_post', 'category_product'];
 
     public function __construct(
         public EloquentCategoryRepository $categoryRepository,
@@ -19,7 +18,7 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
 
     public function getCategoryAll(string $type): array
     {
-        $key = Str::of('category_')->append($type)->append('_')->finish('all');
+        $key = Str::of('category_')->append($type)->finish('_all');
 
         $getCategoryAll = $this->cache->remember($key, self::TTL, function() use($type) {
             return $this->categoryRepository->getCategoryAll($type);
@@ -30,7 +29,9 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
 
     public function getCategoryByProduct(int $count): LengthAwarePaginator
     {
-        $getCategoryByProduct = $this->cache->remember(self::KEY[1], self::TTL, function() use($count) {
+        $key = Str::of('category')->append('_')->finish('product');
+
+        $getCategoryByProduct = $this->cache->remember($key, self::TTL, function() use($count) {
             return $this->categoryRepository->getCategoryByProduct($count);
         });
 
@@ -39,7 +40,9 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
 
     public function getCategoryByPost(int $count): LengthAwarePaginator
     {
-        $getCategoryByPost = $this->cache->remember(self::KEY[0], self::TTL, function() use($count) {
+        $key = Str::of('category')->append('_')->finish('post');
+
+        $getCategoryByPost = $this->cache->remember($key, self::TTL, function() use($count) {
             return $this->categoryRepository->getCategoryByPost($count);
         });
 
@@ -50,18 +53,16 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
     {
         $createCategory = $this->categoryRepository->createCategory($data);
 
-        $cleanCache = collect(self::KEY);
+        $cleanCache = collect(['category_post', 'category_product']);
         $cache = $this->cache;
 
         $cleanCache->each(function ($item) use($cache) {
-            if ($cache->has(Str::of($item)->append('_')->finish('all'))) {
-                return $cache->forget(Str::of($item)->append('_')->finish('all'));
+            if ($cache->has(Str::of($item)->finish('_all'))) {
+                return $cache->forget(Str::of($item)->finish('_all'));
             }
-        });
-
-        $cleanCache->each(function($item) use($cache) {
-            if ($cache->has(Str::of($item))) {
-                return $cache->forget(Str::of($item));
+        })->each(function($item) use($cache) {
+            if ($cache->has($item)) {
+                return $cache->forget($item);
             }
         });
 
@@ -72,15 +73,16 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
     {
         $updateCategory = $this->categoryRepository->updateCategory($category, $data);
 
+        $cleanCache = collect(['category_post', 'category_product']);
         $cache = $this->cache;
 
-        collect(self::KEY)->each(function ($item) use($cache) {
+        $cleanCache->each(function ($item) use($cache) {
             if ($cache->has(Str::of($item)->finish('_all'))) {
-                return $cache->forget(Str::of($item)->append('_')->finish('all'));
+                return $cache->forget(Str::of($item)->finish('_all'));
             }
         })->each(function($item) use($cache) {
             if ($cache->has($item)) {
-                return $cache->forget(Str::of($item));
+                return $cache->forget($item);
             }
         });
 
@@ -91,18 +93,16 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
     {
         $deleteCategory = $this->categoryRepository->deleteCategory($category);
 
-        $cleanCache = collect(self::KEY);
+        $cleanCache = collect(['category_post', 'category_product']);
         $cache = $this->cache;
 
         $cleanCache->each(function ($item) use($cache) {
-            if ($cache->has($item . '_all')) {
-                return $cache->forget(Str::of($item)->append('_')->finish('all'));
+            if ($cache->has(Str::of($item)->finish('_all'))) {
+                return $cache->forget(Str::of($item)->finish('_all'));
             }
-        });
-
-        $cleanCache->each(function($item) use($cache) {
+        })->each(function($item) use($cache) {
             if ($cache->has($item)) {
-                return $cache->forget(Str::of($item));
+                return $cache->forget($item);
             }
         });
 
