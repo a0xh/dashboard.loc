@@ -12,12 +12,32 @@ class EloquentUserRepository extends DecoratorUserRepository
 
     public function findByUser(int $id): User
     {
-        return $this->user->query()->with(['roles'])->find($id);
+        return $this->user->query()->with('roles')->find($id)->through(fn ($user) => [
+            'id' => $user->id,
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'roles' => $user->roles->first()->name,
+            'email' => $user->email,
+            'ip_address' => $user->data->ip_address,
+            'media' => $user->media,
+            'status' => $user->status->value,
+        ]);
     }
 
     public function getUser(int $count): LengthAwarePaginator
     {
-        return $this->user->query()->with(['roles'])->orderByDesc('created_at')->paginate($count);
+        $users = $this->user->query()->with('roles')->orderByDesc('created_at');
+
+        return $users->paginate($count)->through(fn ($user) => [
+            'id' => $user->id,
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'roles' => $user->roles->first()->name,
+            'email' => $user->email,
+            'ip_address' => $user->data->ip_address,
+            'media' => $user->media,
+            'status' => $user->status->value,
+        ]);
     }
 
     public function createUser(array $data): bool

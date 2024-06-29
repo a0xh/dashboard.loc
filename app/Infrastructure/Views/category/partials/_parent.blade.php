@@ -27,7 +27,7 @@
     </td>
     <td>{{ $childCategory->user->first_name ?? null }} {{ $childCategory->user->last_name ?? null }}</td>
     <td>
-        @if ($childCategory->status)
+        @if ($childCategory->status->value)
             <span class="badge bg-success">
                 {{ __('Опубликовано') }}
             </span>

@@ -12,17 +12,26 @@ class EloquentCategoryRepository extends DecoratorCategoryRepository
 
     public function getCategoryAll(string $type): array
     {
-        return $this->category->whereNull('category_id')->where('type', $type)->orderBy('created_at', 'desc')->get()->all();
+        $categories = $this->category->whereNull('category_id')->where('type', $type);
+
+        return $categories->orderBy('created_at', 'desc')->get()->map(fn ($role) => [
+            'id' => $role->id,
+            'title' => $role->title,
+        ])->all();
     }
 
     public function getCategoryByProduct(int $count): LengthAwarePaginator
     {
-        return $this->category->query()->whereNull('category_id')->with(['childrenCategories', 'user'])->where('type', 'product')->orderByDesc('created_at')->paginate($count);
+        $categories = $this->category->query()->whereNull('category_id')->with(['childrenCategories', 'user']);
+
+        return $categories->where('type', 'product')->orderByDesc('created_at')->paginate($count);
     }
 
     public function getCategoryByPost(int $count): LengthAwarePaginator
     {
-        return $this->category->query()->whereNull('category_id')->with(['childrenCategories', 'user'])->where('type', 'post')->orderByDesc('created_at')->paginate($count);
+        $categories = $this->category->query()->whereNull('category_id')->with(['childrenCategories', 'user']);
+        
+        return $categories->where('type', 'post')->orderByDesc('created_at')->paginate($count);
     }
 
     public function createCategory(array $data): bool

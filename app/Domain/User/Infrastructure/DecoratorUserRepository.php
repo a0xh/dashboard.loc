@@ -2,9 +2,6 @@
 
 namespace App\Domain\User\Infrastructure;
 
-use App\Domain\User\Domain\User;
-use Illuminate\Pagination\LengthAwarePaginator;
-
 abstract class DecoratorUserRepository implements UserRepositoryInterface
 {
     protected $userRepository;
@@ -12,7 +9,4 @@ abstract class DecoratorUserRepository implements UserRepositoryInterface
     public function __construct(UserRepositoryInterface $userRepository) {
         $this->userRepository = $userRepository;
     }
-
-    abstract public function findByUser(int $id): User;
-    abstract public function getUser(int $count): LengthAwarePaginator;
 }

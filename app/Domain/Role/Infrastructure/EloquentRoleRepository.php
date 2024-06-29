@@ -10,6 +10,11 @@ class EloquentRoleRepository extends DecoratorRoleRepository
 
     public function getRoleAll(): array
     {
-        return $this->role->query()->orderBy('created_at', 'desc')->get()->all();
+        $getRoleAll = $this->role->query()->orderBy('created_at', 'desc');
+        
+        return $getRoleAll->get()->map(fn ($role) => [
+            'id' => $role->id,
+            'name' => $role->name,
+        ])->all();
     }
 }

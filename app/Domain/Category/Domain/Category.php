@@ -43,6 +43,7 @@ class Category extends Model
         return [
             'title' => 'string',
             'slug' => 'string',
+            'description' => 'string',
             'keywords' => 'string',
             'type' => 'string',
             'status' => StatusEnum::class,

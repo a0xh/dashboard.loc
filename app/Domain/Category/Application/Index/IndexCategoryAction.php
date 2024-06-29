@@ -6,7 +6,6 @@ use App\Infrastructure\Controllers\Controller;
 use App\Domain\Category\Infrastructure\CategoryRepositoryInterface;
 use App\Domain\Category\Domain\Category;
 use Spatie\RouteAttributes\Attributes\Get;
-use Illuminate\Support\{Str, Collection};
 
 final class IndexCategoryAction extends Controller
 {

@@ -39,11 +39,11 @@
                             @isset ($categories)
                                 @foreach ($categories as $value)
                                     @isset ($category)
-                                        @if ($value->id !== $category->id)
-                                            <option value="{{ $value->id }}" @selected($value->id == $category->category_id )>{{ $value->title }}</option>
+                                        @if ($value['id'] !== $category->id)
+                                            <option value="{{ $value['id'] }}" @selected($value['id'] == $category->category_id )>{{ $value['title'] }}</option>
                                         @endif
                                     @else
-                                        <option value="{{ $value->id }}" @selected(old('category_id') == $value->category_id && old('category_id') !== null)>{{ $value->title }}</option>
+                                        <option value="{{ $value['id'] }}" @selected(old('category_id') == $value->category_id && old('category_id') !== null)>{{ $value['title'] }}</option>
                                     @endisset
                                 @endforeach
                             @endisset

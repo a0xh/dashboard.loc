@@ -9,12 +9,12 @@ use Illuminate\Support\{Str, Collection};
 
 class CachedCategoryRepository implements CategoryRepositoryInterface
 {
-    protected const TTL = 1440;
-    public const KEY = ['category_post', 'category_product'];
+    private const TTL = 1440;
+    private const KEY = ['category_post', 'category_product'];
 
     public function __construct(
-        protected EloquentCategoryRepository $categoryRepository,
-        protected CacheManager $cache
+        public EloquentCategoryRepository $categoryRepository,
+        public CacheManager $cache
     ) {}
 
     public function getCategoryAll(string $type): array
@@ -52,10 +52,8 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
 
         $cache = $this->cache;
 
-        $keysCache = collect(self::KEY);
-
-        $keysCache->each(function ($item) use($cache) {
-            if ($cache->has(Str::of($item)->finish('_all')) {
+        collect(self::KEY)->each(function ($item) use($cache) {
+            if ($cache->has(Str::of($item)->finish('_all'))) {
                 return $cache->forget(Str::of($item)->append('_')->finish('all'));
             }
         })->each(function($item) use($cache) {
@@ -71,17 +69,13 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
     {
         $updateCategory = $this->categoryRepository->updateCategory($category, $data);
 
-        $keysCache = collect(self::KEY);
-
         $cache = $this->cache;
 
-        $keysCache->each(function ($item) use($cache) {
+        collect(self::KEY)->each(function ($item) use($cache) {
             if ($cache->has($item . '_all')) {
                 return $cache->forget(Str::of($item)->append('_')->finish('all'));
             }
-        });
-
-        $keysCache->each(function($item) use($cache) {
+        })->each(function($item) use($cache) {
             if ($cache->has($item)) {
                 return $cache->forget(Str::of($item));
             }
@@ -94,10 +88,9 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
     {
         $deleteCategory = $this->categoryRepository->deleteCategory($category);
 
-        $keysCache = collect(self::KEY);
         $cache = $this->cache;
 
-        $keysCache->each(function ($item) use($cache) {
+        collect(self::KEY)->each(function ($item) use($cache) {
             if ($cache->has($item . '_all')) {
                 return $cache->forget(Str::of($item)->append('_')->finish('all'));
             }
