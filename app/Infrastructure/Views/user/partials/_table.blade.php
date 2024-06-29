@@ -16,37 +16,43 @@
             <tr>
                 <th scope="row">
                     <span class="badge bg-primary">
-                        @isset($user['id'])
-                            @if ($user['id'] <= 9)
-                                {{ '0' . $user['id'] }}
+                        @isset($user->id)
+                            @if ($user->id <= 9)
+                                {{ '0' . $user->id }}
                             @else
-                                {{ $user['id'] }}
+                                {{ $user->id }}
                             @endif
                         @endisset
                     </span>
                 </th>
 
                 <td>
-                    @isset ($user['media'])
-                        <img src="{{ Storage::url($user['media']) }}" class="avatar rounded-circle">
+                    @isset ($user->media)
+                        <img src="{{ Storage::url($user->media) }}" class="avatar rounded-circle">
                     @else
                         <img src="{{ asset('assets/img/user.png') }}" class="avatar rounded-circle">
                     @endisset
 
-                    <span class="fw-bold ms-1">{{ $user['first_name'] ?? null }} {{ $user['last_name'] ?? null }}</span>
+                    <span class="fw-bold ms-1">{{ $user->first_name ?? null }} {{ $user->last_name ?? null }}</span>
                 </td>
 
                 <td>
-                    <a href="mailto:{{ $user['email'] ?? null }}" class="btn-link">
-                        {{ $user['email'] ?? null }}
+                    <a href="mailto:{{ $user->email ?? null }}" class="btn-link">
+                        {{ $user->email ?? null }}
                     </a>
                 </td>
 
-                <td>{{ $user['roles'] ?? null }}</td>
+                <td>
+                    @isset ($user->roles)
+                        @foreach ($user->roles as $role)
+                            {{ $role->name }}
+                        @endforeach
+                    @endisset
+                </td>
 
                 <td>
-                    @isset ($user['status'])
-                        @if ($user['status'])
+                    @isset ($user->status->value)
+                        @if ($user->status->value)
                             <span class="badge bg-success">
                                 Активный
                             </span>
@@ -58,24 +64,24 @@
                     @endisset
                 </td>
 
-                <td>{!! $user['ip_address'] ?? '<span class="badge bg-warning">✖</span>' !!}</td>
+                <td>{!! $user->data->ip_address ?? '<span class="badge bg-warning">✖</span>' !!}</td>
 
                 <td>
                     <div class="btn-group" role="group">
                         @if (Route::has('admin.user.show'))
-                            <a href="{{ route('admin.user.show', $user['id']) }}" class="btn btn-outline-secondary" title="Посмотреть">
+                            <a href="{{ route('admin.user.show', $user) }}" class="btn btn-outline-secondary" title="Посмотреть">
                                 <i class="icofont-eye-open text-info"></i>
                             </a>
                         @endif
 
                         @if (Route::has('admin.user.edit'))
-                            <a href="{{ route('admin.user.edit', $user['id']) }}" class="btn btn-outline-secondary" title="Отредактировать">
+                            <a href="{{ route('admin.user.edit', $user) }}" class="btn btn-outline-secondary" title="Отредактировать">
                                 <i class="icofont-edit text-success"></i>
                             </a>
                         @endif
 
                         @if (Route::has('admin.user.delete'))
-                            <form onsubmit="if (confirm('Вы действительно хотите удалить данную запись из таблицы?')) {return true} else {return false}" action="{{ route('admin.user.delete', $user['id']) }}" method="post">
+                            <form onsubmit="if (confirm('Вы действительно хотите удалить данную запись из таблицы?')) {return true} else {return false}" action="{{ route('admin.user.delete', $user) }}" method="post">
 
                                 @method('DELETE')
                                 @csrf

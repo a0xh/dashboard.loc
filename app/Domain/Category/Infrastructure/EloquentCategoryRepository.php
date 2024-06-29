@@ -14,10 +14,7 @@ class EloquentCategoryRepository extends DecoratorCategoryRepository
     {
         $categories = $this->category->whereNull('category_id')->where('type', $type);
 
-        return $categories->orderBy('created_at', 'desc')->get()->map(fn ($role) => [
-            'id' => $role->id,
-            'title' => $role->title,
-        ])->all();
+        return $categories->orderBy('created_at', 'desc')->get()->all();
     }
 
     public function getCategoryByProduct(int $count): LengthAwarePaginator

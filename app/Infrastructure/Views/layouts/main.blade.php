@@ -54,7 +54,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="m-link">
+                        <a href="{{ route('admin.category.index') }}" class="m-link">
                             <i class="icofont-cube"></i>
                             <span>{{ __('Категории') }}</span>
                         </a>

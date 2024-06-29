@@ -69,17 +69,15 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
     {
         $updateCategory = $this->categoryRepository->updateCategory($category, $data);
 
-        $cache = $this->cache;
-
-        collect(self::KEY)->each(function ($item) use($cache) {
-            if ($cache->has($item . '_all')) {
-                return $cache->forget(Str::of($item)->append('_')->finish('all'));
+        foreach (self::KEY as $key) {
+            if ($this->cache->has($key . '_all')) {
+                $this->cache->pull(Str::of($key)->finish('_all'));
             }
-        })->each(function($item) use($cache) {
-            if ($cache->has($item)) {
-                return $cache->forget(Str::of($item));
+            
+            if ($cache->has($key)) {
+                return $cache->forget(Str::of($key));
             }
-        });
+        }
 
         return $updateCategory;
     }
@@ -88,13 +86,16 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
     {
         $deleteCategory = $this->categoryRepository->deleteCategory($category);
 
+        $cleanCache = collect(self::KEY)
         $cache = $this->cache;
 
-        collect(self::KEY)->each(function ($item) use($cache) {
+        $cleanCache->each(function ($item) use($cache) {
             if ($cache->has($item . '_all')) {
                 return $cache->forget(Str::of($item)->append('_')->finish('all'));
             }
-        })->each(function($item) use($cache) {
+        });
+
+        $cleanCache->each(function($item) use($cache) {
             if ($cache->has($item)) {
                 return $cache->forget(Str::of($item));
             }
