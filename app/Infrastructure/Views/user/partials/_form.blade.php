@@ -106,7 +106,7 @@
                                         @isset ($user)
                                             <option value="{{ $role['id'] }}" @selected($role['id'] == $user->roles->first()->id)>{{ $role['name'] }}</option>
                                         @else
-                                            <option value="{{ $role['id'] }}" @selected($role->id == old('role_id'))>{{ $role['name'] }}</option>
+                                            <option value="{{ $role['id'] }}" @selected($role['id'] == old('role_id'))>{{ $role['name'] }}</option>
                                         @endisset
                                     @endforeach
                                 @endisset

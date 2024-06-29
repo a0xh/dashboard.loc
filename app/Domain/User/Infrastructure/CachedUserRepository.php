@@ -5,10 +5,12 @@ namespace App\Domain\User\Infrastructure;
 use App\Domain\User\Domain\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Cache\CacheManager;
+use Illuminate\Support\{Str, Collection};
 
 class CachedUserRepository implements UserRepositoryInterface
 {
     protected const TTL = 1440;
+    private const KEY = ['user'];
 
     public function __construct(
         protected EloquentUserRepository $userRepository,
@@ -37,8 +39,8 @@ class CachedUserRepository implements UserRepositoryInterface
     {
         $createUser = $this->userRepository->createUser($data);
 
-        if ($this->cache->has('users')) {
-            $this->cache->pull('users');
+        if ($this->cache->has(Str::of('users'))) {
+            $this->cache->pull(Str::of('users'));
         }
 
         return $createUser;
@@ -48,13 +50,18 @@ class CachedUserRepository implements UserRepositoryInterface
     {
         $updateUser = $this->userRepository->updateUser($user, $data);
 
-        if ($this->cache->has('users')) {
-            $this->cache->pull('users');
-        }
+        $cleanCache = collect(self::KEY);
+        $cache = $this->cache;
 
-        if ($this->cache->has('user_' . $user->id)) {
-            $this->cache->forget('user_' . $user->id);
-        }
+        $cleanCache->each(function ($item) use($cache, $user) {
+            if ($cache->has($item . '_' . $user->id)) {
+                return $cache->pull(Str::of($item)->append('_')->finish($user->id));
+            }
+        })->each(function($item) use($cache) {
+            if ($cache->has($item . 's')) {
+                return $cache->pull(Str::of($item)->finish('s'));
+            }
+        });
 
         return $updateUser;
     }
@@ -63,12 +70,14 @@ class CachedUserRepository implements UserRepositoryInterface
     {
         $deleteUser = $this->userRepository->deleteUser($user);
 
-        if ($this->cache->has('users')) {
-            $this->cache->forget('users');
-        }
-
-        if ($this->cache->has('user_' . $user->id)) {
-            $this->cache->forget('user_' . $user->id);
+        foreach (self::KEY as $key) {
+            if ($this->cache->has(Str::of($key)->append('_')->finish($user->id))) {
+                $this->cache->forget(Str::of($key)->append('_')->finish($user->id));
+            }
+            
+            if ($this->cache->has($key . 's')) {
+                $this->cache->forget(Str::of($key)->finish('s'));
+            }
         }
 
         return $deleteUser;

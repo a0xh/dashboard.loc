@@ -19,7 +19,7 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
 
     public function getCategoryAll(string $type): array
     {
-        $key = Str::of('category')->finish('_')->append($type)->append('_')->finish('all');
+        $key = Str::of('category_')->append($type)->append('_')->finish('all');
 
         $getCategoryAll = $this->cache->remember($key, self::TTL, function() use($type) {
             return $this->categoryRepository->getCategoryAll($type);
@@ -50,6 +50,28 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
     {
         $createCategory = $this->categoryRepository->createCategory($data);
 
+        $cleanCache = collect(self::KEY);
+        $cache = $this->cache;
+
+        $cleanCache->each(function ($item) use($cache) {
+            if ($cache->has(Str::of($item)->append('_')->finish('all'))) {
+                return $cache->forget(Str::of($item)->append('_')->finish('all'));
+            }
+        });
+
+        $cleanCache->each(function($item) use($cache) {
+            if ($cache->has(Str::of($item))) {
+                return $cache->forget(Str::of($item));
+            }
+        });
+
+        return $createCategory;
+    }
+
+    public function updateCategory(Category $category, array $data): bool
+    {
+        $updateCategory = $this->categoryRepository->updateCategory($category, $data);
+
         $cache = $this->cache;
 
         collect(self::KEY)->each(function ($item) use($cache) {
@@ -62,23 +84,6 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
             }
         });
 
-        return $createCategory;
-    }
-
-    public function updateCategory(Category $category, array $data): bool
-    {
-        $updateCategory = $this->categoryRepository->updateCategory($category, $data);
-
-        foreach (self::KEY as $key) {
-            if ($this->cache->has($key . '_all')) {
-                $this->cache->pull(Str::of($key)->finish('_all'));
-            }
-            
-            if ($cache->has($key)) {
-                return $cache->forget(Str::of($key));
-            }
-        }
-
         return $updateCategory;
     }
 
@@ -86,7 +91,7 @@ class CachedCategoryRepository implements CategoryRepositoryInterface
     {
         $deleteCategory = $this->categoryRepository->deleteCategory($category);
 
-        $cleanCache = collect(self::KEY)
+        $cleanCache = collect(self::KEY);
         $cache = $this->cache;
 
         $cleanCache->each(function ($item) use($cache) {
