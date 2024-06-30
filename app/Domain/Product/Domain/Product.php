@@ -79,18 +79,25 @@ class Product extends Model
         switch ($locale) {
             case 'ru':
                 $currency = 'RUB';
+                $rate = 1;
+                break;
+            case 'en':
+                $currency = 'USD';
+                $rate = 1 / 85.75;
                 break;
             
             default:
-                $currency = 'USD';
+                $currency = 'EUR';
+                $rate = 1 / 92.42;
                 break;
         }
 
         return Attribute::make(
-            get: fn ($price) => str_replace('.00', '', str_replace(',00', '',
-                Number::currency($price, in: $currency, locale: $locale)
-            ))
+            get: fn ($price) => Number::currency(
+                $price * $rate, in: $currency, locale: $locale
+            )
         );
+        
     }
 
     protected function views(): Attribute
