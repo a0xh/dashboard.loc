@@ -88,4 +88,9 @@ class Tag extends Model
     {
         return $this->belongsToMany(\App\Domain\Post\Domain\Post::class);
     }
+
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(\App\Domain\Product\Domain\Product::class);
+    }
 }

@@ -95,4 +95,9 @@ class Category extends Model
     {
         return $this->hasMany(\App\Domain\Post\Domain\Post::class);
     }
+
+    public function products(): HasMany
+    {
+        return $this->hasMany(\App\Domain\Product\Domain\Product::class);
+    }
 }

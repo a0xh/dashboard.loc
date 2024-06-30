@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Domain\Post\Domain;
+namespace App\Domain\Product\Domain;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\UploadedFile;
 
-class PostDto
+class ProductDto
 {
     public function __construct(
         private string $title,
@@ -14,6 +14,7 @@ class PostDto
         private ?string $keywords,
         private bool $status,
         private ?UploadedFile $media,
+        private float $price,
         private ?int $category_id,
         private ?string $text,
         private ?array $tag_id,
@@ -48,6 +49,11 @@ class PostDto
     public function getMedia(): ?UploadedFile
     {
         return $this->media;
+    }
+
+    public function getPrice(): float
+    {
+        return $this->price;
     }
 
     public function getCategoryId(): ?int

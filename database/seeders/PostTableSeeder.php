@@ -21,25 +21,33 @@ class PostTableSeeder extends Seeder
         $post->media = null;
         $post->content = 'content';
         $post->status = true;
+        $post->views = 775;
         $post->category_id = 1;
         $post->user_id = 1;
-        $post->data = null;
+        $post->data = [
+            'heading' => 'heading',
+            'excerpt' => 'excerpt',
+        ];
         $post->save();
         $post->tags()->sync([1]);
 
         sleep(1);
 
         $post = new Post();
-        $post->title = 'Post №1';
+        $post->title = 'Post №2';
         $post->slug = 'post-2';
         $post->description = 'description';
         $post->keywords = 'keywords';
         $post->media = null;
         $post->content = 'content';
         $post->status = true;
+        $post->views = 532;
         $post->category_id = 3;
         $post->user_id = 1;
-        $post->data = null;
+        $post->data = [
+            'heading' => 'heading',
+            'excerpt' => 'excerpt',
+        ];
         $post->save();
         $post->tags()->sync([3]);
     }

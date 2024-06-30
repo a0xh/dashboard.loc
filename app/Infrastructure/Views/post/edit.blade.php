@@ -21,7 +21,9 @@
                     @method('PUT')
                     @csrf
 
-                    @include('post.partials._form')
+                    @if (View::exists('post.partials._form'))
+                        @include('post.partials._form')
+                    @endif
 
                 </form>
             @else

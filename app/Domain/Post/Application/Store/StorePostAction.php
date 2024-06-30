@@ -35,7 +35,8 @@ final class StorePostAction extends Controller
             'category_id' => $postDto->getCategoryId(),
             'status' => $postDto->getStatus(),
             'content' => $postDto->getContent(),
-            'tag_id' => $postDto->getTagId(),
+            'data' => $postDto->getData(),
+            'tag_id' => $postDto->getTagId()
         ]);
 
         $createPost = $this->postRepository->createPost($data->merge([

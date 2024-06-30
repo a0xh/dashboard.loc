@@ -12,7 +12,7 @@ class EloquentCategoryRepository extends DecoratorCategoryRepository
 
     public function getCategoryAll(string $type): array
     {
-        $categories = $this->category->whereNull('category_id')->where('type', $type);
+        $categories = $this->category->where('type', $type);
 
         return $categories->orderBy('created_at', 'desc')->get()->all();
     }

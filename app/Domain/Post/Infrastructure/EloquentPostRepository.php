@@ -43,7 +43,7 @@ class EloquentPostRepository extends DecoratorPostRepository
                 $post->tags()->sync($tagId);
             }, 3);
 
-            return $post->wasChanged();
+            return true;
         }
 
         catch (\ExternalServiceException $exception) {

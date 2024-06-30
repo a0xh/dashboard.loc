@@ -36,7 +36,8 @@ final class UpdatePostAction extends Controller
             'category_id' => $postDto->getCategoryId(),
             'status' => $postDto->getStatus(),
             'content' => $postDto->getContent(),
-            'tag_id' => $postDto->getTagId(),
+            'data' => $postDto->getData(),
+            'tag_id' => $postDto->getTagId()
         ]);
 
         $updatePost = $this->postRepository->updatePost($post, $data->merge([

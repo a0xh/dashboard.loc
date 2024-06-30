@@ -94,6 +94,24 @@ return [
         app_path('Domain/Media/Application/Upload') => [
            'middleware' => ['web', 'auth']
         ],
+        app_path('Domain/Product/Application/Create') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Product/Application/Delete') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Product/Application/Edit') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Product/Application/Index') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Product/Application/Store') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Product/Application/Update') => [
+           'middleware' => ['web', 'auth']
+        ],
     ],
 
     /**

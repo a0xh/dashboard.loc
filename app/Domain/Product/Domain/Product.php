@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Post\Domain;
+namespace App\Domain\Product\Domain;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -9,11 +9,11 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Application\Enums\StatusEnum;
 
-class Post extends Model
+class Product extends Model
 {
     use Sluggable;
 
-    protected $table = 'posts';
+    protected $table = 'products';
     
     protected $dates = [
         'created_at',
@@ -31,6 +31,7 @@ class Post extends Model
         'description',
         'keywords',
         'media',
+        'price',
         'content',
         'status',
         'views',
@@ -52,6 +53,7 @@ class Post extends Model
             'description' => 'string',
             'keywords' => 'string',
             'media' => 'string',
+            'price' => 'float',
             'content' => 'string',
             'status' => StatusEnum::class,
             'views' => 'int',

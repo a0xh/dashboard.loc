@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 return new class extends Migration
 {
@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->charset = 'utf8mb4';
             $table->collation = 'utf8mb4_general_ci';
-
-            $table->comment('Посты');
+            
+            $table->comment('Товары');
             
             $table->smallIncrements('id');
             $table->string('title', 65);
@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('description', 200)->nullable();
             $table->string('keywords', 200)->nullable();
             $table->string('media', 255)->nullable();
+            $table->decimal('price', 10, 2)->nullable();
             $table->text('content')->nullable()->fulltext();
             $table->boolean('status')->default(false);
             $table->mediumInteger('views')->unsigned()->nullable();
@@ -43,6 +44,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('products');
     }
 };

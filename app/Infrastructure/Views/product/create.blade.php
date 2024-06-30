@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Добавление поста')
+@section('title', 'Добавление товара')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/dropify.min.css') }}">
@@ -15,13 +15,13 @@
             <x-errors />
             <x-message />
 
-            @if (Route::has('admin.post.store'))
-                <form action="{{ route('admin.post.store') }}" method="POST" class="mt-2" enctype="multipart/form-data">
+            @if (Route::has('admin.product.store'))
+                <form action="{{ route('admin.product.store') }}" method="POST" class="mt-2" enctype="multipart/form-data">
 
                     @csrf
 
-                    @if (View::exists('post.partials._form'))
-                        @include('post.partials._form')
+                    @if (View::exists('product.partials._form'))
+                        @include('product.partials._form')
                     @endif
                     
                 </form>

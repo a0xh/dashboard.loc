@@ -2,14 +2,14 @@
 
     <div class="form-check form-switch position-absolute top-0 end-0 py-3 px-3 d-none d-md-block">
         <div class="btn-group" role="group" aria-label="btn-group">
-            @if (Route::has('admin.post.edit'))
-                <a href="{{ route('admin.post.edit', $post) }}" class="btn btn-outline-secondary">
+            @if (Route::has('admin.product.edit'))
+                <a href="{{ route('admin.product.edit', $product) }}" class="btn btn-outline-secondary">
                     <i class="icofont-edit text-success"></i>
                 </a>
             @endif
             
-            @if (Route::has('admin.post.delete'))
-                <form onsubmit="if (confirm('{{ __('Вы действительно хотите удалить данную запись из таблицы?') }}')) {return true} else {return false}" action="{{ route('admin.post.delete', $post) }}" method="post">
+            @if (Route::has('admin.product.delete'))
+                <form onsubmit="if (confirm('{{ __('Вы действительно хотите удалить данную запись из таблицы?') }}')) {return true} else {return false}" action="{{ route('admin.product.delete', $product) }}" method="post">
 
                     @method('DELETE')
                     @csrf
@@ -24,17 +24,17 @@
 
     <div class="card-body d-flex align-items-center flex-column flex-md-row">
 
-        @isset ($post->media)
-            <img class="w120 rounded img-fluid" src="{{ Storage::url($post->media) }}">
+        @isset ($product->media)
+            <img class="w120 rounded img-fluid" src="{{ Storage::url($product->media) }}">
         @else
             <img class="w120 rounded img-fluid" src="{{ asset('assets/img/no-data.png') }}">
         @endisset
 
         <div class="ms-md-4 m-0 mt-4 mt-md-0 text-md-start text-center w-100">
 
-            <h6 class="mb-3 fw-bold">{{ $post->title ?? null }}
+            <h6 class="mb-3 fw-bold">{{ $product->title ?? null }}
                 <span class="text-muted small fw-light d-block">
-                    {{ $post->user->first_name ?? null }} {{ $post->user->last_name ?? null }}
+                    {{ $product->user->first_name ?? null }} {{ $product->user->last_name ?? null }}
                 </span>
             </h6>
 
@@ -42,9 +42,8 @@
 
                 <div class="pe-xl-5 pe-md-4 ps-md-0 px-3 mb-2">
                     <div class="text-muted small">{{ __('Категория') }}</div>
-
-                    @isset ($post->category)
-                        <strong>{{ $post->category->title }}</strong>
+                    @isset ($product->category)
+                        <strong>{{ $product->category->title }}</strong>
                     @else
                         <span class="badge bg-danger">{{ __('✖') }}</span>
                     @endisset
@@ -52,9 +51,8 @@
 
                 <div class="pe-xl-5 pe-md-4 ps-md-0 px-3 mb-2">
                     <div class="text-muted small">{{ __('Статус') }}</div>
-
                     <strong>
-                        @if ($post->status->value)
+                        @if ($product->status->value)
                             <span class="badge bg-success">
                                 {{ __('Опубликовано') }}
                             </span>
@@ -69,8 +67,8 @@
                 <div class="pe-xl-5 pe-md-4 ps-md-0 px-3 mb-2">
                     <div class="text-muted small">{{ __('Теги') }}</div>
                     
-                    @isset ($post->tags)
-                        @foreach ($post->tags as $tag)
+                    @isset ($product->tags)
+                        @foreach ($product->tags as $tag)
                             <strong>{{ $tag->title }}</strong>
                         @endforeach
                     @else
@@ -80,7 +78,6 @@
 
                 <div class="pe-xl-5 pe-md-4 ps-md-0 px-3 mb-2">
                     <div class="text-muted small">{{ __('Комментарии') }}</div>
-
                     <strong>
                         <i class="icofont-speech-comments text-warning"></i>
                         <span class="text-muted">({{ __('0') }})</span>
@@ -88,16 +85,15 @@
                 </div>
 
                 <div class="pe-xl-5 pe-md-4 ps-md-0 px-3 mb-2">
-                    <div class="text-muted small">{{ __('Дата и время') }}</div>
-                    <strong>{{ $post->created_at ?? null }}</strong>
+                    <div class="text-muted small">{{ __('Цена') }}</div>
+                    <strong>{{ $product->price ?? null }}</strong>
                 </div>
 
                 <div class="pe-xl-5 pe-md-4 ps-md-0 px-3 mb-2">
                     <div class="text-muted small">{{ __('Просмотры') }}</div>
-
                     <strong>
                         <i class="icofont-eye-open text-info"></i>
-                        <span class="text-muted">({{ $post->views ?? 0 }})</span>
+                        <span class="text-muted">({{ $product->views ?? 0 }})</span>
                     </strong>
                 </div>
 
