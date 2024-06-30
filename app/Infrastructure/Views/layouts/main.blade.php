@@ -42,7 +42,7 @@
                                 <x-notification />
                             </div>
 
-                            @include ('components.profile')
+                            @includeIf('components.dropdown')
                         </div>
 
                         <button class="navbar-toggler p-0 border-0 menu-toggle order-3" type="button" data-bs-toggle="collapse" data-bs-target="#mainHeader">

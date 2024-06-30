@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Application\Enums\StatusEnum;
+use Illuminate\Support\Number;
 
 class Product extends Model
 {
@@ -62,12 +63,40 @@ class Product extends Model
             'data' => 'array',
         ];
     }
-    
+
     protected function data(): Attribute
     {
         return Attribute::make(
             get: fn ($data) => json_decode($data),
             set: fn ($data) => json_encode($data),
+        );
+    }
+
+    protected function price(): Attribute
+    {
+        $locale = app()->getLocale();
+
+        switch ($locale) {
+            case 'ru':
+                $currency = 'RUB';
+                break;
+            
+            default:
+                $currency = 'USD';
+                break;
+        }
+
+        return Attribute::make(
+            get: fn ($price) => str_replace('.00', '', str_replace(',00', '',
+                Number::currency($price, in: $currency, locale: $locale)
+            ))
+        );
+    }
+
+    protected function views(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($count) => Number::abbreviate($count)
         );
     }
 

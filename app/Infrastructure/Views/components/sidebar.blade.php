@@ -42,7 +42,10 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="m-link">
+                <a href="{{ route('admin.product.index') }}" class="m-link" @class([
+                    'active m-link' => Route::is('admin.product.index'),
+                    'm-link' => !Route::is('admin.product.index')
+                ])>
                     <i class="icofont-ui-cart"></i>
                     <span>{{ __('Товары') }}</span>
                 </a>

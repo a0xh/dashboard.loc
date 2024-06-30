@@ -18,11 +18,7 @@ class CachedProductRepository implements ProductRepositoryInterface
 
     public function getProduct(int $count): LengthAwarePaginator
     {
-        $getProduct = $this->cache->remember('products', self::TTL, function() use($count) {
-            return $this->productRepository->getProduct($count);
-        });
-
-        return $getProduct;
+        return $this->productRepository->getProduct($count);
     }
 
     public function createProduct(array $data): bool
