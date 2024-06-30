@@ -61,7 +61,7 @@
                 <td>{{ $category->created_at ?? null }}</td>
 
                 <td>
-                    <div class="btn-group" role="group" aria-label="categories">
+                    <div class="btn-group" role="group" aria-label="btn-group">
                         @if (Route::has('admin.category.edit'))
                             <a href="{{ route('admin.category.edit', $category) }}" class="btn btn-outline-secondary">
                                 <i class="icofont-edit text-success"></i>

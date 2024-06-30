@@ -20,7 +20,7 @@ class TagTableSeeder extends Seeder
         $tag->slug = 'tag-1';
         $tag->description = 'description';
         $tag->keywords = 'keywords';
-        $tag->media = 'assets/img/no-data.png';
+        $tag->media = null;
         $tag->type = 'post';
         $tag->status = true;
         $tag->user_id = 1;
@@ -34,7 +34,7 @@ class TagTableSeeder extends Seeder
         $tag->slug = 'tag-2';
         $tag->description = 'description';
         $tag->keywords = 'keywords';
-        $tag->media = 'assets/img/no-data.png';
+        $tag->media = null;
         $tag->type = 'product';
         $tag->status = true;
         $tag->user_id = 1;
@@ -48,7 +48,7 @@ class TagTableSeeder extends Seeder
         $tag->slug = 'tag-3';
         $tag->description = 'description';
         $tag->keywords = 'keywords';
-        $tag->media = 'assets/img/no-data.png';
+        $tag->media = null;
         $tag->type = 'post';
         $tag->status = true;
         $tag->user_id = 1;
@@ -62,7 +62,7 @@ class TagTableSeeder extends Seeder
         $tag->slug = 'tag-4';
         $tag->description = 'description';
         $tag->keywords = 'keywords';
-        $tag->media = 'assets/img/no-data.png';
+        $tag->media = null;
         $tag->type = 'product';
         $tag->status = true;
         $tag->user_id = 1;

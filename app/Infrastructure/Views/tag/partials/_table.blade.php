@@ -68,7 +68,7 @@
                 <td>{{ $tag->created_at ?? null }}</td>
 
                 <td>
-                    <div class="btn-group" role="group" aria-label="tags">
+                    <div class="btn-group" role="group" aria-label="btn-group">
                         @if (Route::has('admin.tag.edit'))
                             <a href="{{ route('admin.tag.edit', $tag) }}" class="btn btn-outline-secondary">
                                 <i class="icofont-edit text-success"></i>

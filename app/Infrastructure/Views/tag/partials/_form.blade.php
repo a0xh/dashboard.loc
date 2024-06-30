@@ -7,11 +7,9 @@
                     <div class="col-md-12">
                         <label for="title" class="form-label">{{ __('Заголовок') }}</label>
 
-                        <input id="title" type="text" name="title" value="{{ $tag->title ?? old('title') }}" class="form-control @error('title') is-invalid @enderror" autocomplete="title">
+                        <input id="title" type="text" name="title" value="{{ $tag->title ?? old('title') }}" class="form-control @error('title') is-invalid @enderror" autocomplete="title" autofocus>
 
-                        @error('title')
-                            <span role="alert" class="invalid-feedback">{{ $message }}</span>
-                        @enderror
+                        <x-error-field name="title" />
                     </div>
 
                     <div class="col-md-12">
@@ -22,9 +20,7 @@
                             <input id="slug" type="text" name="slug" value="{{ $tag->slug ?? old('slug') }}" class="form-control @error('slug') is-invalid @enderror" autocomplete="slug">
                         </div>
 
-                        @error('slug')
-                            <span role="alert" class="invalid-feedback">{{ $message }}</span>
-                        @enderror
+                        <x-error-field name="slug" />
                     </div>
 
                     <div class="col-md-12">
@@ -32,9 +28,7 @@
 
                         <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror" aria-label="description" autocomplete="description">{{ $tag->description ?? old('description') }}</textarea>
 
-                        @error('description')
-                            <span role="alert" class="invalid-feedback">{{ $message }}</span>
-                        @enderror
+                        <x-error-field name="description" />
                     </div>
 
                     <div class="col-md-12">
@@ -42,9 +36,7 @@
 
                         <input id="keywords" type="text" name="keywords" value="{{ $tag->keywords ?? old('keywords') }}" class="form-control @error('keywords') is-invalid @enderror" autocomplete="keywords">
 
-                        @error('keywords')
-                            <span role="alert" class="invalid-feedback">{{ $message }}</span>
-                        @enderror
+                        <x-error-field name="keywords" />
                     </div>
 
                 </div>

@@ -22,7 +22,7 @@ class CategoryTableSeeder extends Seeder
         $category->keywords = 'keywords';
         $category->type = 'post';
         $category->status = true;
-        $category->media = 'assets/img/no-data.png';
+        $category->media = null;
         $category->category_id = null;
         $category->user_id = 1;
         $category->data = null;
@@ -37,8 +37,8 @@ class CategoryTableSeeder extends Seeder
         $category->keywords = 'keywords';
         $category->type = 'product';
         $category->status = true;
-        $category->media = 'assets/img/no-data.png';
-        $category->category_id = 1;
+        $category->media = null;
+        $category->category_id = null;
         $category->user_id = 1;
         $category->data = null;
         $category->save();
@@ -52,8 +52,8 @@ class CategoryTableSeeder extends Seeder
         $category->keywords = 'keywords';
         $category->type = 'post';
         $category->status = true;
-        $category->media = 'assets/img/no-data.png';
-        $category->category_id = null;
+        $category->media = null;
+        $category->category_id = 1;
         $category->user_id = 1;
         $category->data = null;
         $category->save();
@@ -67,8 +67,8 @@ class CategoryTableSeeder extends Seeder
         $category->keywords = 'keywords';
         $category->type = 'product';
         $category->status = true;
-        $category->media = 'assets/img/no-data.png';
-        $category->category_id = 3;
+        $category->media = null;
+        $category->category_id = 2;
         $category->user_id = 1;
         $category->data = null;
         $category->save();

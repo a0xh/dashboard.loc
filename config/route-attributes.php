@@ -91,6 +91,9 @@ return [
         app_path('Domain/Post/Application/Update') => [
            'middleware' => ['web', 'auth']
         ],
+        app_path('Domain/Media/Application/Upload') => [
+           'middleware' => ['web', 'auth']
+        ],
     ],
 
     /**

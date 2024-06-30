@@ -8,7 +8,7 @@
                     <div class="col-md-12">
                         <label for="title" class="form-label">{{ __('Заголовок') }}</label>
 
-                        <input id="title" type="text" name="title" value="{{ $category->title ?? old('title') }}" class="form-control @error('title') is-invalid @enderror" autocomplete="title">
+                        <input id="title" type="text" name="title" value="{{ $category->title ?? old('title') }}" class="form-control @error('title') is-invalid @enderror" autocomplete="title" autofocus>
 
                         <x-error-field name="title" />
                     </div>

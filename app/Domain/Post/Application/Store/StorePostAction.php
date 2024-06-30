@@ -5,7 +5,7 @@ namespace App\Domain\Post\Application\Store;
 use App\Infrastructure\Controllers\Controller;
 use App\Domain\Post\Infrastructure\PostRepositoryInterface;
 use Illuminate\Http\RedirectResponse;
-use App\Domain\Post\Domain\{Post, PostRequest};
+use App\Domain\Post\Domain\PostRequest;
 use Illuminate\Support\Facades\Auth;
 use Spatie\RouteAttributes\Attributes\Post;
 use Illuminate\Support\Collection;

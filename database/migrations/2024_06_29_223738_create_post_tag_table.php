@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('post_tag', function (Blueprint $table) {
             $table->smallIncrements('id');
-            $table->unsignedSmallInteger('post_id');
+            $table->unsignedSmallInteger('post_id')->index();
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
-            $table->unsignedSmallInteger('tag_id');
+            $table->unsignedSmallInteger('tag_id')->index();
             $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
         });
     }

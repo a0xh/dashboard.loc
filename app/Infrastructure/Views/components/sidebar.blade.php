@@ -33,7 +33,10 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin.category.index') }}" class="m-link">
+                <a href="{{ route('admin.category.index') }}" @class([
+                    'active m-link' => Route::is('admin.category.index'),
+                    'm-link' => !Route::is('admin.category.index')
+                ])>
                     <i class="icofont-cube"></i>
                     <span>{{ __('Категории') }}</span>
                 </a>
@@ -51,7 +54,10 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="m-link">
+                <a href="{{ route('admin.post.index') }}" @class([
+                    'active m-link' => Route::is('admin.post.index'),
+                    'm-link' => !Route::is('admin.post.index')
+                ])>
                     <i class="icofont-paper"></i>
                     <span>{{ __('Посты') }}</span>
                 </a>

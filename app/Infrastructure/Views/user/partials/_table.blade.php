@@ -67,7 +67,7 @@
                 <td>{!! $user->data->ip_address ?? '<span class="badge bg-warning">✖</span>' !!}</td>
 
                 <td>
-                    <div class="btn-group" role="group" aria-label="users">
+                    <div class="btn-group" role="group" aria-label="btn-group">
                         @if (Route::has('admin.user.show'))
                             <a href="{{ route('admin.user.show', $user) }}" class="btn btn-outline-secondary" title="{{ __('Посмотреть') }}">
                                 <i class="icofont-eye-open text-info"></i>

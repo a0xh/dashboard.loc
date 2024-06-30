@@ -21,7 +21,7 @@ class EloquentPostRepository extends DecoratorPostRepository
             DB::transaction(function() use($data) {
                 $tagId = $data['tag_id'];
 
-                $post = $this->post->create($data);
+                $post = $this->post->create(data_forget($data, 'tag_id'));
                 $post->tags()->sync($tagId);
             }, 3);
 
@@ -39,7 +39,7 @@ class EloquentPostRepository extends DecoratorPostRepository
             DB::transaction(function() use($post, $data) {
                 $tagId = $data['tag_id'];
 
-                $post->update($data);
+                $post->update(data_forget($data, 'tag_id'));
                 $post->tags()->sync($tagId);
             }, 3);
 

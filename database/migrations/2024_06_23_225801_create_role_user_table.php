@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('role_user', function (Blueprint $table) {
             $table->smallIncrements('id');
-            $table->unsignedSmallInteger('role_id');
+            $table->unsignedSmallInteger('role_id')->index();
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
-            $table->unsignedSmallInteger('user_id');
+            $table->unsignedSmallInteger('user_id')->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

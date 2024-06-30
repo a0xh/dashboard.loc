@@ -4,7 +4,6 @@ namespace App\Application\Traits;
 
 use Illuminate\Support\Facades\{File, Storage};
 use Illuminate\Http\UploadedFile;
-
 trait MediaAction
 {
     public function createMedia(?UploadedFile $request): ?string
