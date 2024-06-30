@@ -33,6 +33,11 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Domain\Tag\Infrastructure\TagRepositoryInterface::class,
             \App\Domain\Tag\Infrastructure\CachedTagRepository::class
         );
+
+        $this->app->bind(
+            \App\Domain\Post\Infrastructure\PostRepositoryInterface::class,
+            \App\Domain\Post\Infrastructure\CachedPostRepository::class
+        );
     }
 
     /**

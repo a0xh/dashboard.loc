@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Domain\User\Domain;
+namespace App\Domain\Post\Domain;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Collection;
 
-class UserRequest extends FormRequest
+class PostRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,25 +23,26 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         $validation = collect([
+            'title' => ['bail', 'required', 'string', 'min:3', 'max:65'],
+            'description' => ['bail', 'nullable', 'string', 'min:3', 'max:200'],
+            'keywords' => ['bail', 'nullable', 'string', 'min:3', 'max:200'],
             'media' => ['bail', 'nullable', 'image', 'dimensions:max_width=6000,max_height=6000'],
-            'first_name' => ['bail', 'required', 'string', 'min:4', 'max:44'],
-            'last_name' => ['bail', 'nullable', 'string', 'min:4', 'max:44'],
-            'password' => ['bail', 'required', 'string', 'min:8', 'confirmed'],
             'status' => ['bail', 'required', 'boolean', 'in:0,1'],
-            'role_id' => ['bail', 'required', 'integer'],
-            'data' => ['bail', 'nullable', 'array'],
+            'content' => ['bail', 'nullable', 'string', 'max:65535'],
+            'category_id' => ['bail', 'nullable', 'integer'],
+            'tag_id' => ['bail', 'nullable', 'array'],
         ]);
 
         switch ($this->method())
         {
             case 'POST': {
                 return $validation->merge([
-                    'email' => ['bail', 'required', 'email:rfc,strict,spoof', 'max:255', 'unique:users,email']
+                    'slug' => ['bail', 'nullable', 'string', 'lowercase', 'min:1', 'max:65', 'unique:categories,slug']
                 ])->toArray();
             }
             case 'PUT': {
                 return $validation->merge([
-                    'email' => ['bail', 'required', 'email:rfc,strict,spoof', 'max:255', 'unique:users,email,' . $this->user->id]
+                    'slug' => ['bail', 'nullable', 'string', 'lowercase', 'min:1', 'max:65', 'unique:posts,slug,' . $this->post->id]
                 ])->toArray();
             }
             default:
@@ -59,17 +60,18 @@ class UserRequest extends FormRequest
         return [];
     }
 
-    public function formRequest(): UserDto
+    public function formRequest(): PostDto
     {
-        return new UserDto(
+        return new PostDto(
+            title: $this->title,
+            category_id: $this->category_id,
+            slug: $this->slug,
+            keywords: $this->keywords,
+            description: $this->description,
             media: $this->media,
-            first_name: $this->first_name,
-            last_name: $this->last_name,
-            email: $this->email,
-            password: $this->password,
+            content: $this->content,
             status: $this->status,
-            role_id: $this->role_id,
-            data: $this->data
+            tag_id: $this->tag_id,
         );
     }
 }

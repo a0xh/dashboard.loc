@@ -3,6 +3,7 @@
 namespace App\Domain\Tag\Domain;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Collection;
 
 class TagRequest extends FormRequest
 {

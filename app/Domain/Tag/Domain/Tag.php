@@ -3,6 +3,7 @@
 namespace App\Domain\Tag\Domain;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -69,17 +70,22 @@ class Tag extends Model
             ]
         ];
     }
-
+    
     protected function data(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => (object) unserialize($value),
-            set: fn ($value) => serialize($value)
+            get: fn ($data) => json_decode($data),
+            set: fn ($data) => json_encode($data),
         );
     }
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(\App\Domain\User\Domain\User::class);
+    }
+
+    public function posts(): BelongsToMany
+    {
+        return $this->belongsToMany(\App\Domain\Post\Domain\Post::class);
     }
 }

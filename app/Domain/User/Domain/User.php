@@ -93,4 +93,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Domain\Tag\Domain\Tag::class);
     }
+
+    public function posts(): HasMany
+    {
+        return $this->hasMany(\App\Domain\Post\Domain\Post::class);
+    }
 }

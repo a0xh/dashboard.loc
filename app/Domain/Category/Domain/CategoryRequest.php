@@ -3,6 +3,7 @@
 namespace App\Domain\Category\Domain;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Collection;
 
 class CategoryRequest extends FormRequest
 {

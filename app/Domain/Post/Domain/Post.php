@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Domain\Category\Domain;
+namespace App\Domain\Post\Domain;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Application\Enums\StatusEnum;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Application\Enums\StatusEnum;
 
-class Category extends Model
+class Post extends Model
 {
     use Sluggable;
-    
-    protected $table = 'categories';
+
+    protected $table = 'posts';
     
     protected $dates = [
         'created_at',
@@ -30,9 +30,9 @@ class Category extends Model
         'slug',
         'description',
         'keywords',
-        'type',
-        'status',
         'media',
+        'content',
+        'status',
         'category_id',
         'user_id',
         'data'
@@ -50,21 +50,12 @@ class Category extends Model
             'slug' => 'string',
             'description' => 'string',
             'keywords' => 'string',
-            'type' => 'string',
-            'status' => StatusEnum::class,
             'media' => 'string',
+            'content' => 'string',
+            'status' => StatusEnum::class,
             'category_id' => 'int',
             'user_id' => 'int',
             'data' => 'array',
-        ];
-    }
-
-    public function sluggable(): array
-    {
-        return [
-            'slug' => [
-                'source' => 'title'
-            ]
         ];
     }
     
@@ -76,14 +67,18 @@ class Category extends Model
         );
     }
 
-    public function categories(): HasMany
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable(): array
     {
-        return $this->hasMany(\App\Domain\Category\Domain\Category::class);
-    }
-
-    public function childrenCategories(): HasMany
-    {
-        return $this->hasMany(self::class)->with('categories');
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
     }
 
     public function user(): BelongsTo
@@ -91,8 +86,13 @@ class Category extends Model
         return $this->belongsTo(\App\Domain\User\Domain\User::class);
     }
 
-    public function posts(): HasMany
+    public function category(): BelongsTo
     {
-        return $this->hasMany(\App\Domain\Post\Domain\Post::class);
+        return $this->belongsTo(\App\Domain\Category\Domain\Category::class);
+    }
+    
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(\App\Domain\Tag\Domain\Tag::class);
     }
 }
