@@ -51,7 +51,10 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="m-link">
+                <a href="{{ route('admin.comment.index') }}" @class([
+                    'active m-link' => Route::is('admin.comment.index'),
+                    'm-link' => !Route::is('admin.comment.index')
+                ])>
                     <i class="icofont-speech-comments"></i>
                     <span>{{ __('Комментарии') }}</span>
                 </a>

@@ -43,6 +43,11 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Domain\Product\Infrastructure\ProductRepositoryInterface::class,
             \App\Domain\Product\Infrastructure\CachedProductRepository::class
         );
+
+        $this->app->bind(
+            \App\Domain\Comment\Infrastructure\CommentRepositoryInterface::class,
+            \App\Domain\Comment\Infrastructure\CachedCommentRepository::class
+        );
     }
 
     /**

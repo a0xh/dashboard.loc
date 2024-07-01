@@ -112,6 +112,18 @@ return [
         app_path('Domain/Product/Application/Update') => [
            'middleware' => ['web', 'auth']
         ],
+        app_path('Domain/Comment/Application/Delete') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Comment/Application/Index') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Comment/Application/Store') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Comment/Application/Update') => [
+           'middleware' => ['web', 'auth']
+        ],
     ],
 
     /**

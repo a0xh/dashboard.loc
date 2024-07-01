@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -11,24 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->charset = 'utf8mb4';
             $table->collation = 'utf8mb4_general_ci';
-            
-            $table->comment('Товары');
-            
+
+            $table->comment('Комментарии');
+
             $table->smallIncrements('id');
-            $table->string('title', 65);
-            $table->string('slug', 65)->unique();
-            $table->string('description', 200)->nullable();
-            $table->string('keywords', 200)->nullable();
-            $table->string('media', 255)->nullable();
-            $table->decimal('price', 10, 2);
-            $table->text('content')->nullable()->fulltext();
+            $table->text('content')->fulltext();
             $table->boolean('status')->default(false);
-            $table->mediumInteger('views')->unsigned()->nullable();
-            $table->unsignedSmallInteger('category_id')->nullable()->index();
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
+            $table->enum('type', ['post', 'product']);
+            $table->unsignedSmallInteger('comment_id')->nullable()->index();
+            $table->foreign('comment_id')->references('id')->on('comments')->onDelete('cascade');
             $table->unsignedSmallInteger('user_id')->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->text('data')->nullable()->comment('Доп. данные');
@@ -44,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('comments');
     }
 };

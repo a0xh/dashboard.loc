@@ -97,4 +97,9 @@ class Post extends Model
     {
         return $this->belongsToMany(\App\Domain\Tag\Domain\Tag::class);
     }
+    
+    public function comments(): BelongsToMany
+    {
+        return $this->belongsToMany(\App\Domain\Comment\Domain\Comment::class);
+    }
 }

@@ -78,7 +78,7 @@ class Category extends Model
 
     public function categories(): HasMany
     {
-        return $this->hasMany(\App\Domain\Category\Domain\Category::class);
+        return $this->hasMany(self::class);
     }
 
     public function childrenCategories(): HasMany

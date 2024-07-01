@@ -1,25 +1,36 @@
-<form method="post" action="{{ route('admin.comments.store') }}">
+@if (Route::has('admin.comment.store'))
+    <form method="post" action="{{ route('admin.comment.store') }}">
+        @csrf
 
-    @csrf
+        <textarea id="text" name="text" class="form-control @error('text') is-invalid @enderror" aria-label="text" autocomplete="text">{{ $comment->user->first_name ?? null }}, </textarea>
 
-    <textarea id="content" name="content" class="form-control @error('content') is-invalid @enderror" aria-label="content" autocomplete="content">{{ $comment->user->name ?? null }}, </textarea>
+        <x-error-field name="text" />
 
-    @error('content')
-        <span role="alert" class="invalid-feedback">{{ $message }}</span>
-    @enderror
+        <input type="hidden" name="comment_id" value="{{ $comment->id ?? null }}">
+        
+        @isset ($comment->type)
+            <input type="hidden" name="type" value="{{ $comment->type }}">
+            @switch ($comment->type)
+                @case ('product')
+                    @isset ($comment->products)
+                        @foreach ($comment->products as $post)
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        @endforeach
+                    @endisset
+                    @break
+                @case ('post')
+                    @isset ($comment->posts)
+                        @foreach ($comment->posts as $post)
+                            <input type="hidden" name="post_id" value="{{ $post->id }}">
+                        @endforeach
+                    @endisset
+                    @break
+                @default
+            @endswitch
+        @endisset
 
-    <input type="hidden" name="type" value="{{ $comment->type ?? null }}">
-    <input type="hidden" name="comment_id" value="{{ $comment->id ?? null }}">
+        <input type="hidden" name="status" value="1">
 
-    @switch($comment->type)
-        @case('post')
-            <input type="hidden" name="post_id" value="{{ $comment->post_id ?? null }}">
-            @break
-        @case('product')
-            <input type="hidden" name="product_id" value="{{ $comment->product_id ?? null }}">
-            @break
-    @endswitch
-
-    <button type="submit" class="btn btn-primary mt-4 text-uppercase px-5">{{ __('Отправить') }}</button>
-
-</form>
+        <button type="submit" class="btn btn-primary mt-4 text-uppercase px-5">{{ __('Отправить') }}</button>
+    </form>
+@endif
