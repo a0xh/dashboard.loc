@@ -17,3 +17,10 @@ Route::get('/login', function() {
 
 	return redirect()->to('/admin');
 });
+
+Route::get('/admin/lang/{locale}', function ($locale) {
+    config()->set('app.locale', $locale);
+    session()->put('locale', $locale);
+
+    return redirect()->back();
+});

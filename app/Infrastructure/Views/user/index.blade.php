@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', trans('Пользователи'))
+@section('title', trans('messages.admin.user.index'))
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
@@ -9,7 +9,7 @@
 @section('content')
     <div class="body d-flex py-lg-3 py-md-2">
         <div class="container-xxl">
-
+            
             <x-heading>
                 <x-slot:button>
                     @if (Route::has('admin.user.create'))

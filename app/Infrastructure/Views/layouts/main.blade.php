@@ -22,7 +22,7 @@
 <body>
     <div id="ebazar-layout" class="theme-blue">
 
-        <x-sidebar />
+        <x-admin::navigation />
 
         <div class="main px-lg-4 px-md-4">
             <div class="header">

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', trans('Товары'))
+@section('title', trans('messages.admin.product.index'))
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">

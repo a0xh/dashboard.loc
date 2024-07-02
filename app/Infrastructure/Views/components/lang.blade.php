@@ -1,6 +1,15 @@
 <div class="dropdown zindex-popover">
     <a href="javascript:void(0);" class="nav-link dropdown-toggle pulse" role="button" data-bs-toggle="dropdown">
-        <img src="{{ asset('assets/img/ru.png') }}">
+        @switch(app()->getLocale())
+            @case('en')
+                <img src="{{ asset('assets/img/en.png') }}">
+                @break
+            @case('ru')
+                <img src="{{ asset('assets/img/ru.png') }}">
+                @break
+            @default
+                <img src="{{ asset('assets/img/' . app()->getLocale() . '.png') }}">
+        @endswitch
     </a>
     <div class="dropdown-menu rounded-lg shadow border-0 dropdown-animation dropdown-menu-md-end p-0 m-0 mt-3">
         <div class="card border-0">

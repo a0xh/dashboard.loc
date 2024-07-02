@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', trans('Категории'))
+@section('title', trans('messages.admin.category.index'))
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
