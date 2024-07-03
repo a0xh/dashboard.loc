@@ -124,6 +124,24 @@ return [
         app_path('Domain/Comment/Application/Update') => [
            'middleware' => ['web', 'auth']
         ],
+        app_path('Domain/Page/Application/Create') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Page/Application/Delete') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Page/Application/Edit') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Page/Application/Index') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Page/Application/Store') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Page/Application/Update') => [
+           'middleware' => ['web', 'auth']
+        ],
     ],
 
     /**

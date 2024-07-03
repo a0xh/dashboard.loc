@@ -7,8 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\Lang;
-use Money\Money;
+
 class RepositoryServiceProvider extends ServiceProvider
 {
     /**
@@ -50,6 +49,11 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Domain\Comment\Infrastructure\CommentRepositoryInterface::class,
             \App\Domain\Comment\Infrastructure\CachedCommentRepository::class
         );
+
+        $this->app->bind(
+            \App\Domain\Page\Infrastructure\PageRepositoryInterface::class,
+            \App\Domain\Page\Infrastructure\EloquentPageRepository::class
+        );
     }
 
     /**
@@ -61,12 +65,8 @@ class RepositoryServiceProvider extends ServiceProvider
         Model::shouldBeStrict();
 
         Blade::anonymousComponentPath(
-            app_path() . '/Infrastructure/Views/components', 'admin'
+            app_path() . '/Infrastructure/Views/components/navigation', 'admin'
         );
-
-        Lang::stringable(function (Money $money) {
-            return $money->formatTo('ru_RU');
-        });
 
         View::addNamespace('admin', [
             app_path() . '/Infrastructure/Views',

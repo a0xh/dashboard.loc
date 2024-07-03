@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Добавление поста')
+@section('title', 'Добавление страницы')
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/css/dropify.min.css') }}">
@@ -15,25 +15,12 @@
             <x-errors />
             <x-message />
 
-            @if (Route::has('admin.post.store'))
-                <form action="{{ route('admin.post.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.page.store') }}" method="post" enctype="multipart/form-data">
+                
+                @csrf
+                @includeIf('page.partials._form')
 
-                    @csrf
-
-                    @if (View::exists('post.partials._form'))
-                        @include('post.partials._form')
-                    @endif
-                    
-                </form>
-            @else
-                <x-no-data>
-                    <x-slot:button>
-                        @if (Route::has('admin.statistics.index'))
-                            <a href="{{ route('admin.statistics.index') }}" class="btn btn-primary border lift mt-1">{{ __('Вернутся на главную') }}</a>
-                        @endif
-                    </x-slot>
-                </x-no-data>
-            @endif
+            </form>
             
         </div>
     </div>

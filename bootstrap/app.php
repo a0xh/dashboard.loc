@@ -12,6 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->appendToGroup('web', \App\Infrastructure\Middleware\Localisation::class);
+        $middleware->appendToGroup('web', \Illuminate\View\Middleware\ShareErrorsFromSession::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

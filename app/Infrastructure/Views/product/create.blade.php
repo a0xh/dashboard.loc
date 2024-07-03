@@ -16,7 +16,7 @@
             <x-message />
 
             @if (Route::has('admin.product.store'))
-                <form action="{{ route('admin.product.store') }}" method="POST" class="mt-2" enctype="multipart/form-data">
+                <form action="{{ route('admin.product.store') }}" method="POST" enctype="multipart/form-data">
 
                     @csrf
 

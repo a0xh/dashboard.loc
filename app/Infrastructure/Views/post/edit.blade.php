@@ -16,7 +16,7 @@
             <x-message />
 
             @if (Route::has('admin.post.update'))
-                <form action="{{ route('admin.post.update', $post) }}" method="POST" class="mt-2" enctype="multipart/form-data">
+                <form action="{{ route('admin.post.update', $post) }}" method="POST" enctype="multipart/form-data">
 
                     @method('PUT')
                     @csrf

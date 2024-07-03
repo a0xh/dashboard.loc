@@ -103,4 +103,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Domain\Product\Domain\Product::class);
     }
+
+    public function pages(): HasMany
+    {
+        return $this->hasMany(\App\Domain\Page\Domain\Page::class);
+    }
 }

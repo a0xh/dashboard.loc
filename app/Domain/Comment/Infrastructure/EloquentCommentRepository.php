@@ -13,6 +13,7 @@ class EloquentCommentRepository extends DecoratorCommentRepository
     public function getCommentByProduct(int $count): LengthAwarePaginator
     {
         $comments = $this->comment->query()->where('type', 'product')->whereNull('comment_id');
+        
         $data = ['childrenComments', 'user', 'products'];
 
         return $comments->with($data)->orderByDesc('created_at')->distinct()->paginate($count);
@@ -21,6 +22,7 @@ class EloquentCommentRepository extends DecoratorCommentRepository
     public function getCommentByPost(int $count): LengthAwarePaginator
     {
         $comments = $this->comment->query()->where('type', 'post')->whereNull('comment_id');
+
         $data = ['childrenComments', 'user', 'posts'];
 
         return $comments->with($data)->orderByDesc('created_at')->distinct()->paginate($count);
@@ -30,24 +32,15 @@ class EloquentCommentRepository extends DecoratorCommentRepository
     {
         try {
             DB::transaction(function() use($data) {
-                $type = $data['type'];
+                $getType = $data['type'];
 
-                $productId = $data['product_id'];
-                $postId = $data['post_id'];
+                $setType = match ($getType) {
+                    'product' => 'product_id',
+                    'post' => 'post_id',
+                };
 
-                switch ($type) {
-                    case 'product':
-                        $comment = $this->comment->create(data_forget($data, 'product_id'));
-                        $comment->products()->sync($productId);
-                        break;
-                    case 'post':
-                        $comment = $this->comment->create(data_forget($data, 'post_id'));
-                        $comment->posts()->sync($postId);
-                        break;
-                    
-                    default:
-                        break;
-                }
+                $comment = $this->comment->create(data_forget($data, $setType));
+                $comment->products()->sync([$setType]);
             }, 3);
 
             return $this->comment->exists();
