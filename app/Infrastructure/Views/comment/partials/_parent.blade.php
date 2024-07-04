@@ -13,7 +13,9 @@
                 <small class="msg-time text-muted">{{ $comment->created_at ?? null }}</small>
             </p>
 
-            <span class="text-muted">{{ Str::limit($comment->content, 110) ?? null }}</span>
+            @isset ($comment->content)
+                <span class="text-muted">{{ Str::limit($comment->content, 110) }}</span>
+            @endisset
         </div>
                     
         <div class="d-flex align-items-center">

@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 return new class extends Migration
 {
@@ -17,7 +17,7 @@ return new class extends Migration
 
             $table->comment('Теги');
 
-            $table->smallIncrements('id');
+            $table->uuid('id')->primary();
             $table->string('title', 65);
             $table->string('slug', 65)->unique();
             $table->string('description', 200)->nullable();
@@ -25,8 +25,7 @@ return new class extends Migration
             $table->string('media', 255)->nullable();
             $table->enum('type', ['post', 'product']);
             $table->boolean('status')->default(false);
-            $table->unsignedSmallInteger('user_id')->index();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignUuid('user_id')->index();
             $table->text('data')->nullable()->comment('Доп. данные');
             $table->timestamps();
 

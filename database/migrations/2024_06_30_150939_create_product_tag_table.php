@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('product_tag', function (Blueprint $table) {
             $table->smallIncrements('id');
-            $table->unsignedSmallInteger('product_id')->index();
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->unsignedSmallInteger('tag_id')->index();
-            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
+            $table->foreignUuid('product_id')->index();
+            $table->foreignUuid('tag_id')->index();
         });
     }
 

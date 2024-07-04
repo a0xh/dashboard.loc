@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Domain\User\Domain\User;
+use App\Domain\Category\Domain\Category;
+use App\Domain\Tag\Domain\Tag;
 use App\Domain\Post\Domain\Post;
 
 class PostTableSeeder extends Seeder
@@ -22,14 +25,14 @@ class PostTableSeeder extends Seeder
         $post->content = 'content';
         $post->status = true;
         $post->views = 775;
-        $post->category_id = 1;
-        $post->user_id = 1;
+        $post->category_id = Category::query()->get('id')[0]->id;
+        $post->user_id = User::query()->get('id')[0]->id;
         $post->data = [
             'heading' => 'heading',
             'excerpt' => 'excerpt',
         ];
         $post->save();
-        $post->tags()->sync([1]);
+        $post->tags()->sync([Tag::query()->get('id')[0]->id]);
 
         sleep(1);
 
@@ -42,13 +45,13 @@ class PostTableSeeder extends Seeder
         $post->content = 'content';
         $post->status = true;
         $post->views = 532;
-        $post->category_id = 3;
-        $post->user_id = 1;
+        $post->category_id = Category::query()->get('id')[2]->id;
+        $post->user_id = User::query()->get('id')[0]->id;
         $post->data = [
             'heading' => 'heading',
             'excerpt' => 'excerpt',
         ];
         $post->save();
-        $post->tags()->sync([3]);
+        $post->tags()->sync([Tag::query()->get('id')[2]->id]);
     }
 }

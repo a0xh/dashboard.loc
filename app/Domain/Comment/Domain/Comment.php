@@ -9,10 +9,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use App\Application\Enums\StatusEnum;
+use Illuminate\Support\Str;
 
 class Comment extends Model
 {
     protected $table = 'comments';
+    protected $keyType = 'string';
+
+    public $incrementing = false;
     
     protected $dates = [
         'created_at',
@@ -36,11 +40,18 @@ class Comment extends Model
     {
         return [
             'content' => 'string',
-            'comment_id' => 'int',
+            'comment_id' => 'string',
             'status' => StatusEnum::class,
-            'user_id' => 'int',
+            'user_id' => 'string',
             'data' => 'array',
         ];
+    }
+
+    public static function booted(): void
+    {
+        static::creating(function (Comment $comment) {
+            $comment->id = Str::uuid();
+        });
     }
 
     protected function data(): Attribute

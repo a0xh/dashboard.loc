@@ -52,7 +52,7 @@ class RepositoryServiceProvider extends ServiceProvider
 
         $this->app->bind(
             \App\Domain\Page\Infrastructure\PageRepositoryInterface::class,
-            \App\Domain\Page\Infrastructure\EloquentPageRepository::class
+            \App\Domain\Page\Infrastructure\CachedPageRepository::class
         );
     }
 
@@ -64,9 +64,8 @@ class RepositoryServiceProvider extends ServiceProvider
         Model::unguard();
         Model::shouldBeStrict();
 
-        Blade::anonymousComponentPath(
-            app_path() . '/Infrastructure/Views/components/navigation', 'admin'
-        );
+        Blade::componentNamespace('App\\Application\\Components\\', 'admin');
+        Blade::component('admin::navigation', Navigation::class);
 
         View::addNamespace('admin', [
             app_path() . '/Infrastructure/Views',

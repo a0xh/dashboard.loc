@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Domain\User\Domain\User;
 use App\Domain\Page\Domain\Page;
 
 class PageTableSeeder extends Seeder
@@ -24,7 +25,7 @@ class PageTableSeeder extends Seeder
         $page->status = true;
         $page->media = null;
         $page->views = 537;
-        $page->user_id = 1;
+        $page->user_id = User::query()->get('id')[0]->id;
         $page->data = serialize([
             'heading' => 'heading',
             'excerpt' => 'excerpt'

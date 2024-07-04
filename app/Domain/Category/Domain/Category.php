@@ -8,12 +8,16 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Application\Enums\StatusEnum;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Support\Str;
 
 class Category extends Model
 {
     use Sluggable;
     
     protected $table = 'categories';
+    protected $keyType = 'string';
+
+    public $incrementing = false;
     
     protected $dates = [
         'created_at',
@@ -53,10 +57,25 @@ class Category extends Model
             'type' => 'string',
             'status' => StatusEnum::class,
             'media' => 'string',
-            'category_id' => 'int',
-            'user_id' => 'int',
+            'category_id' => 'string',
+            'user_id' => 'string',
             'data' => 'array',
         ];
+    }
+
+    public static function booted(): void
+    {
+        static::creating(function (Category $category) {
+            $category->id = Str::uuid();
+        });
+    }
+    
+    protected function data(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($data) => json_decode($data),
+            set: fn ($data) => json_encode($data),
+        );
     }
 
     public function sluggable(): array
@@ -66,14 +85,6 @@ class Category extends Model
                 'source' => 'title'
             ]
         ];
-    }
-    
-    protected function data(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($data) => json_decode($data),
-            set: fn ($data) => json_encode($data),
-        );
     }
 
     public function categories(): HasMany

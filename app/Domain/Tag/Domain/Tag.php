@@ -8,12 +8,16 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Application\Enums\StatusEnum;
+use Illuminate\Support\Str;
 
 class Tag extends Model
 {
     use Sluggable;
 
     protected $table = 'tags';
+    protected $keyType = 'string';
+
+    public $incrementing = false;
     
     protected $dates = [
         'created_at',
@@ -52,9 +56,16 @@ class Tag extends Model
             'type' => 'string',
             'status' => StatusEnum::class,
             'media' => 'string',
-            'user_id' => 'int',
+            'user_id' => 'string',
             'data' => 'array',
         ];
+    }
+
+    public static function booted(): void
+    {
+        static::creating(function (Tag $tag) {
+            $tag->id = Str::uuid();
+        });
     }
 
     /**

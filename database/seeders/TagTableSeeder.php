@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Domain\User\Domain\User;
 use App\Domain\Tag\Domain\Tag;
 
 class TagTableSeeder extends Seeder
@@ -23,7 +24,7 @@ class TagTableSeeder extends Seeder
         $tag->media = null;
         $tag->type = 'post';
         $tag->status = true;
-        $tag->user_id = 1;
+        $tag->user_id = User::query()->get('id')[0]->id;
         $tag->data = null;
         $tag->save();
 
@@ -37,7 +38,7 @@ class TagTableSeeder extends Seeder
         $tag->media = null;
         $tag->type = 'product';
         $tag->status = true;
-        $tag->user_id = 1;
+        $tag->user_id = User::query()->get('id')[0]->id;
         $tag->data = null;
         $tag->save();
 
@@ -51,7 +52,7 @@ class TagTableSeeder extends Seeder
         $tag->media = null;
         $tag->type = 'post';
         $tag->status = true;
-        $tag->user_id = 1;
+        $tag->user_id = User::query()->get('id')[0]->id;
         $tag->data = null;
         $tag->save();
 
@@ -65,7 +66,7 @@ class TagTableSeeder extends Seeder
         $tag->media = null;
         $tag->type = 'product';
         $tag->status = true;
-        $tag->user_id = 1;
+        $tag->user_id = User::query()->get('id')[0]->id;
         $tag->data = null;
         $tag->save();
     }

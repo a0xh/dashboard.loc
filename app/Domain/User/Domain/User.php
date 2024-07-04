@@ -10,12 +10,16 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Application\Enums\StatusEnum;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
     use Notifiable;
 
     protected $table = 'users';
+    protected $keyType = 'string';
+
+    public $incrementing = false;
     
     protected $dates = [
         'created_at',
@@ -66,6 +70,13 @@ class User extends Authenticatable
         ];
     }
 
+    public static function booted(): void
+    {
+        static::creating(function (User $user) {
+            $user->id = Str::uuid();
+        });
+    }
+
     /**
      * Get and set the data.
      *
@@ -82,6 +93,11 @@ class User extends Authenticatable
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(\App\Domain\Role\Domain\Role::class);
+    }
+
+    public function pages(): HasMany
+    {
+        return $this->hasMany(\App\Domain\Page\Domain\Page::class);
     }
 
     public function categories(): HasMany
@@ -104,8 +120,8 @@ class User extends Authenticatable
         return $this->hasMany(\App\Domain\Product\Domain\Product::class);
     }
 
-    public function pages(): HasMany
+    public function orders(): HasMany
     {
-        return $this->hasMany(\App\Domain\Page\Domain\Page::class);
+        return $this->hasMany(\App\Domain\Order\Domain\Order::class);
     }
 }

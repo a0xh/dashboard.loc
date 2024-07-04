@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Domain\Category\Domain\Category;
+use App\Domain\User\Domain\User;
 
 class CategoryTableSeeder extends Seeder
 {
@@ -24,7 +25,7 @@ class CategoryTableSeeder extends Seeder
         $category->status = true;
         $category->media = null;
         $category->category_id = null;
-        $category->user_id = 1;
+        $category->user_id = User::query()->get('id')[0]->id;
         $category->data = null;
         $category->save();
 
@@ -39,7 +40,7 @@ class CategoryTableSeeder extends Seeder
         $category->status = true;
         $category->media = null;
         $category->category_id = null;
-        $category->user_id = 1;
+        $category->user_id = User::query()->get('id')[0]->id;
         $category->data = null;
         $category->save();
 
@@ -53,8 +54,8 @@ class CategoryTableSeeder extends Seeder
         $category->type = 'post';
         $category->status = true;
         $category->media = null;
-        $category->category_id = 1;
-        $category->user_id = 1;
+        $category->category_id = Category::query()->get('id')[0]->id;
+        $category->user_id = User::query()->get('id')[0]->id;
         $category->data = null;
         $category->save();
 
@@ -68,8 +69,8 @@ class CategoryTableSeeder extends Seeder
         $category->type = 'product';
         $category->status = true;
         $category->media = null;
-        $category->category_id = 2;
-        $category->user_id = 1;
+        $category->category_id = Category::query()->get('id')[1]->id;
+        $category->user_id = User::query()->get('id')[0]->id;
         $category->data = null;
         $category->save();
     }

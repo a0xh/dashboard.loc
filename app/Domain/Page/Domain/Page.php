@@ -7,12 +7,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use App\Application\Enums\StatusEnum;
+use Illuminate\Support\Str;
 
 class Page extends Model
 {
     use Sluggable;
 
     protected $table = 'pages';
+    protected $keyType = 'string';
+    
+    public $incrementing = false;
     
     protected $dates = [
         'created_at',
@@ -53,9 +57,16 @@ class Page extends Model
             'content' => 'string',
             'status' => StatusEnum::class,
             'views' => 'int',
-            'user_id' => 'int',
+            'user_id' => 'string',
             'data' => 'array',
         ];
+    }
+
+    public static function booted(): void
+    {
+        static::creating(function (Page $page) {
+            $page->id = Str::uuid();
+        });
     }
     
     protected function data(): Attribute

@@ -17,7 +17,7 @@ return new class extends Migration
 
             $table->comment('Категории');
 
-            $table->smallIncrements('id');
+            $table->uuid('id')->primary();
             $table->string('title', 65);
             $table->string('slug', 65)->unique();
             $table->string('description', 200)->nullable();
@@ -25,10 +25,8 @@ return new class extends Migration
             $table->enum('type', ['post', 'product']);
             $table->boolean('status')->default(false);
             $table->string('media', 255)->nullable();
-            $table->unsignedSmallInteger('category_id')->nullable()->index();
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
-            $table->unsignedSmallInteger('user_id')->index();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignUuid('category_id')->nullable()->index();
+            $table->foreignUuid('user_id')->index();
             $table->text('data')->nullable()->comment('Доп. данные');
             $table->timestamps();
 

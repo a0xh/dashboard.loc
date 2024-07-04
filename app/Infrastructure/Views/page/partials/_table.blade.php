@@ -3,7 +3,7 @@
         <tr>
             <th scope="col">{{ __('#') }}</th>
             <th scope="col">{{ __('Название') }}</th>
-            <th scope="col">{{ __('Ярлык') }}</th>
+            <th scope="col">{{ __('Маршрут') }}</th>
             <th scope="col">{{ __('Пользователь') }}</th>
             <th scope="col">{{ __('Статус') }}</th>
             <th scope="col">{{ __('Дата') }}</th>
@@ -15,16 +15,16 @@
             <tr>
                 <th scope="row">
                     <span class="badge bg-primary">
-                        @isset($page->id)
-                            @if ($page->id <= 9)
-                                0{{ $page->id }}
+                        @isset($loop->iteration)
+                            @if ($loop->iteration <= 9)
+                                0{{ $loop->iteration }}
                             @else
-                                {{ $page->id }}
+                                {{ $loop->iteration }}
                             @endif
                         @endisset
                     </span>
                 </th>
-
+                
                 <td>{{ $page->title ?? null }}</td>
                 <td>{{ $page->slug ?? null }}</td>
                 <td>{{ $page->user->first_name ?? null }} {{ $page->user->last_name ?? null }}</td>

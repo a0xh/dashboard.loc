@@ -12,7 +12,7 @@ class EloquentPageRepository extends DecoratorPageRepository
 
     public function getPage(int $count): LengthAwarePaginator
     {
-        return $this->page->query()->with(['user'])->orderByDesc('created_at')->paginate($count);
+        return $this->page->query()->with('user')->orderByDesc('created_at')->paginate($count);
     }
 
     public function createPage(array $data): bool

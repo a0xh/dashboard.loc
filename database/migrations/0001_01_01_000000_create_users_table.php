@@ -17,7 +17,7 @@ return new class extends Migration
 
             $table->comment('Пользователи');
 
-            $table->smallIncrements('id');
+            $table->uuid('id')->primary();
             $table->string('media', 255)->nullable();
             $table->string('first_name', 44);
             $table->string('last_name', 44)->nullable();
@@ -38,10 +38,10 @@ return new class extends Migration
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });
-
+        
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
+            $table->foreignUuid('user_id')->nullable()->index();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');

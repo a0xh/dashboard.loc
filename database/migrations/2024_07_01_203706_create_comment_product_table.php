@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('comment_product', function (Blueprint $table) {
             $table->smallIncrements('id');
-            $table->unsignedSmallInteger('product_id')->index();
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->unsignedSmallInteger('comment_id')->index();
-            $table->foreign('comment_id')->references('id')->on('comments')->onDelete('cascade');
+            $table->foreignUuid('comment_id')->index();
+            $table->foreignUuid('product_id')->index();
         });
     }
 

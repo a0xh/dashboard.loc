@@ -12,6 +12,5 @@ class Route
         public string $path,
         public string $name,
         public string $middleware,
-    )
-    {}
+    ) {}
 }

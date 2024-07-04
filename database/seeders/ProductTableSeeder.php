@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Domain\User\Domain\User;
+use App\Domain\Category\Domain\Category;
+use App\Domain\Tag\Domain\Tag;
 use App\Domain\Product\Domain\Product;
 
 class ProductTableSeeder extends Seeder
@@ -25,14 +28,14 @@ class ProductTableSeeder extends Seeder
         $product->content = 'content';
         $product->status = true;
         $product->views = 953;
-        $product->category_id = 2;
-        $product->user_id = 1;
+        $product->category_id = Category::query()->get('id')[1]->id;
+        $product->user_id = User::query()->get('id')[0]->id;
         $product->data = [
             'heading' => 'heading',
             'excerpt' => 'excerpt',
         ];
         $product->save();
-        $product->tags()->sync([2]);
+        $product->tags()->sync([Tag::query()->get('id')[1]->id]);
 
         sleep(1);
 
@@ -46,14 +49,14 @@ class ProductTableSeeder extends Seeder
         $product->content = 'content';
         $product->status = true;
         $product->views = 735;
-        $product->category_id = 4;
-        $product->user_id = 1;
+        $product->category_id = Category::query()->get('id')[3]->id;
+        $product->user_id = User::query()->get('id')[0]->id;
         $product->data = [
             'heading' => 'heading',
             'excerpt' => 'excerpt',
         ];
         $product->save();
-        $product->tags()->sync([4]);
+        $product->tags()->sync([Tag::query()->get('id')[3]->id]);
     }
 }
 

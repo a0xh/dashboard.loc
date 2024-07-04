@@ -8,7 +8,7 @@
                     <div class="col-md-6">
                         <label for="first_name" class="form-label">{{ _('Имя') }}</label>
 
-                        <input id="first_name" type="text" name="first_name" value="{{ $user->first_name ?? old('first_name') }}" class="form-control @error('first_name') is-invalid @enderror" autocomplete="first_name" autofocus>
+                        <input id="first_name" type="text" name="first_name" value="{{ old('first_name', $user->first_name ?? null) }}" class="form-control @error('first_name') is-invalid @enderror" autocomplete="first_name" autofocus>
 
                         <x-error-field name="first_name" />
                     </div>
@@ -18,7 +18,7 @@
                     <div class="col-md-6">
                         <label for="last_name" class="form-label">{{ _('Фамилия') }}</label>
 
-                        <input id="last_name" type="text" name="last_name" value="{{ $user->last_name ?? old('last_name') }}" class="form-control @error('last_name') is-invalid @enderror" autocomplete="last_name">
+                        <input id="last_name" type="text" name="last_name" value="{{ old('last_name', $user->last_name ?? null) }}" class="form-control @error('last_name') is-invalid @enderror" autocomplete="last_name">
 
                         <x-error-field name="last_name" />
                     </div>
@@ -28,7 +28,7 @@
                     <div class="col-md-12">
                         <label for="email" class="form-label">{{ _('Эл. почта') }}</label>
 
-                        <input id="email" type="email" name="email" value="{{ $user->email ?? old('email') }}" class="form-control @error('email') is-invalid @enderror" autocomplete="email">
+                        <input id="email" type="email" name="email" value="{{ old('email', $user->email ?? null) }}" class="form-control @error('email') is-invalid @enderror" autocomplete="email">
 
                         <x-error-field name="email" />
                     </div>
@@ -65,7 +65,7 @@
                     <div class="col-md-12">
                         <label for="ip_address" class="form-label">{{ _('IP-адрес') }}</label>
 
-                        <input id="ip_address" type="text" name="data[ip_address]" value="{{ $user->data->ip_address ?? old('ip_address') }}" class="form-control @error('ip_address') is-invalid @enderror" autocomplete="ip_address">
+                        <input id="ip_address" type="text" name="data[ip_address]" value="{{ old('ip_address', $user->ip_address ?? null) }}" class="form-control @error('ip_address') is-invalid @enderror" autocomplete="ip_address">
 
                         <x-error-field name="ip_address" />
                     </div>
@@ -111,7 +111,7 @@
                                     @endforeach
                                 @endisset
                             </select>
-
+                            
                             <x-error-field name="role_id" />
                         </div>
                         {{-- ================ End Role User ================ --}}

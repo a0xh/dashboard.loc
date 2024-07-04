@@ -8,12 +8,16 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Application\Enums\StatusEnum;
+use Illuminate\Support\Str;
 
 class Post extends Model
 {
     use Sluggable;
 
     protected $table = 'posts';
+    protected $keyType = 'string';
+
+    public $incrementing = false;
     
     protected $dates = [
         'created_at',
@@ -54,11 +58,18 @@ class Post extends Model
             'media' => 'string',
             'content' => 'string',
             'status' => StatusEnum::class,
-            'views' => 'int',
-            'category_id' => 'int',
-            'user_id' => 'int',
+            'views' => 'string',
+            'category_id' => 'string',
+            'user_id' => 'string',
             'data' => 'array',
         ];
+    }
+
+    public static function booted(): void
+    {
+        static::creating(function (Post $post) {
+            $post->id = Str::uuid();
+        });
     }
     
     protected function data(): Attribute

@@ -5,16 +5,20 @@ namespace App\Domain\Product\Domain;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Application\Enums\StatusEnum;
-use Illuminate\Support\Number;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Support\{Str, Number};
 
 class Product extends Model
 {
     use Sluggable;
 
     protected $table = 'products';
+    protected $keyType = 'string';
+
+    public $incrementing = false;
     
     protected $dates = [
         'created_at',
@@ -58,10 +62,17 @@ class Product extends Model
             'content' => 'string',
             'status' => StatusEnum::class,
             'views' => 'int',
-            'category_id' => 'int',
-            'user_id' => 'int',
+            'category_id' => 'string',
+            'user_id' => 'string',
             'data' => 'array',
         ];
+    }
+
+    public static function booted(): void
+    {
+        static::creating(function (Product $product) {
+            $product->id = Str::uuid();
+        });
     }
 
     protected function data(): Attribute
@@ -139,5 +150,10 @@ class Product extends Model
     public function comments(): MorphToMany
     {
         return $this->belongsToMany(\App\Domain\Comment\Domain\Comment::class);
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(\App\Domain\Order\Domain\Order::class);
     }
 }

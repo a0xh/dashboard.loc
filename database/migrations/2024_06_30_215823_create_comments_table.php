@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 return new class extends Migration
 {
@@ -17,14 +17,12 @@ return new class extends Migration
 
             $table->comment('Комментарии');
 
-            $table->smallIncrements('id');
+            $table->uuid('id')->primary();
             $table->text('content')->fulltext();
             $table->boolean('status')->default(false);
             $table->enum('type', ['post', 'product']);
-            $table->unsignedSmallInteger('comment_id')->nullable()->index();
-            $table->foreign('comment_id')->references('id')->on('comments')->onDelete('cascade');
-            $table->unsignedSmallInteger('user_id')->index();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignUuid('comment_id')->nullable()->index();
+            $table->foreignUuid('user_id')->index();
             $table->text('data')->nullable()->comment('Доп. данные');
             $table->timestamps();
 

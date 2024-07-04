@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 return new class extends Migration
 {
@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('post_tag', function (Blueprint $table) {
             $table->smallIncrements('id');
-            $table->unsignedSmallInteger('post_id')->index();
-            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
-            $table->unsignedSmallInteger('tag_id')->index();
-            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
+            $table->foreignUuid('post_id')->index();
+            $table->foreignUuid('tag_id')->index();
         });
     }
 
