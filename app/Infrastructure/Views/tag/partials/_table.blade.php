@@ -16,11 +16,11 @@
             <tr>
                 <th scope="row">
                     <span class="badge bg-primary">
-                        @isset($tag->id)
-                            @if ($tag->id <= 9)
-                                0{{ $tag->id }}
+                        @isset($loop->iteration)
+                            @if ($loop->iteration <= 9)
+                                0{{ $loop->iteration }}
                             @else
-                                {{ $tag->id }}
+                                {{ $loop->iteration }}
                             @endif
                         @endisset
                     </span>

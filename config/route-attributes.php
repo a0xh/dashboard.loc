@@ -142,6 +142,15 @@ return [
         app_path('Domain/Page/Application/Update') => [
            'middleware' => ['web', 'auth']
         ],
+        app_path('Domain/Order/Application/Delete') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Order/Application/Index') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Order/Application/Update') => [
+           'middleware' => ['web', 'auth']
+        ],
     ],
 
     /**

@@ -12,25 +12,29 @@
             <th scope="col">{{ __('Удаление') }}</th>
         </tr>
     </thead>
+    
     <tbody>
         @foreach ($orders as $order)
             <tr>
                 <th scope="row">
                     <span class="badge bg-primary">
-                        @isset($order->id)
-                            @if ($order->id <= 9)
-                                0{{ $order->id }}
+                        @isset($loop->iteration)
+                            @if ($loop->iteration <= 9)
+                                0{{ $loop->iteration }}
                             @else
-                                {{ $order->id }}
+                                {{ $loop->iteration }}
                             @endif
                         @endisset
                     </span>
                 </th>
+
                 <td>{{ $order->product->title ?? null }}</td>
-                <td>{{ $order->user->name ?? null }}</td>
+
+                <td>{{ $order->user->first_name ?? null }} {{ $order->user->last_name ?? null }}</td>
+
                 <td>
-                    @isset ($order->status)
-                        @if ($order->status)
+                    @isset ($order->status->value)
+                        @if ($order->status->value)
                             <span class="badge bg-success">
                                 {{ __('Выполнен') }}
                             </span>
@@ -41,29 +45,32 @@
                         @endif
                     @endisset
                 </td>
+
                 <td>{{ $order->product->price ?? null }}</td>
+
                 <td><span class="badge bg-info">{{ $order->quantity ?? null }}</span></td>
+
                 <td>
                     <div class="btn-group" role="group" aria-label="orders">
-                        @if (Route::has('admin.orders.update'))
-                            <form action="{{ route('admin.orders.update', $order) }}" method="post">
+                        @if (Route::has('admin.order.update'))
+                            <form action="{{ route('admin.order.update', $order) }}" method="post">
 
                                 @method('PUT')
                                 @csrf
 
-                                <input type="hidden" name="status" value="on">
+                                <input type="hidden" name="status" value="1">
 
                                 <button type="submit" class="btn btn-outline-secondary" title="Выполнен">
                                     <i class="icofont-check-circled text-success"></i>
                                 </button>
                             </form>
 
-                            <form action="{{ route('admin.orders.update', $order) }}" method="post">
+                            <form action="{{ route('admin.order.update', $order) }}" method="post">
 
                                 @method('PUT')
                                 @csrf
 
-                                <input type="hidden" name="status" value="off">
+                                <input type="hidden" name="status" value="0">
 
                                 <button type="submit" class="btn btn-outline-secondary" title="В работе">
                                     <i class="icofont-close-circled text-danger"></i>
@@ -72,11 +79,13 @@
                         @endif
                     </div>
                 </td>
+
                 <td>{{ $order->created_at ?? null }}</td>
+
                 <td>
                     <div class="btn-group" role="group" aria-label="subscribers">
-                        @if (Route::has('admin.orders.destroy'))
-                            <form onsubmit="if(confirm('Вы действительно хотите удалить данную запись из таблицы?')){return true}else{return false}" action="{{ route('admin.orders.destroy', $order) }}" method="post">
+                        @if (Route::has('admin.order.delete'))
+                            <form onsubmit="if(confirm('Вы действительно хотите удалить данную запись из таблицы?')){return true}else{return false}" action="{{ route('admin.order.delete', $order) }}" method="post">
 
                                 @method('DELETE')
                                 @csrf

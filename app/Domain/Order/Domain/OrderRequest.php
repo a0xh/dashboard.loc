@@ -23,9 +23,7 @@ class OrderRequest extends FormRequest
     public function rules(): array
     {
         $validation = collect([
-            'quantity' => ['bail', 'nullable', 'integer'],
-            'status' => ['bail', 'required', 'boolean', 'in:0,1'],
-            'data' => ['bail', 'nullable', 'array'],
+            'status' => ['bail', 'required', 'boolean', 'in:0,1']
         ])->toArray();
 
         switch ($this->method())
@@ -54,9 +52,7 @@ class OrderRequest extends FormRequest
     public function formRequest(): OrderDto
     {
         return new OrderDto(
-            quantity: $this->quantity,
-            status: $this->status,
-            data: $this->data,
+            status: $this->status
         );
     }
 }

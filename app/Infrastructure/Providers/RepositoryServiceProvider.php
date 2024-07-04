@@ -54,6 +54,11 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Domain\Page\Infrastructure\PageRepositoryInterface::class,
             \App\Domain\Page\Infrastructure\CachedPageRepository::class
         );
+
+        $this->app->bind(
+            \App\Domain\Order\Infrastructure\OrderRepositoryInterface::class,
+            \App\Domain\Order\Infrastructure\CachedOrderRepository::class
+        );
     }
 
     /**
