@@ -18,8 +18,8 @@ return new class extends Migration
             $table->comment('Заказы');
 
             $table->uuid('id')->primary();
-            $table->foreignUuid('product_id')->index();
-            $table->foreignUuid('user_id')->index();
+            $table->foreignUuid('product_id')->constrained();
+            $table->foreignUuid('user_id')->constrained();
             $table->tinyInteger('quantity')->unsigned();
             $table->boolean('status')->default(true);
             $table->text('data')->nullable()->comment('Доп. данные');

@@ -12,9 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('role_user', function (Blueprint $table) {
-            $table->smallIncrements('id');
-            $table->foreignUuid('role_id')->index();
-            $table->foreignUuid('user_id')->index();
+            $table->foreignUuid('role_id')->constrained();
+            $table->foreignUuid('user_id')->constrained();
         });
     }
 

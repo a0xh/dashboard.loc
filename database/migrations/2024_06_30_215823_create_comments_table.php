@@ -21,8 +21,8 @@ return new class extends Migration
             $table->text('content')->fulltext();
             $table->boolean('status')->default(false);
             $table->enum('type', ['post', 'product']);
-            $table->foreignUuid('comment_id')->nullable()->index();
-            $table->foreignUuid('user_id')->index();
+            $table->foreignUuid('comment_id')->nullable()->constrained();
+            $table->foreignUuid('user_id')->constrained();
             $table->text('data')->nullable()->comment('Доп. данные');
             $table->timestamps();
 

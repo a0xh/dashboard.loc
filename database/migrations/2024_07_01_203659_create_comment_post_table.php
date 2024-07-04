@@ -12,9 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('comment_post', function (Blueprint $table) {
-            $table->smallIncrements('id');
-            $table->foreignUuid('comment_id')->index();
-            $table->foreignUuid('post_id')->index();
+            $table->foreignUuid('comment_id')->constrained();
+            $table->foreignUuid('post_id')->constrained();
         });
     }
 

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('media', 255)->nullable();
             $table->enum('type', ['post', 'product']);
             $table->boolean('status')->default(false);
-            $table->foreignUuid('user_id')->index();
+            $table->foreignUuid('user_id')->constrained();
             $table->text('data')->nullable()->comment('Доп. данные');
             $table->timestamps();
 
