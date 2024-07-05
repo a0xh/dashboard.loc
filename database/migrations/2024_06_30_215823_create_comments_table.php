@@ -6,14 +6,16 @@ use Illuminate\Database\Schema\Blueprint;
 
 return new class extends Migration
 {
+    protected $connection = 'mysql';
+
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::create('comments', function (Blueprint $table) {
-            $table->charset = 'utf8mb4';
-            $table->collation = 'utf8mb4_general_ci';
+            $table->charset('utf8mb4');
+            $table->collation('utf8mb4_general_ci');
 
             $table->comment('Комментарии');
 
@@ -21,13 +23,13 @@ return new class extends Migration
             $table->text('content')->fulltext();
             $table->boolean('status')->default(false);
             $table->enum('type', ['post', 'product']);
-            $table->foreignUuid('comment_id')->nullable()->constrained();
-            $table->foreignUuid('user_id')->constrained();
-            $table->text('data')->nullable()->comment('Доп. данные');
-            $table->timestamps();
+            $table->foreignUuid('comment_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignUuid('user_id')->constrained()->onDelete('cascade');
+            $table->json('data')->nullable()->comment('Доп. данные');
+            $table->timestampsTz(precision: 0);
 
-            $table->index(['created_at']);
-            $table->engine = 'InnoDB';
+            $table->index('created_at');
+            $table->engine('InnoDB');
         });
     }
 

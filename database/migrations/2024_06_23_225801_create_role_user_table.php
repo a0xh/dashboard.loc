@@ -6,14 +6,21 @@ use Illuminate\Database\Schema\Blueprint;
 
 return new class extends Migration
 {
+    protected $connection = 'mysql';
+
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::create('role_user', function (Blueprint $table) {
-            $table->foreignUuid('role_id')->constrained();
-            $table->foreignUuid('user_id')->constrained();
+            $table->charset('utf8mb4');
+            $table->collation('utf8mb4_general_ci');
+
+            $table->foreignUuid('role_id')->constrained()->onDelete('cascade');
+            $table->foreignUuid('user_id')->constrained()->onDelete('cascade');
+            
+            $table->engine('InnoDB');
         });
     }
 

@@ -6,12 +6,17 @@ use Illuminate\Database\Schema\Blueprint;
 
 return new class extends Migration
 {
+    protected $connection = 'mysql';
+
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::create('jobs', function (Blueprint $table) {
+            $table->charset('utf8mb4');
+            $table->collation('utf8mb4_general_ci');
+
             $table->id();
             $table->string('queue')->index();
             $table->longText('payload');
@@ -19,9 +24,14 @@ return new class extends Migration
             $table->unsignedInteger('reserved_at')->nullable();
             $table->unsignedInteger('available_at');
             $table->unsignedInteger('created_at');
+            
+            $table->engine('InnoDB');
         });
 
         Schema::create('job_batches', function (Blueprint $table) {
+            $table->charset('utf8mb4');
+            $table->collation('utf8mb4_general_ci');
+
             $table->string('id')->primary();
             $table->string('name');
             $table->integer('total_jobs');
@@ -32,16 +42,23 @@ return new class extends Migration
             $table->integer('cancelled_at')->nullable();
             $table->integer('created_at');
             $table->integer('finished_at')->nullable();
+            
+            $table->engine('InnoDB');
         });
 
         Schema::create('failed_jobs', function (Blueprint $table) {
+            $table->charset('utf8mb4');
+            $table->collation('utf8mb4_general_ci');
+
             $table->id();
             $table->string('uuid')->unique();
             $table->text('connection');
             $table->text('queue');
             $table->longText('payload');
             $table->longText('exception');
-            $table->timestamp('failed_at')->useCurrent();
+            $table->timestampTz('failed_at')->useCurrent();
+            
+            $table->engine('InnoDB');
         });
     }
 

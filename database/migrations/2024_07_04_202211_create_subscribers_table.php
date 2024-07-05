@@ -13,13 +13,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('post_tag', function (Blueprint $table) {
+        Schema::create('subscribers', function (Blueprint $table) {
             $table->charset('utf8mb4');
             $table->collation('utf8mb4_general_ci');
 
-            $table->foreignUuid('post_id')->constrained()->onDelete('cascade');
-            $table->foreignUuid('tag_id')->constrained()->onDelete('cascade');
+            $table->comment('Подписчики');
             
+            $table->uuid('id')->primary();
+            $table->string('email', 255)->unique();
+            $table->boolean('status')->default(true);
+            $table->json('data')->nullable()->comment('Доп. данные');
+            $table->timestampsTz(precision: 0);
+
+            $table->index('created_at');
             $table->engine('InnoDB');
         });
     }
@@ -29,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('post_tag');
+        Schema::dropIfExists('subscribers');
     }
 };

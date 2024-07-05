@@ -6,14 +6,16 @@ use Illuminate\Database\Schema\Blueprint;
 
 return new class extends Migration
 {
+    protected $connection = 'mysql';
+
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::create('categories', function (Blueprint $table) {
-            $table->charset = 'utf8mb4';
-            $table->collation = 'utf8mb4_general_ci';
+            $table->charset('utf8mb4');
+            $table->collation('utf8mb4_general_ci');
 
             $table->comment('Категории');
 
@@ -25,13 +27,13 @@ return new class extends Migration
             $table->enum('type', ['post', 'product']);
             $table->boolean('status')->default(false);
             $table->string('media', 255)->nullable();
-            $table->foreignUuid('category_id')->nullable()->constrained();
-            $table->foreignUuid('user_id')->constrained();
-            $table->text('data')->nullable()->comment('Доп. данные');
-            $table->timestamps();
+            $table->foreignUuid('category_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignUuid('user_id')->constrained()->onDelete('cascade');
+            $table->json('data')->nullable()->comment('Доп. данные');
+            $table->timestampsTz(precision: 0);
 
-            $table->index(['created_at']);
-            $table->engine = 'InnoDB';
+            $table->index('created_at');
+            $table->engine('InnoDB');
         });
     }
 

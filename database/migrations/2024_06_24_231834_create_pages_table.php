@@ -6,14 +6,16 @@ use Illuminate\Database\Schema\Blueprint;
 
 return new class extends Migration
 {
+    protected $connection = 'mysql';
+
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::create('pages', function (Blueprint $table) {
-            $table->charset = 'utf8mb4';
-            $table->collation = 'utf8mb4_general_ci';
+            $table->charset('utf8mb4');
+            $table->collation('utf8mb4_general_ci');
 
             $table->comment('Страницы');
 
@@ -24,14 +26,14 @@ return new class extends Migration
             $table->string('keywords', 200)->nullable();
             $table->string('media', 255)->nullable();
             $table->mediumInteger('views')->unsigned()->nullable();
-            $table->text('content')->fulltext()->nullable();
+            $table->text('content')->nullable()->fulltext();
             $table->boolean('status')->default(false);
-            $table->foreignUuid('user_id')->constrained();
-            $table->text('data')->nullable()->comment('Доп. данные');
-            $table->timestamps();
+            $table->foreignUuid('user_id')->constrained()->onDelete('cascade');
+            $table->json('data')->nullable()->comment('Доп. данные');
+            $table->timestampsTz(precision: 0);
 
-            $table->index(['created_at']);
-            $table->engine = 'InnoDB';
+            $table->index('created_at');
+            $table->engine('InnoDB');
         });
     }
 

@@ -6,14 +6,21 @@ use Illuminate\Database\Schema\Blueprint;
 
 return new class extends Migration
 {
+    protected $connection = 'mysql';
+
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::create('comment_post', function (Blueprint $table) {
-            $table->foreignUuid('comment_id')->constrained();
-            $table->foreignUuid('post_id')->constrained();
+            $table->charset('utf8mb4');
+            $table->collation('utf8mb4_general_ci');
+
+            $table->foreignUuid('comment_id')->constrained()->onDelete('cascade');
+            $table->foreignUuid('post_id')->constrained()->onDelete('cascade');
+            
+            $table->engine('InnoDB');
         });
     }
 
