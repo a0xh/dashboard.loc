@@ -22,10 +22,7 @@ class SubscriberRequest extends FormRequest
      */
     public function rules(): array
     {
-        $validation = collect([
-            'status' => ['bail', 'required', 'boolean', 'in:0,1'],
-            'data' => ['bail', 'nullable', 'array'],
-        ]);
+        $validation = collect(['data' => ['bail', 'nullable', 'array']]);
 
         switch ($this->method())
         {
@@ -36,7 +33,7 @@ class SubscriberRequest extends FormRequest
             }
             case 'PUT': {
                 return $validation->merge([
-                    'email' => ['bail', 'required', 'email:rfc,strict,spoof,dns', 'max:255', 'unique:subscribers,email,' . $this->subscriber->id]
+                    'status' => ['bail', 'required', 'boolean', 'in:0,1']
                 ])->toArray();
             }
             default:

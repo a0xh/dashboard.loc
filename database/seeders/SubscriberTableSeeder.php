@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Subscriber;
+use App\Domain\Subscriber\Domain\Subscriber;
 
 class SubscriberTableSeeder extends Seeder
 {
@@ -15,8 +15,7 @@ class SubscriberTableSeeder extends Seeder
     {
         $subscriber = new Subscriber();
         $subscriber->email = 'test-true@mail.ru';
-        $subscriber->status = 'on';
-        $subscriber->ip = '127.0.0.1';
+        $subscriber->status = true;
         $subscriber->data = null;
         $subscriber->save();
 
@@ -24,8 +23,7 @@ class SubscriberTableSeeder extends Seeder
         
         $subscriber = new Subscriber();
         $subscriber->email = 'test-false@mail.ru';
-        $subscriber->status = 'off';
-        $subscriber->ip = '127.0.0.2';
+        $subscriber->status = false;
         $subscriber->data = null;
         $subscriber->save();
     }

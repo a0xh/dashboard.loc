@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             ProductTableSeeder::class,
             CommentTableSeeder::class,
             OrderTableSeeder::class,
+            SubscriberTableSeeder::class,
         ]);
     }
 }

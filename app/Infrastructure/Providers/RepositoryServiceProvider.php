@@ -57,6 +57,11 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Domain\Order\Infrastructure\OrderRepositoryInterface::class,
             \App\Domain\Order\Infrastructure\EloquentOrderRepository::class
         );
+
+        $this->app->bind(
+            \App\Domain\Subscriber\Infrastructure\SubscriberRepositoryInterface::class,
+            \App\Domain\Subscriber\Infrastructure\EloquentSubscriberRepository::class
+        );
     }
 
     /**
@@ -71,7 +76,7 @@ class RepositoryServiceProvider extends ServiceProvider
         Blade::component('admin::navigation', \App\Application\Components\Navigation::class);
 
         View::addNamespace('admin', [app_path() . '/Infrastructure/Views']);
-        View::composer(['admin::layouts.main'], function($view) {
+        View::composer(['layouts.main'], function($view) {
             $view->with('user', Auth::user());
         });
     }

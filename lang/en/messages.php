@@ -10,6 +10,7 @@ return [
     'admin.post.index' => 'Posts',
     'admin.tag.index' => 'Tags',
     'admin.page.index' => 'Pages',
+    'admin.subscriber.index' => 'Subscribers',
     'admin.tool.index' => 'Tools',
     'admin.tool.robots.index' => 'robots.txt',
     'admin.tool.sitemap.index' => 'sitemap.xml',

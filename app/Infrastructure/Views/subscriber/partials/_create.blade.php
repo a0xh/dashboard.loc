@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-dialog-centered modal-md modal-dialog-scrollable">
         <div class="modal-content">
 
-            <form method="post" action="{{ route('admin.subscribers.store') }}" class="modal-content" enctype="multipart/form-data">
+            <form method="post" action="{{ route('admin.subscriber.store') }}" class="modal-content" enctype="multipart/form-data">
 
                 @csrf
 
@@ -33,7 +33,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Закрыть') }}</button>
-                    <button type="button" class="btn btn-primary">{{ __('Добавить') }}</button>
+                    <button type="submit" class="btn btn-primary">{{ __('Добавить') }}</button>
                 </div>
                 
             </form>

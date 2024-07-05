@@ -151,6 +151,18 @@ return [
         app_path('Domain/Order/Application/Update') => [
            'middleware' => ['web', 'auth']
         ],
+        app_path('Domain/Subscriber/Application/Delete') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Subscriber/Application/Index') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Subscriber/Application/Store') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Subscriber/Application/Update') => [
+           'middleware' => ['web', 'auth']
+        ],
     ],
 
     /**
