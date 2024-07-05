@@ -65,7 +65,7 @@
                     <div class="col-md-12">
                         <label for="ip_address" class="form-label">{{ _('IP-адрес') }}</label>
 
-                        <input id="ip_address" type="text" name="data[ip_address]" value="{{ old('ip_address', $user->ip_address ?? null) }}" class="form-control @error('ip_address') is-invalid @enderror" autocomplete="ip_address">
+                        <input id="ip_address" type="text" name="data[ip_address]" value="{{ old('ip_address', $user->data->ip_address ?? null) }}" class="form-control @error('ip_address') is-invalid @enderror" autocomplete="ip_address">
 
                         <x-error-field name="ip_address" />
                     </div>

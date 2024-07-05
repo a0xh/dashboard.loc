@@ -6,16 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Application\Enums\StatusEnum;
 use Illuminate\Support\Str;
 
 class Post extends Model
 {
-    use Sluggable;
+    use Sluggable, HasUuids;
 
     protected $table = 'posts';
-    protected $keyType = 'string';
+    protected $keyType = 'uuid';
 
     public $incrementing = false;
     
@@ -68,7 +69,7 @@ class Post extends Model
     public static function booted(): void
     {
         static::creating(function (Post $post) {
-            $post->id = Str::uuid();
+            $post->id = Str::uuid()->toString();
         });
     }
     

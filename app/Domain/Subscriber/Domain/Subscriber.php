@@ -1,21 +1,19 @@
 <?php
 
-namespace App\Domain\Order\Domain;
+namespace App\Domain\Subscriber\Domain;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use App\Application\Enums\StatusEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Support\Str;
+use App\Application\Enums\StatusEnum;
 
-class Order extends Model
+class Subscriber extends Model
 {
     use HasUuids;
-    
-    protected $table = 'orders';
-    protected $keyType = 'uuid';
 
+    protected $table = 'subscribers';
+    protected $keyType = 'uuid';
+    
     public $incrementing = false;
     
     protected $dates = [
@@ -29,9 +27,7 @@ class Order extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'product_id',
-        'user_id',
-        'quantity',
+        'email',
         'status',
         'data'
     ];
@@ -44,9 +40,7 @@ class Order extends Model
     protected function casts(): array
     {
         return [
-            'product_id' => 'string',
-            'user_id' => 'string',
-            'quantity' => 'int',
+            'email' => 'string',
             'status' => StatusEnum::class,
             'data' => 'array',
         ];
@@ -54,8 +48,8 @@ class Order extends Model
 
     public static function booted(): void
     {
-        static::creating(function (Order $order) {
-            $order->id = Str::uuid()->toString();
+        static::creating(function (Subscriber $subscriber) {
+            $subscriber->id = Str::uuid()->toString();
         });
     }
     
@@ -65,15 +59,5 @@ class Order extends Model
             get: fn ($data) => json_decode($data),
             set: fn ($data) => json_encode($data),
         );
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(\App\Domain\User\Domain\User::class);
-    }
-
-    public function product(): BelongsTo
-    {
-        return $this->belongsTo(\App\Domain\Product\Domain\Product::class);
     }
 }

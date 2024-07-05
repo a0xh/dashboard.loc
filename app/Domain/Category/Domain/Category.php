@@ -7,15 +7,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Application\Enums\StatusEnum;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Support\Str;
 
 class Category extends Model
 {
-    use Sluggable;
+    use Sluggable, HasUuids;
     
     protected $table = 'categories';
-    protected $keyType = 'string';
+    protected $keyType = 'uuid';
 
     public $incrementing = false;
     
@@ -66,7 +67,7 @@ class Category extends Model
     public static function booted(): void
     {
         static::creating(function (Category $category) {
-            $category->id = Str::uuid();
+            $category->id = Str::uuid()->toString();
         });
     }
     

@@ -5,12 +5,15 @@ namespace App\Domain\Role\Domain;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Support\Str;
 
 class Role extends Model
 {
+    use HasUuids;
+    
     protected $table = 'roles';
-    protected $keyType = 'string';
+    protected $keyType = 'uuid';
 
     public $incrementing = false;
     
@@ -43,7 +46,7 @@ class Role extends Model
     public static function booted(): void
     {
         static::creating(function (Role $role) {
-            $role->id = Str::uuid();
+            $role->id = Str::uuid()->toString();
         });
     }
     

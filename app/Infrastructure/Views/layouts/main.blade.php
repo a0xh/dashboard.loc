@@ -16,10 +16,12 @@
     <link rel="icon" href="{{ asset('assets/img/favicon.png') }}" sizes="192x192" />
     <meta name="msapplication-TileImage" content="{{ asset('assets/img/favicon.png') }}" />
 
+    {{-- <script src="{{ asset('assets/js/htmx.min.js') }}"></script> --}}
+
     @stack('styles')
 </head>
 
-<body>
+<body hx-boost="true">
     <div id="ebazar-layout" class="theme-blue">
 
         <x-admin::navigation />
@@ -54,7 +56,7 @@
                     </div>
                 </nav>
             </div>
-
+            
             @yield('content')
 
         </div>

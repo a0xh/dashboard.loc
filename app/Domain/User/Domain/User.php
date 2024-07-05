@@ -8,16 +8,18 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Application\Enums\StatusEnum;
 use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, Searchable, HasUuids;
 
     protected $table = 'users';
-    protected $keyType = 'string';
+    protected $keyType = 'uuid';
 
     public $incrementing = false;
     
@@ -73,7 +75,7 @@ class User extends Authenticatable
     public static function booted(): void
     {
         static::creating(function (User $user) {
-            $user->id = Str::uuid();
+            $user->id = Str::uuid()->toString();
         });
     }
 
@@ -88,6 +90,15 @@ class User extends Authenticatable
             get: fn ($data) => json_decode($data),
             set: fn ($data) => json_encode($data),
         );
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'email' => $this->email
+        ];
     }
 
     public function roles(): BelongsToMany

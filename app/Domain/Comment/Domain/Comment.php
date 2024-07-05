@@ -6,15 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use App\Application\Enums\StatusEnum;
 use Illuminate\Support\Str;
 
 class Comment extends Model
 {
+    use HasUuids;
+
     protected $table = 'comments';
-    protected $keyType = 'string';
+    protected $keyType = 'uuid';
 
     public $incrementing = false;
     
@@ -50,7 +52,7 @@ class Comment extends Model
     public static function booted(): void
     {
         static::creating(function (Comment $comment) {
-            $comment->id = Str::uuid();
+            $comment->id = Str::uuid()->toString();
         });
     }
 

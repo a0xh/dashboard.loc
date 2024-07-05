@@ -26,10 +26,10 @@ class PageTableSeeder extends Seeder
         $page->media = null;
         $page->views = 537;
         $page->user_id = User::query()->get('id')[0]->id;
-        $page->data = serialize([
+        $page->data = [
             'heading' => 'heading',
             'excerpt' => 'excerpt'
-        ]);
+        ];
         $page->save();
     }
 }

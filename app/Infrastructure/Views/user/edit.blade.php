@@ -3,7 +3,7 @@
 @section('title', trans('Редактирование пользователя'))
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/dropify.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/dropify.min.css') }}" ansyc>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 @endpush
 
@@ -16,14 +16,16 @@
             <x-message />
             
 	        @if (Route::has('admin.user.update'))
-		        <form action="{{ route('admin.user.update', $user)}}" method="post" enctype="multipart/form-data">
+		        @fragment('user-edit')
+			        <form action="{{ route('admin.user.update', $user)}}" method="post" enctype="multipart/form-data">
 
-		            @method('PUT')
-		            @csrf
+			            @method('PUT')
+			            @csrf
 
-		            @includeIf('user.partials._form')
+			            @includeIf('user.partials._form')
 
-		        </form>
+			        </form>
+		        @endfragment
             @else
                 <x-no-data>
                     <x-slot:button>
@@ -40,7 +42,7 @@
 
 @push('scripts')
     <script src="{{ asset('assets/js/libscripts.bundle.js') }}"></script>
-    <script src="{{ asset('assets/js/dropify.bundle.js') }}"></script>
+    <script src="{{ asset('assets/js/dropify.bundle.js') }}" ansyc></script>
     <script src="{{ asset('assets/js/template.js') }}"></script>
 
     <script>

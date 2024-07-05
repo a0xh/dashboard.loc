@@ -7,15 +7,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use App\Application\Enums\StatusEnum;
 use Illuminate\Support\Str;
 
 class Tag extends Model
 {
-    use Sluggable;
+    use Sluggable, HasUuids;
 
     protected $table = 'tags';
-    protected $keyType = 'string';
+    protected $keyType = 'uuid';
 
     public $incrementing = false;
     
@@ -64,7 +65,7 @@ class Tag extends Model
     public static function booted(): void
     {
         static::creating(function (Tag $tag) {
-            $tag->id = Str::uuid();
+            $tag->id = Str::uuid()->toString();
         });
     }
 

@@ -3,10 +3,8 @@
 namespace App\Infrastructure\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\{View, Blade, Auth};
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Blade;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -17,47 +15,47 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             \App\Domain\Role\Infrastructure\RoleRepositoryInterface::class,
-            \App\Domain\Role\Infrastructure\CachedRoleRepository::class
+            \App\Domain\Role\Infrastructure\EloquentRoleRepository::class
         );
 
         $this->app->bind(
             \App\Domain\User\Infrastructure\UserRepositoryInterface::class,
-            \App\Domain\User\Infrastructure\CachedUserRepository::class
+            \App\Domain\User\Infrastructure\EloquentUserRepository::class
         );
 
         $this->app->bind(
             \App\Domain\Category\Infrastructure\CategoryRepositoryInterface::class,
-            \App\Domain\Category\Infrastructure\CachedCategoryRepository::class
+            \App\Domain\Category\Infrastructure\EloquentCategoryRepository::class
         );
 
         $this->app->bind(
             \App\Domain\Tag\Infrastructure\TagRepositoryInterface::class,
-            \App\Domain\Tag\Infrastructure\CachedTagRepository::class
+            \App\Domain\Tag\Infrastructure\EloquentTagRepository::class
         );
 
         $this->app->bind(
             \App\Domain\Post\Infrastructure\PostRepositoryInterface::class,
-            \App\Domain\Post\Infrastructure\CachedPostRepository::class
+            \App\Domain\Post\Infrastructure\EloquentPostRepository::class
         );
 
         $this->app->bind(
             \App\Domain\Product\Infrastructure\ProductRepositoryInterface::class,
-            \App\Domain\Product\Infrastructure\CachedProductRepository::class
+            \App\Domain\Product\Infrastructure\EloquentProductRepository::class
         );
 
         $this->app->bind(
             \App\Domain\Comment\Infrastructure\CommentRepositoryInterface::class,
-            \App\Domain\Comment\Infrastructure\CachedCommentRepository::class
+            \App\Domain\Comment\Infrastructure\EloquentCommentRepository::class
         );
 
         $this->app->bind(
             \App\Domain\Page\Infrastructure\PageRepositoryInterface::class,
-            \App\Domain\Page\Infrastructure\CachedPageRepository::class
+            \App\Domain\Page\Infrastructure\EloquentPageRepository::class
         );
 
         $this->app->bind(
             \App\Domain\Order\Infrastructure\OrderRepositoryInterface::class,
-            \App\Domain\Order\Infrastructure\CachedOrderRepository::class
+            \App\Domain\Order\Infrastructure\EloquentOrderRepository::class
         );
     }
 
@@ -70,13 +68,10 @@ class RepositoryServiceProvider extends ServiceProvider
         Model::shouldBeStrict();
 
         Blade::componentNamespace('App\\Application\\Components\\', 'admin');
-        Blade::component('admin::navigation', Navigation::class);
+        Blade::component('admin::navigation', \App\Application\Components\Navigation::class);
 
-        View::addNamespace('admin', [
-            app_path() . '/Infrastructure/Views',
-        ]);
-
-        view()->composer(['layouts.main'], function($view) {
+        View::addNamespace('admin', [app_path() . '/Infrastructure/Views']);
+        View::composer(['admin::layouts.main'], function($view) {
             $view->with('user', Auth::user());
         });
     }

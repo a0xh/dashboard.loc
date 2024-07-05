@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Domain\Post\Domain;
+namespace App\Domain\Subscriber\Domain;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Collection;
 
-class PostRequest extends FormRequest
+class SubscriberRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,13 +23,6 @@ class PostRequest extends FormRequest
     public function rules(): array
     {
         $validation = collect([
-            'title' => ['bail', 'required', 'string', 'min:3', 'max:65'],
-            'description' => ['bail', 'nullable', 'string', 'min:3', 'max:200'],
-            'keywords' => ['bail', 'nullable', 'string', 'min:3', 'max:200'],
-            'media' => ['bail', 'nullable', 'image', 'dimensions:max_width=6000,max_height=6000'],
-            'category_id' => ['bail', 'nullable', 'integer'],
-            'text' => ['bail', 'nullable', 'string', 'max:65535'],
-            'tag_id' => ['bail', 'nullable', 'array'],
             'status' => ['bail', 'required', 'boolean', 'in:0,1'],
             'data' => ['bail', 'nullable', 'array'],
         ]);
@@ -38,12 +31,12 @@ class PostRequest extends FormRequest
         {
             case 'POST': {
                 return $validation->merge([
-                    'slug' => ['bail', 'nullable', 'string', 'lowercase', 'min:1', 'max:65', 'unique:posts,slug']
+                    'email' => ['bail', 'required', 'email:rfc,strict,spoof', 'max:255', 'unique:subscribers,email']
                 ])->toArray();
             }
             case 'PUT': {
                 return $validation->merge([
-                    'slug' => ['bail', 'nullable', 'string', 'lowercase', 'min:1', 'max:65', 'unique:posts,slug,' . $this->post->id]
+                    'email' => ['bail', 'required', 'email:rfc,strict,spoof,dns', 'max:255', 'unique:subscribers,email,' . $this->subscriber->id]
                 ])->toArray();
             }
             default:
@@ -61,18 +54,11 @@ class PostRequest extends FormRequest
         return [];
     }
 
-    public function formRequest(): PostDto
+    public function formRequest(): SubscriberDto
     {
-        return new PostDto(
-            title: $this->title,
-            category_id: $this->category_id,
-            slug: $this->slug,
-            keywords: $this->keywords,
-            description: $this->description,
-            media: $this->media,
-            text: $this->text,
+        return new SubscriberDto(
+            email: $this->email,
             status: $this->status,
-            tag_id: $this->tag_id,
             data: $this->data,
         );
     }

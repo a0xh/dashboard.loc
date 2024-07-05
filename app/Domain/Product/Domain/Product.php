@@ -8,15 +8,16 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Application\Enums\StatusEnum;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Support\{Str, Number};
 
 class Product extends Model
 {
-    use Sluggable;
+    use Sluggable, HasUuids;
 
     protected $table = 'products';
-    protected $keyType = 'string';
+    protected $keyType = 'uuid';
 
     public $incrementing = false;
     
@@ -71,7 +72,7 @@ class Product extends Model
     public static function booted(): void
     {
         static::creating(function (Product $product) {
-            $product->id = Str::uuid();
+            $product->id = Str::uuid()->toString();
         });
     }
 
