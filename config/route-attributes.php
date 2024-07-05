@@ -163,6 +163,12 @@ return [
         app_path('Domain/Subscriber/Application/Update') => [
            'middleware' => ['web', 'auth']
         ],
+        app_path('Domain/Setting/Application/Index') => [
+           'middleware' => ['web', 'auth']
+        ],
+        app_path('Domain/Setting/Application/Update') => [
+           'middleware' => ['web', 'auth']
+        ],
     ],
 
     /**

@@ -62,6 +62,11 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Domain\Subscriber\Infrastructure\SubscriberRepositoryInterface::class,
             \App\Domain\Subscriber\Infrastructure\EloquentSubscriberRepository::class
         );
+
+        $this->app->bind(
+            \App\Domain\Setting\Infrastructure\SettingRepositoryInterface::class,
+            \App\Domain\Setting\Infrastructure\EloquentSettingRepository::class
+        );
     }
 
     /**

@@ -6,6 +6,8 @@ use Illuminate\Database\Schema\Blueprint;
 
 return new class extends Migration
 {
+    protected $connection = 'mysql';
+
     /**
      * Run the migrations.
      */
@@ -17,8 +19,8 @@ return new class extends Migration
 
             $table->comment('Настройки');
 
-            $table->smallIncrements('id');
-            $table->string('key', 80)->unique()->index();
+            $table->uuid('id')->primary();
+            $table->string('key', 45)->unique()->index();
             $table->json('data')->nullable()->comment('Доп. данные');
             $table->timestampsTz(precision: 0);
             
