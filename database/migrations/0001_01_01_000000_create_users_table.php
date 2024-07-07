@@ -29,7 +29,14 @@ return new class extends Migration
             $table->boolean('status')->nullable()->default(false);
             $table->json('data')->nullable();
             $table->rememberToken();
-            $table->timestampsTz(precision: 0);
+
+            $table->timestampTz('created_at')->nullable();
+            $table->unsignedSmallInteger('created_by')->nullable();
+            $table->timestampTz('updated_at')->nullable();
+            $table->unsignedSmallInteger('updated_by')->nullable();
+            $table->timestampTz('deleted_at')->nullable();
+            $table->unsignedSmallInteger('deleted_by')->nullable();
+            $table->boolean('is_deleted')->default(false);
 
             $table->index('created_at');
             $table->engine('InnoDB');

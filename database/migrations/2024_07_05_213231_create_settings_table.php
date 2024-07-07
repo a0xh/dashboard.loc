@@ -22,7 +22,14 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('key', 45)->unique()->index();
             $table->json('data')->nullable()->comment('Доп. данные');
-            $table->timestampsTz(precision: 0);
+
+            $table->timestampTz('created_at')->nullable();
+            $table->unsignedSmallInteger('created_by')->nullable();
+            $table->timestampTz('updated_at')->nullable();
+            $table->unsignedSmallInteger('updated_by')->nullable();
+            $table->timestampTz('deleted_at')->nullable();
+            $table->unsignedSmallInteger('deleted_by')->nullable();
+            $table->boolean('is_deleted')->default(false);
             
             $table->engine('InnoDB');
         });
