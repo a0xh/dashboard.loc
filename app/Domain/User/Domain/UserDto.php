@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Domain\User\Domain;
 
@@ -14,7 +14,7 @@ class UserDto
         private string $email,
         private string $password,
         private bool $status,
-        private int $role_id,
+        private string $role_id,
         private ?array $data
     ) {}
 
@@ -53,7 +53,7 @@ class UserDto
         return $this->status;
     }
 
-    public function getRoleId(): int
+    public function getRoleId(): string
     {
         return $this->role_id;
     }

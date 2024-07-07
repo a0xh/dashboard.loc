@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Domain\User\Domain;
 
@@ -61,6 +61,7 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
+            'id' => 'string',
             'media' => 'string',
             'first_name' => 'string',
             'last_name' => 'string',

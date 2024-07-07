@@ -8,11 +8,13 @@ final readonly class StoreUserResponder
 {
     public function handle(bool $result): RedirectResponse
     {
+        $message = 'messages.admin.user.store';
+        
         if ($result) {
-            session()->flash('success', 'messages.user.store.success');
+            session()->flash("success", "{$message}.success");
             return redirect()->route('admin.user.index');
         }
 
-        return back()->with('error', 'messages.user.store.error');
+        return back()->with("error", "{$message}.error");
     }
 }

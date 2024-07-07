@@ -8,11 +8,13 @@ final readonly class DeleteUserResponder
 {
     public function handle(bool $result): RedirectResponse
     {
+        $message = 'messages.admin.user.delete';
+
         if ($result) {
-            session()->flash('success', 'messages.user.update.success');
+            session()->flash("success", "{$message}.success");
             return redirect()->route('admin.user.index');
         }
         
-        return back()->with('error', 'messages.user.update.error');
+        return back()->with("error", "{$message}.error");
     }
 }

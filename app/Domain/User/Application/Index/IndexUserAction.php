@@ -18,7 +18,7 @@ final class IndexUserAction extends Controller
     public function __invoke(): \Illuminate\View\View
     {
         return $this->userResponder->handle([
-            'users' => $this->userRepository->getUser(11)
+            'users' => $this->userRepository->getUser()
         ]);
     }
 }

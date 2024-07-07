@@ -4,16 +4,13 @@ namespace App\Domain\User\Application\Delete;
 
 use App\Infrastructure\Controllers\Controller;
 use App\Domain\User\Infrastructure\UserRepositoryInterface;
-use App\Application\Traits\MediaAction;
+use App\Domain\User\Domain\{User, UserRequest};
 use Spatie\RouteAttributes\Attributes\{Delete, Where};
-use App\Domain\User\Domain\User;
 use Illuminate\Http\RedirectResponse;
 
 #[Where('{user:id}', '[0-9]+')]
 final class DeleteUserAction extends Controller
 {
-    use MediaAction;
-
     public function __construct(
         private readonly UserRepositoryInterface $userRepository,
         private readonly DeleteUserResponder $userResponder
@@ -22,13 +19,14 @@ final class DeleteUserAction extends Controller
     #[Delete('/admin/user/{user:id}/delete', name: "admin.user.delete")]
     public function __invoke(User $user): RedirectResponse
     {
-        if ($user->media) {
-            $this->deleteMedia($user->media);
+        $request = (new UserRequest(request()->all()));
+        
+        if ($request->string('id')->trim()->value == $user->id)
+        {
+            $deleteUser = $this->userRepository->deleteUser($user);
+            return $this->userResponder->handle($deleteUser);
         }
 
-        $deleteUser = $this->userRepository->deleteUser($user);
-        $redirectTo = $this->userResponder->handle($deleteUser);
-
-        return $redirectTo;
+        return $this->userResponder->handle(false);
     }
 }

@@ -2,93 +2,66 @@
 
 namespace App\Domain\User\Infrastructure;
 
-use App\Domain\User\Domain\User;
+use App\Domain\User\Domain\{User, UserDto};
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Support\{Str, Collection};
 
-class CachedUserRepository implements UserRepositoryInterface
+final class CachedUserRepository extends DecoratorUserRepository implements UserRepositoryInterface
 {
     private const TTL = 1440;
 
     public function __construct(
-        public EloquentUserRepository $userRepository,
-        public CacheManager $cache
+        private readonly EloquentUserRepository $eloquentUserRepository,
+        private readonly TransactionUserRepository $transactionUserRepository,
+        private readonly CacheManager $cacheManager
     ) {}
 
-    public function findByUser(int $id): User
+    public function findByUser(string $id): Collection
     {
-        $key = Str::of('user')->append('_')->finish($id);
+        $setKey = Str::of('user')->append('_')->finish($id);
 
-        $findByUser = $this->cache->remember($key, self::TTL, function() use($id) {
-            return $this->userRepository->findByUser($id);
+        $findByUser = $this->cacheManager->remember($setKey, self::TTL, function() use($id) {
+            return $this->eloquentUserRepository->findByUser($id);
         });
 
         return $findByUser;
     }
 
-    public function getUser(int $count): LengthAwarePaginator
+    public function getUser(): LengthAwarePaginator
     {
-        $getUser = $this->cache->remember('users', self::TTL, function() use($count) {
-            return $this->userRepository->getUser($count);
+        $getUser = $this->cacheManager->remember('users', self::TTL, function() {
+            return $this->eloquentUserRepository->getUser();
         });
 
         return $getUser;
     }
 
-    public function createUser(array $data): bool
+    public function createUser(UserDto $userDto): bool
     {
-        $createUser = $this->userRepository->createUser($data);
+        $createUser = $this->transactionUserRepository->createUser($userDto);
 
-        $cache = $this->cache;
-
-        collect(['users'])->each(function ($item) use($cache) {
-            if ($cache->has($item)) {
-                return $cache->forget($item);
-            }
-        });
+        $this->cacheManager->pull('users');
 
         return $createUser;
     }
 
-    public function updateUser(User $user, array $data): bool
+    public function updateUser(User $user, UserDto $userDto): bool
     {
-        $updateUser = $this->userRepository->updateUser($user, $data);
+        $updateUser = $this->transactionUserRepository->updateUser($user, $userDto);
 
-        $cache = $this->cache;
-
-        collect(['users'])->each(function ($item) use($cache) {
-            if ($cache->has($item)) {
-                return $cache->forget($item);
-            }
-        });
-
-        collect(['user_'])->each(function($item) use($cache, $user) {
-            if ($cache->has(Str::of($item)->finish($user->id))) {
-                return $cache->forget(Str::of($item)->finish($user->id));
-            }
-        });
+        $this->cacheManager->pull('users');
+        $this->cacheManager->pull(Str::of('user')->append('_')->finish($user->id));
 
         return $updateUser;
     }
 
     public function deleteUser(User $user): bool
     {
-        $deleteUser = $this->userRepository->deleteUser($user);
+        $deleteUser = $this->transactionUserRepository->deleteUser($user);
 
-        $cache = $this->cache;
-
-        collect(['users'])->each(function ($item) use($cache) {
-            if ($cache->has($item)) {
-                return $cache->forget($item);
-            }
-        });
-
-        collect(['user_'])->each(function($item) use($cache, $user) {
-            if ($cache->has(Str::of($item)->finish($user->id))) {
-                return $cache->forget(Str::of($item)->finish($user->id));
-            }
-        });
+        $this->cacheManager->forget('users');
+        $this->cacheManager->forget(Str::of('user')->append('_')->finish($user->id));
 
         return $deleteUser;
     }

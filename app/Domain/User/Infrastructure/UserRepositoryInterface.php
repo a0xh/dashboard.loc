@@ -2,14 +2,11 @@
 
 namespace App\Domain\User\Infrastructure;
 
-use App\Domain\User\Domain\User;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Domain\User\Domain\{UserDto, User};
 
 interface UserRepositoryInterface
 {
-    public function findByUser(int $id): User;
-    public function getUser(int $count): LengthAwarePaginator;
-    public function createUser(array $data): bool;
-    public function updateUser(User $user, array $data): bool;
+    public function createUser(UserDto $data): bool;
+    public function updateUser(User $user, UserDto $data): bool;
     public function deleteUser(User $user): bool;
 }

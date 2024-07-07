@@ -2,76 +2,100 @@
 
 namespace App\Domain\User\Infrastructure;
 
-use App\Domain\User\Domain\User;
+use App\Domain\User\Domain\{UserDto, User};
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
+use App\Application\Traits\MediaAction;
 
-class EloquentUserRepository extends DecoratorUserRepository
+final class EloquentUserRepository extends DecoratorUserRepository
 {
-    public function __construct(protected User $user) {}
+    use MediaAction;
 
-    public function findByUser(int $id): User
+    public function __construct(private readonly User $user) {}
+
+    public function findByUser(string $id): Collection
     {
-        return $this->user->query()->with('roles')->find($id);
+        $findByUser = $this->user->query()->with('roles')->find($id);
+        
+        return collect([
+            'id' => $findByUser->id ?? null,
+            'ip_address' => $findByUser->data->ip_address,
+            'avatar' => $findByUser->media,
+            'first_name' => $findByUser->first_name ?? null,
+            'status' => $findByUser->status->value,
+            'last_name' => $findByUser->last_name ?? null,
+            'email' => $findByUser->email ?? null,
+            'roles' => $findByUser->roles,
+        ]);
     }
 
-    public function getUser(int $count): LengthAwarePaginator
+    public function getUser(): LengthAwarePaginator
     {
-        return $this->user->query()->with('roles')->orderByDesc('created_at')->paginate($count);
+        $query = $this->user->query()->with('roles');
+        $getUser = $query->orderByDesc('created_at');
+
+        return $getUser->paginate(11)->through(fn ($user) => [
+            'id' => $user->id ?? null,
+            'ip_address' => $user->data->ip_address,
+            'avatar' => $user->media,
+            'first_name' => $user->first_name ?? null,
+            'status' => $user->status->value,
+            'last_name' => $user->last_name ?? null,
+            'email' => $user->email ?? null,
+            'roles' => $user->roles,
+        ]);
     }
 
-    public function createUser(array $data): bool
+    public function createUser(UserDto $userDto): bool
     {
-        try {
-            DB::transaction(function() use($data) {
-                $roleId = $data['role_id'];
+        $createMedia = $this->createMedia($userDto->getMedia());
 
-                $user = $this->user->create(data_forget($data, 'role_id'));
-                $user->roles()->sync($roleId);
-            }, 3);
+        $dataUser = collect([
+            'first_name' => $userDto->getFirstName(),
+            'last_name' => $userDto->getLastName(),
+            'email' => $userDto->getEmail(),
+            'status' => $userDto->getStatus(),
+            'password' => $userDto->getHashPassword(),
+            'data' => $userDto->getData()
+        ])->merge(['media' => $createMedia]);
 
-            return $this->user->exists();
-        }
+        $createUser = $this->user->create($dataUser->toArray());
+        $createUser->roles()->sync($userDto->getRoleId());
 
-        catch (\ExternalServiceException $exception) {
-            return false;
-        }
+        return $createUser->exists();
     }
 
-    public function updateUser(User $user, array $data): bool
+    public function updateUser(User $user, UserDto $userDto): bool
     {
-        try {
-            DB::transaction(function() use($user, $data) {
-                $roleId = $data['role_id'];
-                
-                $user->update(data_forget($data, 'role_id'));
-                $user->roles()->sync($roleId);
-            }, 3);
+        $user->email = $userDto->getEmail();
+        $user->last_name = $userDto->getLastName();
+        $user->status = $userDto->getStatus();
+        $user->password = $userDto->getHashPassword();
+        $user->data = $userDto->getData();
+        $user->first_name = $userDto->getFirstName();
+        $user->media = $this->updateMedia(
+            $user->media, $userDto->getMedia()
+        );
 
-            return $user->wasChanged();
-        }
+        $user->save();
 
-        catch (\ExternalServiceException $exception) {
-            return false;
-        }
+        $user->roles()->sync($userDto->getRoleId());
+
+        return $user->wasChanged();
     }
 
     public function deleteUser(User $user): bool
     {
-        try {
-            DB::transaction(function() use($user) {
-                $user->roles()->detach();
-                $user->delete();
-            }, 3);
-
-            if ($user->deleteOrFail() !== true) {
-                return true;
-            } else {
-                return false;
-            }
+        if ($user->media) {
+            $this->deleteMedia($user->media);
         }
 
-        catch (\ExternalServiceException $exception) {
+        $user->roles()->detach();
+        $user->delete();
+
+        if ($user->deleteOrFail() !== true) {
+            return true;
+        } else {
             return false;
         }
     }

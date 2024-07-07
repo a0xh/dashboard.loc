@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Domain\User\Domain;
 
@@ -25,51 +25,37 @@ class UserRequest extends FormRequest
         $validation = collect([
             'media' => ['bail', 'nullable', 'image', 'dimensions:max_width=6000,max_height=6000'],
             'first_name' => ['bail', 'required', 'string', 'min:4', 'max:44'],
-            'last_name' => ['bail', 'nullable', 'string', 'min:4', 'max:44'],
-            'password' => ['bail', 'required', 'string', 'min:8', 'confirmed'],
             'status' => ['bail', 'required', 'boolean', 'in:0,1'],
-            'role_id' => ['bail', 'required', 'integer'],
+            'last_name' => ['bail', 'nullable', 'string', 'min:4', 'max:44'],
+            'role_id' => ['bail', 'required', 'string'],
+            'password' => ['bail', 'required', 'string', 'min:8', 'confirmed'],
             'data' => ['bail', 'nullable', 'array'],
         ]);
 
-        switch ($this->method())
-        {
-            case 'POST': {
-                return $validation->merge([
-                    'email' => ['bail', 'required', 'email:rfc,strict,spoof', 'max:255', 'unique:users,email']
-                ])->toArray();
-            }
-            case 'PUT': {
-                return $validation->merge([
-                    'email' => ['bail', 'required', 'email:rfc,strict,spoof', 'max:255', 'unique:users,email,' . $this->user->id]
-                ])->toArray();
-            }
-            default:
-                break;
-        }
+        $request = match ($this->method()) {
+            'POST' => $validation->merge([
+                'email' => ['bail', 'required', 'email:rfc,strict,spoof,dns', 'max:255', 'unique:users,email']
+            ])->toArray(),
+            'PUT' => $validation->merge([
+                'email' => ['bail', 'required', 'email:rfc,strict,spoof,dns', 'max:255', 'unique:users,email,' . $this->user->id]
+            ])->toArray(),
+            'DELETE' => ['id' => ['required', 'string', 'exists:users,id,' . $this->user->id]],
+        };
+
+        return $request;
     }
 
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array<string, string>
-     */
-    public function messages(): array
-    {
-        return [];
-    }
-
-    public function formRequest(): UserDto
+    public function toDto(): UserDto
     {
         return new UserDto(
-            media: $this->media,
-            first_name: $this->first_name,
-            last_name: $this->last_name,
-            email: $this->email,
-            password: $this->password,
-            status: $this->status,
-            role_id: $this->role_id,
-            data: $this->data
+            media: $this->file('media'),
+            last_name: $this->string('last_name')->trim()->value,
+            email: $this->string('email')->trim()->value,
+            first_name: $this->string('first_name')->trim()->value,
+            password: $this->string('password')->trim()->value,
+            status: $this->boolean('status'),
+            role_id: $this->string('role_id')->trim()->value,
+            data: $this->input('data')
         );
     }
 }
